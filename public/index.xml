@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistical and R blog</title>
+    <link>/</link>
+    <description>Recent content on Statistical and R blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Jan 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Curriculum Vitae</title>
+      <link>/curriculum/</link>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/curriculum/</guid>
+      <description>Marie VAUGOYEAUSkillsField skills on birds and reptilesLab skillsVertebrates’ manipulationLanguageComputer skillsExperiences2016-2017 1-year teaching assistant in biostatistics. Laboratory Mer, Molécules, Santé. EA 2160. Le Mans University2014-2015 1-year teaching assistant in ecology and evolution. Laboratory Ecology, Systematic, Evolution, Paris-Sud University.2011-2014 PhD student in ecology and evolution. Maternal effects as mediators of climate changes: mechanisms and consequences in avian populations. Evolutionary ecology department, iEES-Paris.</description>
+    </item>
+    
+    <item>
+      <title>About Me</title>
+      <link>/aboutme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/aboutme/</guid>
+      <description>Ph.D. in Ecology and Evolution
+Since 2011, I work in ecology and especially I study influence of urbanised world on ecosystems. I am interesting by statistics and R-used.
+Contact:
+marie.vaugoyeau@gmail.com
+Twitter
+LinkedIn</description>
+    </item>
+    
+    <item>
+      <title>First post</title>
+      <link>/2018/01/24/first-post/</link>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/24/first-post/</guid>
+      <description>My first postMy first postIt is not easy to start, the first step is the hardest…
+I created this site to explain statistical analyses and used of R that I already did.
+It is also intended to evolve with my future works.
+See you.
+</description>
+    </item>
+    
+  </channel>
+</rss>

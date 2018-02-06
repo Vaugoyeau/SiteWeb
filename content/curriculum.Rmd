@@ -1,0 +1,150 @@
+---
+title: "Curriculum Vitae"
+date: "2018-01-24"
+layout: "about"
+menu: "main"
+weight: 50
+output:
+  blogdown::html_page:
+    toc: true
+    fig_width: 6
+    dev: "svg"
+---
+
+# Marie VAUGOYEAU 
+**Ph.D. in Ecology and Evolution**  
+  
+Nationality: French  
+Born May 1^st^ 1986  
+
+## Skills
+### Field skills on birds and reptiles
+* Behavioural ecology (female incubation and nestling feeding behaviour / anti-predator behaviour and aggressiveness / exploratory behaviour)
+* Capture in nest boxes and with mist nets in birds and by hand and with trap in reptiles
+* Measure of tarsus and wing length, body mass and feather colour by pictures analyse or spectophotometry in birds
+* Measure of snout-vent and total length, body mass and throat * colouration by visual comparison in reptiles
+* Blood sample in brachial vein in birds. 
+
+### Lab skills
+* Treatment of samples (blood, feather, eggs) taken from the field
+* Keeping animals in aviaries and terrariums
+* Used of climatic chambers
+* Used of ELISA-tests for corticosterone, antioxidant capacity and ROMs concentration
+* Leucocytes count on slides
+
+### Vertebrates’ manipulation
+* French authorisation for animal experimentation Level 1 (2013)
+* Training on animal welfare applied on experimental use of animals (2008)
+* Electrofishing certificate (2008)
+
+### Language
+* English (TOEIC 2009): 835/990
+* French: native speaker
+
+### Computer skills 
+* Microsoft Office: advanced level
+* R (statistical analyses for all kind of data): advanced level
+* ArcGIS: basic level
+  
+
+## Experiences
+### 2016-2017 **1-year teaching assistant in biostatistics**. Laboratory Mer, Molécules, Santé. EA 2160. Le Mans University  
+#### Research: Analyse human influence on physicochemical characteristics of one urban lake (Dayat Morsli) in Algeria
+* Analyse physicochemical variation according time (once per month during one year) and space (seven study plots)
+* Calculation for the repeatability of measurements and number of needed data
+* Creation of independent variables  
+
+#### Teaching in **biology** and **biostatistics** 
+* Animal biology cellular, *bachelor level* (32 h of practical class)
+* Animal behaviour, *bachelor level* (4h: two lectures of 2 h)
+* Measurements and data analyses, *bachelor level* (30 h of practical class)
+* Statistics, *bachelor level* (48 h of practical class)
+* Biostatistics, *bachelor level* (8 h of lecture and 6 h of practical class)
+* Data analyses, *bachelor level*(20 h of lecture and 40 of practical class)
+* Biostatistics, *master level* (14 h of lecture and 14 h of practical class) 
+  
+### 2014-2015 **1-year teaching assistant in ecology and evolution**. Laboratory Ecology, Systematic, Evolution, Paris-Sud University.
+Supervisor: [Dr. Anders MØLLER](http://www.ese.u-psud.fr/article226.html?lang=en#encadrement)  
+  
+#### Research: Study of urbanisation influences on laying dates and clutch sizes in blue tits (*Cyanistes caeruleus*), great tits (*Parus major*), collared flycatchers (*Ficedula albicollis*) and pied flycatcher (*Ficedula hypoleuca*)
+* Adding number of buildings and available values of Corine Land Cover near study plots as index of the intensity of urbanisation to a dataset.
+* Organise and analyse a dataset with large temporal (1948-2012) and spatial (199 study spots) scales with R
+* Use ArcGIS to extract and show geographical data
+* Results published in 2016 in [Ecology and Evolution](http://onlinelibrary.wiley.com/doi/10.1002/ece3.2335/abstract)  
+  
+#### Teaching in **ecology** and **evolution**  
+* Chemistry-Biology, *bachelor level* (28 h of practical class)
+* Biology Plus, *bachelor level* (31 h of practical class)
+* Evolutive Biology, *bachelor level* (10 h of practical class)
+* Genetic of populations, *bachelor level* (19 h of practical class)  
+  
+### 2011-2014 **PhD student in ecology and evolution**. *Maternal effects as mediators of climate changes: mechanisms and consequences in avian populations*. Evolutionary ecology department, iEES-Paris.
+Supervisors: [Pr. Sandrine MEYLAN](https://iees-paris.ufr918.upmc.fr/index.php?page=fiche&id=51&droit=1) and [Dr. Clotilde BIARD](https://iees-paris.ufr918.upmc.fr/index.php?page=fiche&id=9&droit=1)  
+  
+#### **Research**: Study of urban-rural gradient influences on reproduction in blue tits (*Cyanistes caeruleus*) and great tits (*Parus major*)  
+  
+**Correlative study with daily monitoring of three reproductive seasons in great tits and blue tits:**  
+* Handling and ringing of adults and nestlings  
+*	Measure of birds’ phenotypes by morphological measurements of mass and skeleton size (tarsus length)  
+*	Sampled eggs, feathers and blood  
+* Did pictures to quantify melanisation of great tits  
+
+**Two experimentations in great tits:**  
+* In aviaries on links between oxidative status, physical activity and carotenoids. Results were presented during two conventions, one national: Colloque d’EcoPhysiologie Animale at Lyon in 2013, and one international: 1st Young Natural History scientists' Meeting at Paris in 2014 and were published in 2015 by [The Journal of Experimental Biology](http://jeb.biologists.org/content/218/13/2106)  
+* In natura about the influence of temperature on reproductive success. Results were published in 2017 in [Journal of Avian Biology](http://onlinelibrary.wiley.com/doi/10.1111/jav.01208/abstract;jsessionid=34C44663807B1B7CA81850CA6E577BE0.f01t03)  
+
+**Analyses in laboratory:**
+*	Animals’ physiology: activation of the immune system by blood sedimentation speed, stress response by quantification of heterophils and lymphocytes on slides and oxidative status by measure of oxidative damage and capacity antioxidant
+*	Coloured phenotype: yellow phenotype by spectrophotometry on feathers in both species and in great tits, size of black breast stripe by pictures
+*	Maternal investment in reproduction: eggs weighed fresh, measure of egg shape and volume, measure of eggshell thickness and colour  
+
+**Data analyse with R**  
+Generalized Linear Mixed Models and tests post-hoc  
+Pearson, Student, Welch and Khi^2^ tests  
+Wilcoxon, Mann-Whitney et Kruskal-Wallis tests  
+  
+**Collaboration with researchers from [CEBC](http://www.cebc.cnrs.fr/)**  
+Results were publishedin 2017 in [Frontiers in Ecology and Evolution](https://www.frontiersin.org/articles/10.3389/fevo.2017.00079/full)  
+  
+#### Teaching in **bibliographic research** *bachelor and master levels*  
+Teach bibliographic research and used of Zotero  
+  
+#### **Supervision of 12 internships** (9 students in Bachelor and 3 Master students).  
+Each student had a personal subject choose to be according with student interests and data available.  
+  
+### 2011-2011 **6-month internship**. *Study of impacts of climate change on development: an experimental study in aspic viper*. CEBC CNRS.
+Supervisor: [Dr. Olivier LOURDAIS](http://www.cebc.cnrs.fr/Fidentite/lourdais/lourdais.htm)  
+**Research**: Measure temperature influence during embryonic development on behaviour and physiology of females and young in aspic viper (*Vipera aspis*)  
+* Organisation of experiments and data analyse with R  
+* Keeping in captivity, fed and manipulated offspring of the aspic viper  
+  
+### 2010 **6-month internship**. *Study of aggressiveness in wall lizards according to temperature, sex and throat colour*. SEEM CNRS.
+Supervisors: Drs. [Susanne](https://www.researchgate.net/profile/Susanne_Zajitschek) & [Felix](https://www.researchgate.net/profile/Felix_Zajitschek) ZAJITSCHEK  
+**Research**: Study of wall lizards (*Podarcis muralis*) and viviparous lizards (*Zootoca vivipara*) behaviour and physiology  
+* Measure of bite force and data analyse with R  
+* Help in experimentation about substrate choice, boldness response and dispersal availability  
+* Captured, kept in captivity, fed and manipulated around fifty lizards.
+
+### 2009-2010 **6-month internship**. *Study of impacts of climate change on development: an experimental study in aspic viper*. CEBC CNRS.
+Supervisor: [Sophie LORIOUX](https://www.researchgate.net/profile/Sophie_Lorioux)  
+**Research**: Measure temperature influence during embryonic development on behaviour and physiology of females and young in aspic viper (*Vipera aspis*)  
+* Help to measure behaviour and physiology of pregnant vipers and young in response to daily temperature increase.  
+* Results were published in 2013 by [American Naturalist](http://www.journals.uchicago.edu/doi/10.1086/670809).  
+
+
+## Publications
+1. BIARD C., BRISCHOUX F. et al. ([2017](https://www.frontiersin.org/articles/10.3389/fevo.2017.00079/full)) *Growing in cities: an urban penalty for wild birds? A study of phenotypic differences between urban and rural great tit chicks (Parus major)*. **Frontiers in Ecology and Evolution** (Impact factor: unavailable). **5**(79)  
+Collaboration between CEBC and iEES-Paris allowed us to compare body condition and coloured phenotype in great tits between two pairs of urban and rural populations. Nestlings in urban area were smaller and less yellow than ones in rural areas but had similar size of telomeres.  
+  
+2. VAUGOYEAU M., MEYLAN S. and BIARD C. ([2017](http://onlinelibrary.wiley.com/doi/10.1111/jav.01208/abstract;jsessionid=34C44663807B1B7CA81850CA6E577BE0.f01t03)) *How does an increase in minimum daily temperatures during incubation influence reproduction in the great tit (Parus major)?* **Journal of Avian Biology** (Impact factor: 2.2). **48**: 714-725  
+In the aim to understand the influence of developmental temperature on phenotypes and physiology of future adults, an experiment of heating nests was doing in forest. Mass of hatchlings in heated nests were higher than mass of hatchlings in control nests during the first three days but the fledging mass were similar between two groups.  
+  
+3. VAUGOYEAU M., ADRIAENSEN F. et al. ([2016](http://onlinelibrary.wiley.com/doi/10.1002/ece3.2335/abstract)) *Interspecific variation in the relationship between clutch size, laying date and urbanization in four species of hole-nesting birds.* **Ecology and Evolution** (Impact factor: 2.5). **6**(16): 5907-5920  
+Timing of breeding and clutch size were analysed in relation to urbanisation in 199 nest box plots across Europe, North Africa and the Middle East for four species of hole-nesters: blue tits, great tits, collared flycatchers and pied flycatchers. The intensity of urbanisation was not correlated with laying date in the four species, while clutch sizes decreased with increasing intensity of urbanisation in both collared and pied flycatchers.  
+  
+4. VAUGOYEAU M., DECENCIERE B. et al. ([2015](http://jeb.biologists.org/content/218/13/2106)) *Is oxidative status influenced by dietary carotenoids and flight ability during winter in great tit (Parus major)?* **The Journal of Experimental Biology** (Impact factor: 2.9). **218**(13): 2106-2115  
+In the aim to understand environmental influences on oxidative status according physical activity on birds, 41 great tits were caught and kept in aviaries under three treatments: physical handicap and dietary supplementation with carotenoids, physical handicap and control diet, and no handicap and control diet. Carotenoid supplementation increased total plasma carotenoid concentrations, decreased feather carotenoid chroma and marginally increased ROM concentration. Handicap increased blood sedimentation only in males but had no clear influence on oxidative stress, which contradicted previous studies. Results were oral presented in 2013 and in a poster in 2014.  
+  
+5. LORIOUX S., VAUGOYEAU M. et al. ([2013](http://www.journals.uchicago.edu/doi/10.1086/670809)) *Stage dependence of phenotypical and phenological maternal effects: Insight into squamate reptile reproductive strategies.* **American Naturalist** (Impact factor: 4.45). **182**(2): 223-233.
+Pregnant vipers were kept in climatic chamber under five thermal treatments: the first, second or last third of embryogenesis in cold period or all in cold and all in hot environment. Morphological, physiological and behavioural measurements showed that the first third embryogenesis was the most sensitive period of temperatures variations.  
+

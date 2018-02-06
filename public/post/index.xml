@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Statistical and R blog</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Statistical and R blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Jan 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First post</title>
+      <link>/2018/01/24/first-post/</link>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/01/24/first-post/</guid>
+      <description>My first postMy first postIt is not easy to start, the first step is the hardest…
+I created this site to explain statistical analyses and used of R that I already did.
+It is also intended to evolve with my future works.
+See you.
+</description>
+    </item>
+    
+  </channel>
+</rss>

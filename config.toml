@@ -1,0 +1,29 @@
+baseurl = "https://mvaugoyeau.netlify.com/"
+languageCode = "en-us"
+title = "Statistical and R blog"
+theme = "hugo-lithium-theme"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+    
+[[menu.main]]
+    name = "GitHub"
+    url = "https://github.com/Vaugoyeau"
+    weight = 2
+    
+[[menu.main]]
+    name = "Twitter"
+    url = "https://twitter.com/MVaugoyeau"
+    weight = 3
+
+[[menu.main]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/marie-vaugoyeau-72ab64153/"
+    weight = 4
+
