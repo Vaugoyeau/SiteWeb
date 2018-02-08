@@ -35,16 +35,24 @@ LinkedIn</description>
     </item>
     
     <item>
+      <title>My first article: A not fully crossed design</title>
+      <link>/2018/02/06/my-first-article/</link>
+      <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/06/my-first-article/</guid>
+      <description>First Step: Check the repeatability of the dataSecond step: Linear mixed models with backward eliminationLinear mixed modelDistribution of model residualsModel selection with backward eliminationFinal modelRandom effectThird and last step: Analyse resultsIn 2015, I published the article: Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)? about my first experimentation. In the aim to investigate on the relationship between dietary carotenoids, physical activity and oxidative status, I captured great tits and kept them in aviaries.</description>
+    </item>
+    
+    <item>
       <title>First post</title>
       <link>/2018/01/24/first-post/</link>
       <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/01/24/first-post/</guid>
-      <description>My first postMy first postIt is not easy to start, the first step is the hardest…
+      <description>It is not easy to start, the first step is the hardest…
 I created this site to explain statistical analyses and used of R that I already did.
 It is also intended to evolve with my future works.
-See you.
-</description>
+See you.</description>
     </item>
     
   </channel>

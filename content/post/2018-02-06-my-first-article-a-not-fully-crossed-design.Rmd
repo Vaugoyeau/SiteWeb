@@ -1,0 +1,112 @@
+---
+title: 'My first article: A not fully crossed design'
+author: "Marie Vaugoyeau"
+date: '2018-02-06'
+slug: my-first-article
+tags:
+- stat
+- article
+- experiemental design
+categories:
+- stat
+- article
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+In 2015, I published [the article](http://jeb.biologists.org/content/218/13/2106): *Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?* about my first experimentation. In the aim to investigate on the relationship between dietary carotenoids, physical activity and oxidative status, I captured great tits and kept them in aviaries.  
+Initially, a cross design: with/without dietary carotenoids and with/without plucking primary feathers (to increase physical activity or not), was planned. Due to weather conditions, number of caught birds was to low to do it, so only three treatments were done.  
+  
+```{r table1, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(knitr)
+ED<-matrix("7F 7M", ncol=2, nrow=2)
+colnames(ED)<-c("Dietary carotenoids in water","Natural water")
+rownames(ED)<-c("Physical activity increased", "Normal physical activity")
+kable(ED, caption="Expected crossed design")
+```
+  
+With F = females and M = males  
+  
+Unfortunately, I caught only 42 adults (1 was dead before the beginning of the experiment).  
+```{r table2, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+RD<-matrix(c("6F 8M", "5F 8M", "", "7F 7M"), ncol=2, nrow=2, byrow=TRUE)
+colnames(RD)<-c("Dietary carotenoids in water","Natural water")
+rownames(RD)<-c("Physical activity increased", "Normal physical activity")
+kable(RD, caption="Real crossed design")
+```
+  
+Here I detail the statistical analyses that I did it.  
+  
+# First Step: Check the repeatability of the data  
+For some characteristics (counts heterophiles on lymphocytes, feathers colour...), I did two, three or four measurements. To measure repeatability, I used a linear model which give me *F*-statistic with freedom degree and *p*-value.
+  
+```{r setup, include=FALSE}
+X<-read.table("BV.csv", header = TRUE, sep = ";")
+Y<-read.table("Oxy.csv", header = TRUE, sep = ";")
+```
+  
+```{r linear model, echo=TRUE, message=FALSE, warning=FALSE}
+mod<-lm(Area~Identity, data=X)
+anova(mod)
+```
+  
+In this article, I also calculated manually intraclass correlation coefficient according Lessells and Boag's method [1987](http://www.jstor.org/stable/4087240?seq=1#page_scan_tab_contents): r = (MS~A~ - MS~w~)/(MS~A~ + MS~W~(n-1)).  
+  
+Once repeatability was checked, I calculated and used only means.  
+
+# Second step: Linear mixed models with backward elimination
+In order to test the effects of physical activity and dietary carotenoid availability on the antioxidant system (total antioxidant capacity, ROM concentration, total carotenoids, vitamin A and vitamin E), on the stress response (blood sedimentation and H/Ly ratio) and on plumage colour (lutein absorbance, carotenoid chroma and UV brightness), all models included as fixed effects tarsus length and body mass, and three-way interactions among carotenoid supplementation or physical handicap with sex and time of experiment (start or end of the experiment).  
+  
+## Linear mixed model
+For each variable, I write a mixed model like that:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(nlme)
+m1<-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method="ML", data = Y, na.action=na.exclude)
+```
+To consider biological variance, aviaries and individual identity were included as random factors. 
+
+## Distribution of model residuals
+To validate *a posteriori* the used of **linear** model, I tested residuals distribution with Shapiro test and Q-Q plot.
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+shapiro.test(residuals(m1))
+qqnorm(residuals(m1));qqline(residuals(m1))
+```
+If residuals did not follow normal distribution, variable was log-transformed.
+  
+## Model selection with backward elimination
+About first model, I created a new one by removing one fixed factor. Then, I used Akaike’s Information Criterion to select the best predictive model between both.  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+anova(m1)
+summary(m1)
+
+m2<-lme(Oxy ~ Tarsus+Mass+Exp*Carot+Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method="ML", data = Y, na.action=na.exclude)
+anova(m1,m2)
+```
+I kept the model with the smaller AIC or if difference between AIC was smaller than 2, the most parsimonious.
+
+## Final model
+Final models were maximum-likelihood (REML) linear mixed models, run using the  same function lme and the function Anova in the package car, with type III sum of squares.
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+mf<-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method="REML", data = Y, na.action=na.exclude)
+shapiro.test(residuals(mf))
+qqnorm(residuals(mf));qqline(residuals(mf))
+
+library(car)
+Anova(mf, type="III")
+summary(mf)
+```
+  
+## Random effect
+For all final model, random factors (aviaries and individual identity) were unsignificant.
+I tested it by the follow way:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+mfR<-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method="REML", data = Y, na.action=na.exclude)
+mfNR<-gls(Oxy ~ Sex+Exp*Plucking, method="REML", data = Y, na.action=na.exclude)
+anova(mfR,mfNR)
+```
+  
+# Third and last step: Analyse results
+The last 	and a good one at that: analyse results and wrote article.  
+  
+If you read until here, thank you. I remain at your disposal for questions and comments. If you want a pdf, full text is available [here](https://www.researchgate.net/publication/276209153_Is_oxidative_status_influenced_by_dietary_carotenoid_and_physical_activity_after_moult_in_the_great_tit_Parus_major).

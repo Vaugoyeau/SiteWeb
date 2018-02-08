@@ -12,18 +12,54 @@
   </url>
   
   <url>
+    <loc>/2018/02/06/my-first-article/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2018/01/24/first-post/</loc>
     <lastmod>2018-01-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>/tags/article/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/article/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/experiemental-design/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/stat/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/stat/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -35,6 +71,7 @@
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
