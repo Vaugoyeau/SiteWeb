@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Statistical and R blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How I check the data</title>
+      <link>/2018/02/22/how-i-check-the-data/</link>
+      <pubDate>Thu, 22 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/22/how-i-check-the-data/</guid>
+      <description>There are outliers?First step: Outliers and BoxplotSecond step: Outliers, means and standard errorVerify the repeatability of the dataActually I analyse data from a thesis which measure urbanisation’s influence on physicochemical characteristics. The PhD student sample water once by month during 2017 at seven spots around a lake.
+I think it is a nice occasion to explain how I check the data when I received them.</description>
+    </item>
     
     <item>
       <title>My first article: A not fully crossed design</title>

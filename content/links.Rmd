@@ -1,0 +1,9 @@
+---
+title: "Links"
+layout: "links"
+menu: "main"
+weight: 50
+---
+
+[R weekly](https://rweekly.org/)  
+[StatnMap](https://statnmap.com/)  

@@ -1,0 +1,90 @@
+---
+title: How I check the data
+author: "Marie Vaugoyeau"
+date: '2018-02-22'
+slug: how-i-check-the-data
+categories:
+- stat
+tags:
+- stat
+output:
+  blogdown::html_page:
+    toc: true
+cover: "/images/Outlier.png"
+---
+
+Actually I analyse data from a thesis which measure urbanisation's influence on physicochemical characteristics. The PhD student sample water once by month during 2017 at seven spots around a lake.  
+I think it is a nice occasion to explain how I check the data when I received them.  
+  
+# There are outliers?
+## First step: Outliers and Boxplot  
+Before to start anything, I test the data to find outliers (observation that has a
+relatively large or small value compared to the majority of observations [Zuur et al. (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract)).  
+```{r setup, include=FALSE}
+X<-read.table("PhysicochimieJanvDec2017aVerifier.csv", header = TRUE, sep = ";")
+Y<-read.table("PhysicochimieJanvDec2017.csv", header = TRUE, sep = ";")
+```
+I start by draw boxplots by month (one by characteristic).  
+```{r boxplot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+for (i in c(6,8,10,13))
+{
+boxplot(X[,i]~X$Date, xlab= "Date", asp= 1.5, ylab= variable.names(X)[i])
+}
+```
+Except for NO~3~^-^ at 128 days after the start of the year, there does not seem to have any outlier.  
+  
+## Second step: Outliers, means and standard error
+In the data used, measurements were did three times each, so I calculated means and standard error with plotrix library.  
+```{r mean, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(plotrix)
+
+X$rep<-paste(as.factor(X$Site), as.factor(X$Date))
+# I create a variable to work on the repetition of measurements
+
+# I create also the new database Z to have means and standard error according to spot and date
+Site<-rep(1:7, each = 12)
+Date<-rep(c(128,159,189,220,251,294,312,342,35,67,8,98), 7)
+Z<-cbind(Site,Date)
+CN<-colnames(Z)
+
+for (i in 3:13)
+{
+M<-tapply(X[,i], X$rep, mean, na.rm=TRUE)
+S<-tapply(X[,i], X$rep, std.error, na.rm=TRUE)
+Z<-cbind(Z, M, S)
+CN<-c(CN, paste(variable.names(X)[i],"Mean"),paste(variable.names(X)[i],"Se"))
+}
+
+colnames(Z)<-CN
+
+write.table(Z, row.names=FALSE, "Physicochimical.txt", sep=";")
+# Exporte table to work on it later
+```
+  
+Then I analyse standard error by drawing.  
+```{r plot standard error, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(lattice)
+Z<-read.table("Physicochimical.txt", header = TRUE, sep = ";")
+
+for (i in c(10,14,18,24))
+{
+p<-xyplot(Z[,i] ~ Z$Date, groups=Z$Site, ylab= variable.names(Z)[i], xlab="Date", auto.key=list(columns=4))
+print(p)
+}
+```
+Now, we can see some standard error were higher than other (example for Pb one point has error higher than 0.1), so I will verify these specific data.  
+This method allows me to found and correct five misprint in the data. I will take in mind other outlier to check their influences on the futur analyses.  
+
+# Verify the repeatability of the data  
+As in the previous [blog article](https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/), I verify the repeatability of the corrected data with simple linear model.  
+```{r repeatability, echo=TRUE, message=FALSE, warning=FALSE}
+Y$rep<-paste(as.factor(Y$Site), as.factor(Y$Date))
+
+# The repeatability of the pH for exemple
+mod<-lm(Y[,6]~Y$rep)
+anova(mod)
+```
+  
+Next time, I will describe how I do data exploration and first analyse.  
+  
+If you have any comments, do not hesitate to [contact me](https://mvaugoyeau.netlify.com/aboutme/) in English or in French.  
