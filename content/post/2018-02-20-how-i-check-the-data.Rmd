@@ -26,7 +26,7 @@ Y<-read.table("PhysicochimieJanvDec2017.csv", header = TRUE, sep = ";")
 ```
 I start by draw boxplots by month (one by characteristic).  
 ```{r boxplot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
-for (i in c(6,8,10,13))
+for (i in 3:6)
 {
 boxplot(X[,i]~X$Date, xlab= "Date", asp= 1.5, ylab= variable.names(X)[i])
 }
@@ -47,7 +47,7 @@ Date<-rep(c(128,159,189,220,251,294,312,342,35,67,8,98), 7)
 Z<-cbind(Site,Date)
 CN<-colnames(Z)
 
-for (i in 3:13)
+for (i in 3:6)
 {
 M<-tapply(X[,i], X$rep, mean, na.rm=TRUE)
 S<-tapply(X[,i], X$rep, std.error, na.rm=TRUE)
@@ -66,7 +66,7 @@ Then I analyse standard error by drawing.
 library(lattice)
 Z<-read.table("Physicochimical.txt", header = TRUE, sep = ";")
 
-for (i in c(10,14,18,24))
+for (i in c(4,6,8,10))
 {
 p<-xyplot(Z[,i] ~ Z$Date, groups=Z$Site, ylab= variable.names(Z)[i], xlab="Date", auto.key=list(columns=4))
 print(p)
@@ -81,7 +81,7 @@ As in the previous [blog article](https://mvaugoyeau.netlify.com/2018/02/06/my-f
 Y$rep<-paste(as.factor(Y$Site), as.factor(Y$Date))
 
 # The repeatability of the pH for exemple
-mod<-lm(Y[,6]~Y$rep)
+mod<-lm(Y[,4]~Y$rep)
 anova(mod)
 ```
   

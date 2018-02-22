@@ -32,7 +32,7 @@ I think it is a nice occasion to explain how I check the data when I received th
 <h2>First step: Outliers and Boxplot</h2>
 <p>Before to start anything, I test the data to find outliers (observation that has a relatively large or small value compared to the majority of observations <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
 <p>I start by draw boxplots by month (one by characteristic).</p>
-<pre class="r"><code>for (i in c(6,8,10,13))
+<pre class="r"><code>for (i in 3:6)
 {
 boxplot(X[,i]~X$Date, xlab= &quot;Date&quot;, asp= 1.5, ylab= variable.names(X)[i])
 }</code></pre>
@@ -52,7 +52,7 @@ Date&lt;-rep(c(128,159,189,220,251,294,312,342,35,67,8,98), 7)
 Z&lt;-cbind(Site,Date)
 CN&lt;-colnames(Z)
 
-for (i in 3:13)
+for (i in 3:6)
 {
 M&lt;-tapply(X[,i], X$rep, mean, na.rm=TRUE)
 S&lt;-tapply(X[,i], X$rep, std.error, na.rm=TRUE)
@@ -68,7 +68,7 @@ write.table(Z, row.names=FALSE, &quot;Physicochimical.txt&quot;, sep=&quot;;&quo
 <pre class="r"><code>library(lattice)
 Z&lt;-read.table(&quot;Physicochimical.txt&quot;, header = TRUE, sep = &quot;;&quot;)
 
-for (i in c(10,14,18,24))
+for (i in c(4,6,8,10))
 {
 p&lt;-xyplot(Z[,i] ~ Z$Date, groups=Z$Site, ylab= variable.names(Z)[i], xlab=&quot;Date&quot;, auto.key=list(columns=4))
 print(p)
@@ -83,14 +83,14 @@ This method allows me to found and correct five misprint in the data. I will tak
 <pre class="r"><code>Y$rep&lt;-paste(as.factor(Y$Site), as.factor(Y$Date))
 
 # The repeatability of the pH for exemple
-mod&lt;-lm(Y[,6]~Y$rep)
+mod&lt;-lm(Y[,4]~Y$rep)
 anova(mod)</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
-## Response: Y[, 6]
-##            Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## Y$rep      83 112.166 1.35139  123.57 &lt; 2.2e-16 ***
-## Residuals 168   1.837 0.01094                      
+## Response: Y[, 4]
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Y$rep      83 40.866 0.49236  735.84 &lt; 2.2e-16 ***
+## Residuals 168  0.112 0.00067                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Next time, I will describe how I do data exploration and first analyse.</p>
