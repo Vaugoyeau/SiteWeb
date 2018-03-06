@@ -26,9 +26,11 @@ Y<-read.table("PhysicochimieJanvDec2017.csv", header = TRUE, sep = ";")
 ```
 I start by draw boxplots by month (one by characteristic).  
 ```{r boxplot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(ggplot2)
 for (i in 3:6)
 {
-boxplot(X[,i]~X$Date, xlab= "Date", asp= 1.5, ylab= variable.names(X)[i])
+bp<-ggplot(X) + geom_boxplot(aes(x = as.factor(Date), y = X[,i])) + geom_jitter(aes(x = as.factor(Date), y = X[,i]), col = X$Site, alpha = 0.2) + theme_minimal() + xlab("Date") + ylab(variable.names(X)[i])
+print(bp)
 }
 ```
 Except for NO~3~^-^ at 128 days after the start of the year, there does not seem to have any outlier.  
@@ -63,13 +65,15 @@ write.table(Z, row.names=FALSE, "Physicochimical.txt", sep=";")
   
 Then I analyse standard error by drawing.  
 ```{r plot standard error, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
-library(lattice)
 Z<-read.table("Physicochimical.txt", header = TRUE, sep = ";")
+o <- order(Z$Date)
+Z<-Z[o,]
+Z$Site<-as.factor(Z$Site)
 
 for (i in c(4,6,8,10))
 {
-p<-xyplot(Z[,i] ~ Z$Date, groups=Z$Site, ylab= variable.names(Z)[i], xlab="Date", auto.key=list(columns=4))
-print(p)
+  se<-ggplot(Z) + geom_point(aes(x = Date, y = Z[,i], color = Site)) + theme_minimal() + xlab("Date") + ylab(variable.names(Z)[i])
+  print(se)
 }
 ```
 Now, we can see some standard error were higher than other (example for Pb one point has error higher than 0.1), so I will verify these specific data.  

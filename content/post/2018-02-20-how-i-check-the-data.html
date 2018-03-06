@@ -32,9 +32,11 @@ I think it is a nice occasion to explain how I check the data when I received th
 <h2>First step: Outliers and Boxplot</h2>
 <p>Before to start anything, I test the data to find outliers (observation that has a relatively large or small value compared to the majority of observations <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
 <p>I start by draw boxplots by month (one by characteristic).</p>
-<pre class="r"><code>for (i in 3:6)
+<pre class="r"><code>library(ggplot2)
+for (i in 3:6)
 {
-boxplot(X[,i]~X$Date, xlab= &quot;Date&quot;, asp= 1.5, ylab= variable.names(X)[i])
+bp&lt;-ggplot(X) + geom_boxplot(aes(x = as.factor(Date), y = X[,i])) + geom_jitter(aes(x = as.factor(Date), y = X[,i]), col = X$Site, alpha = 0.2) + theme_minimal() + xlab(&quot;Date&quot;) + ylab(variable.names(X)[i])
+print(bp)
 }</code></pre>
 <p><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/boxplot-1.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/boxplot-2.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/boxplot-3.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/boxplot-4.png" width="672" /> Except for NO<sub>3</sub><sup>-</sup> at 128 days after the start of the year, there does not seem to have any outlier.</p>
 </div>
@@ -65,13 +67,15 @@ colnames(Z)&lt;-CN
 write.table(Z, row.names=FALSE, &quot;Physicochimical.txt&quot;, sep=&quot;;&quot;)
 # Exporte table to work on it later</code></pre>
 <p>Then I analyse standard error by drawing.</p>
-<pre class="r"><code>library(lattice)
-Z&lt;-read.table(&quot;Physicochimical.txt&quot;, header = TRUE, sep = &quot;;&quot;)
+<pre class="r"><code>Z&lt;-read.table(&quot;Physicochimical.txt&quot;, header = TRUE, sep = &quot;;&quot;)
+o &lt;- order(Z$Date)
+Z&lt;-Z[o,]
+Z$Site&lt;-as.factor(Z$Site)
 
 for (i in c(4,6,8,10))
 {
-p&lt;-xyplot(Z[,i] ~ Z$Date, groups=Z$Site, ylab= variable.names(Z)[i], xlab=&quot;Date&quot;, auto.key=list(columns=4))
-print(p)
+  se&lt;-ggplot(Z) + geom_point(aes(x = Date, y = Z[,i], color = Site)) + theme_minimal() + xlab(&quot;Date&quot;) + ylab(variable.names(Z)[i])
+  print(se)
 }</code></pre>
 <p><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/plot%20standard%20error-1.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/plot%20standard%20error-2.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/plot%20standard%20error-3.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data_files/figure-html/plot%20standard%20error-4.png" width="672" /> Now, we can see some standard error were higher than other (example for Pb one point has error higher than 0.1), so I will verify these specific data.<br />
 This method allows me to found and correct five misprint in the data. I will take in mind other outlier to check their influences on the futur analyses.</p>
