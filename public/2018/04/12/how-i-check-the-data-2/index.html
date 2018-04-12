@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.34" />
+
+
+<title>Start with the data - Statistical and R blog</title>
+<meta property="og:title" content="Start with the data - Statistical and R blog">
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/%3cnil%3e"
+         width=""
+         height=""
+         alt="">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/">Home</a></li>
+    
+    <li><a href="https://github.com/Vaugoyeau">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/MVaugoyeau">Twitter</a></li>
+    
+    <li><a href="https://www.linkedin.com/in/marie-vaugoyeau-72ab64153/">LinkedIn</a></li>
+    
+    <li><a href="/aboutme/">About Me</a></li>
+    
+    <li><a href="/curriculum/">Curriculum Vitae</a></li>
+    
+    <li><a href="/links/">Links</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Start with the data</h1>
+
+    
+    <span class="article-date">2018/04/12</span>
+    
+
+    <div class="article-content">
+      <div id="TOC">
+<ul>
+<li><a href="#the-distribution-of-each-variable">The distribution of each variable</a></li>
+<li><a href="#the-multi-test-of-correlations">The multi-test of correlations</a></li>
+</ul>
+</div>
+
+<p>After verifying that there is no one <a href="https://mvaugoyeau.netlify.com/2018/02/22/how-i-check-the-data/">missprint</a> in the data and before starting the true statistical analysis, I check the distribution of data and relationships between factors.</p>
+<p>For this blog article, I use data of air quality available in R.</p>
+<div id="the-distribution-of-each-variable" class="section level1">
+<h1>The distribution of each variable</h1>
+<p>To see distribution, I use a ggplot.</p>
+<pre class="r"><code>library(tidyverse)
+D&lt;-airquality
+
+# First time transform data of tidy ones
+D_tidy&lt;-D %&gt;% tidyr::gather(VAR, value, -Month, -Day) %&gt;% mutate(Time = Month*30.5+Day)
+
+ggplot(D_tidy) + geom_line(aes(x=Time, y=value, color=Month)) + scale_color_distiller(&quot;Month&quot;, palette = &quot;Spectral&quot;) + facet_wrap(~VAR, scales = &quot;free_y&quot;) + theme_minimal() + ylab(&quot;&quot;)</code></pre>
+<p><img src="/post/2018-04-11-how-i-check-the-data-2_files/figure-html/plot-1.png" width="672" /> We can see there are missing value in Ozone but it is not an issue.</p>
+</div>
+<div id="the-multi-test-of-correlations" class="section level1">
+<h1>The multi-test of correlations</h1>
+<p>To see which variable varies with another, I analysed correlation with cor.test.<br />
+I used the following code lines with R modified from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
+<pre class="r"><code>D&lt;-airquality
+
+par(bty=&quot;n&quot;) # I prefer when box was delete from plots but it is not a necessary
+
+# I re-write panel.smooth to change the shape of points and thickness of the red line
+panel.smooth2=function (x, y, col = par(&quot;col&quot;), bg = NA, pch = par(&quot;pch&quot;),
+    cex = 1, col.smooth = &quot;red&quot;, span = 2/3, iter = 3, ...)
+{
+  points(x, y, pch = 20, col = col, bg = bg, cex = cex)
+    ok &lt;- is.finite(x) &amp; is.finite(y)
+    if (any(ok))
+        lines(stats::lowess(x[ok], y[ok], f = span, iter = iter),
+            col = &quot;red&quot;, lwd=2,...)
+}
+
+# I modfied panel.cor to show estimate for only significant cor.test
+panel.cor &lt;- function(x, y, digits=1, prefix=&quot;&quot;, cex.cor)
+{
+  usr &lt;- par(&quot;usr&quot;); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r1=cor.test(x,y)
+  r &lt;- abs(cor(x, y,use=&quot;pairwise.complete.obs&quot;))
+  
+  txt &lt;- format(c(r1[4], 0.123456789), digits=digits)[1]
+  txt &lt;- paste(prefix, txt, sep=&quot;&quot;)
+  if(missing(cex.cor)) cex &lt;- 0.9/strwidth(txt)
+  text(0.5, 0.5, if(r1[3]&lt;0.005) txt, cex = cex * r)
+}
+
+pairs(D, lower.panel = panel.smooth2, upper.panel=panel.cor, cex.labels=1.3)</code></pre>
+<p><img src="/post/2018-04-11-how-i-check-the-data-2_files/figure-html/cor.test-1.png" width="672" /></p>
+<p>My main modification is the blank when correlation test was not significant.</p>
+<p>In the upper triangle, number is estimate of the correlation between the line variable and the column one.</p>
+<p>And you, how do you do multi-test of correlations?</p>
+<p>If you have any comments, do not hesitate to <a href="https://mvaugoyeau.netlify.com/aboutme/">contact me</a> in English or in French.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdn.bootcss.com/highlight.js//highlight.min.js"></script>
+
+
+
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-113773843-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
+

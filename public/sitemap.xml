@@ -16,6 +16,11 @@
   </url>
   
   <url>
+    <loc>/2018/04/12/how-i-check-the-data-2/</loc>
+    <lastmod>2018-04-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/2018/02/22/how-i-check-the-data/</loc>
     <lastmod>2018-02-22T00:00:00+00:00</lastmod>
   </url>
@@ -49,6 +54,12 @@
   </url>
   
   <url>
+    <loc>/tags/cor.test/</loc>
+    <lastmod>2018-04-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/experiemental-design/</loc>
     <lastmod>2018-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -56,19 +67,19 @@
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-02-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/stat/</loc>
-    <lastmod>2018-02-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/stat/</loc>
-    <lastmod>2018-02-22T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
