@@ -1,0 +1,91 @@
+---
+title: Comment je vérifie les données
+author: "Marie Vaugoyeau"
+date: '2018-04-27'
+slug: comment-je-verifie-les-donnees
+categories:
+- stat
+tags:
+- stat
+output:
+  blogdown::html_page:
+    toc: true
+cover: "/images/Outlier.png"
+---
+
+Actuellement j'analyse des données obtenues par une thésarde qui mesure l'influence de l'urbanisation sur les caractéristiques physicochimiques d'un lac. L'étudiante prélève une fois par mois de l'eau en sept points autours du lac.  
+Je pense que c'est la bonne occasion pour expliquer comment je vérifie les données quand je les reçois.  
+  
+# Recherche d'outliers ?
+## Première étape : Les outliers et les boxplots (boîtes à moustaches)  
+Avant de commencer à analyser les données, je les vérifie pour voir s'il n'y a pas d'outlier (c-à-d une observation qui a une valeur largement plus faible ou plus grande que la majorité des observations [Zuur et al. (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract)).  
+```{r setup, include=FALSE}
+X<-read.table("PhysicochimieJanvDec2017aVerifier.csv", header = TRUE, sep = ";")
+Y<-read.table("PhysicochimieJanvDec2017.csv", header = TRUE, sep = ";")
+```
+Je commence par dessiner des boxplots selon la date de prélèvement (une par variable).  
+```{r boxplot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(ggplot2)
+for (i in 3:6)
+{
+bp<-ggplot(X) + geom_boxplot(aes(x = as.factor(Date), y = X[,i])) + geom_jitter(aes(x = as.factor(Date), y = X[,i]), col = X$Site, alpha = 0.2) + theme_minimal() + xlab("Date") + ylab(variable.names(X)[i])
+print(bp)
+}
+```
+A part pour NO~3~^-^ au 128^ème^ jour après le début de l'année, il ne semble pas avoir de valeurs extrêmes.  
+
+## Deuxième étape : Outlier, moyenne et écart-type
+Dans les données que j'utilise, les mesures ont été réalisées trois fois à chaque fois. Avec la library plotrix je vais calculer la moyenne et l'écart-type par site et par jour de prélèvement.  
+```{r mean, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(plotrix)
+
+X$rep<-paste(as.factor(X$Site), as.factor(X$Date))
+# Je crée une variable pour travailler sur la répétition des mesures
+
+# Je crée aussi une nouvelle base de données Z pour garder les moyennes et ecart-types en fonction du site de prélèvement et de la date
+Site<-rep(1:7, each = 12)
+Date<-rep(c(128,159,189,220,251,294,312,342,35,67,8,98), 7)
+Z<-cbind(Site,Date)
+CN<-colnames(Z)
+
+for (i in 3:6)
+{
+M<-tapply(X[,i], X$rep, mean, na.rm=TRUE)
+S<-tapply(X[,i], X$rep, std.error, na.rm=TRUE)
+Z<-cbind(Z, M, S)
+CN<-c(CN, paste(variable.names(X)[i],"Mean"),paste(variable.names(X)[i],"Se"))
+}
+
+colnames(Z)<-CN
+
+write.table(Z, row.names=FALSE, "Physicochimical.txt", sep=";")
+# Exporte la table pour travailler dessus plus tard
+```
+  
+Ensuite je visualise les erreurs.  
+```{r plot standard error, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+Z<-read.table("Physicochimical.txt", header = TRUE, sep = ";")
+o <- order(Z$Date)
+Z<-Z[o,]
+Z$Site<-as.factor(Z$Site)
+
+for (i in c(4,6,8,10))
+{
+  se<-ggplot(Z) + geom_point(aes(x = Date, y = Z[,i], color = Site)) + theme_minimal() + xlab("Date") + ylab(variable.names(Z)[i])
+  print(se)
+}
+```
+Maintenant, il est visible que certaines erreurs sont bien plus grandes que les autres (par exemple le Pb a une seule valeur supérieur à 0.1), donc je vais vérifier spécifiquement ces données.  
+Cette méthode m'a permis de trouver et de corriger cinq fautes de frappe dans ces données. Pour les valeurs extrêmes qui ne sont pas associées à des erreurs au moment de rentrer les données, je les garde dans un coin de ma tête pour vérifier leurs influences sur les futures analyses.  
+
+# Vérification de la répétabilité des données  
+Comme dans mon article de [blog précédent](https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/), je vérifie la répétabilité des données avec un simple modèle linéaire.  
+```{r repeatability, echo=TRUE, message=FALSE, warning=FALSE}
+Y$rep<-paste(as.factor(Y$Site), as.factor(Y$Date))
+
+# Répétabilité du pH par example
+mod<-lm(Y[,4]~Y$rep)
+anova(mod)
+```
+  
+La prochaine fois, je décrirai comment je fais de l'exploration de données et les premières analyses que je réalise.  

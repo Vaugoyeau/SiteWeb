@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Site de Statistiques et R</title>
+    <link>/fr/categories/</link>
+    <description>Recent content in Categories on Site de Statistiques et R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/fr/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Article</title>
+      <link>/fr/categories/article/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/categories/article/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stat</title>
+      <link>/fr/categories/stat/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/categories/stat/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

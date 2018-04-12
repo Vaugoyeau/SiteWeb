@@ -1,0 +1,15 @@
+---
+title: "Premier post"
+author: "Marie Vaugoyeau"
+date: "2018-04-19"
+output:
+  blogdown::html_page:
+    toc: true
+    fig_width: 6
+    dev: "svg"
+---
+  
+Ce n'est jamais facile de commencer, le premier pas est toujours le plus dur et je pense que c'est pareil ici.
+J'ai créé ce site dans le but d'expliquer les analyses statistiques que je fais ainsi que quelques utilisations de [R](https://cran.r-project.org/).  
+Ce site est évidement appelé à évoluer, sa première métamorphose est faite, il est maintenant en français en plus de l'anglais.  
+A bientôt.

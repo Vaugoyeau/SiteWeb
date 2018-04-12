@@ -1,0 +1,112 @@
+---
+title: 'Mon premier article : Un design croisé non équilibré'
+author: "Marie Vaugoyeau"
+date: '2018-04-27'
+slug: mon-premier-article
+tags:
+- stat
+- article
+- design experiemental
+categories:
+- stat
+- article
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+En 2015, j'ai publié [l'article](http://jeb.biologists.org/content/218/13/2106): *Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?* sur ma première expérimentation. Dans le but de tester les relations entre caroténoïdes alimentaires, activité physique et status oxidatif, j'ai capturé et gardé en volière des mésanges charbonnières.
+Initialement, nous avions prévu de faire une expérience avec un design croisé équilibré : avec ou sans caroténoïdes dans l'alimentation et avec ou sans rémiges primaires enlevées (retirer des rémiges augmente l'activité physique des oiseaux).  
+  
+```{r table1, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(knitr)
+ED<-matrix("7F 7M", ncol=2, nrow=2)
+colnames(ED)<-c("Caroténoïdes dans l'eau","Eau pure")
+rownames(ED)<-c("Activité physique augmentée", "Activité physique normale")
+kable(ED, caption="Design expérimental prévu")
+```
+  
+Avec F = femelles et M = mâles  
+  
+ A cause du temps, le nombre d'oiseaux capturés a été largement inférieur à celui prévu, nous n'avons donc fait que trois traitements sur les quatre car je n'ai capturé que 42 adultes (un est mort avant le début de l'expérience).  
+```{r table2, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+RD<-matrix(c("6F 8M", "5F 8M", "", "7F 7M"), ncol=2, nrow=2, byrow=TRUE)
+colnames(RD)<-c("Caroténoïdes dans l'eau","Eau pure")
+rownames(RD)<-c("Activité physique augmentée", "Activité physique normale")
+kable(RD, caption="Design expérimental réel")
+```
+  
+Si dessous, je détaille les analyses statistiques menées à l'époque.  
+  
+# Première étape : Vérifier la répétabilité des données 
+Pour certaines variables (comptage d'hétérophiles sur lymphocytes, couleur des plumes...), j'ai fair deux ou trois mesures. Afin de mesurer la répétabilité, j'ai utilisé un modèle linéaire qui m'a donnée la statistique de test *F* avec le degré de liberté et la *p*-value.  
+  
+```{r setup, include=FALSE}
+X<-read.table("BV.csv", header = TRUE, sep = ";")
+Y<-read.table("Oxy.csv", header = TRUE, sep = ";")
+```
+  
+```{r linear model, echo=TRUE, message=FALSE, warning=FALSE}
+mod<-lm(Area~Identity, data=X)
+anova(mod)
+```
+  
+Dans cet article j'ai aussi calculé manuellement le facteur de corrélation intraclass selon la méthode de Lessells and Boag [1987](http://www.jstor.org/stable/4087240?seq=1#page_scan_tab_contents): r = (MS~A~ - MS~w~)/(MS~A~ + MS~W~(n-1)).  
+  
+Une fois la répétabilité calculée, j'ai calculé et utilisé  les moyennes pour le reste des analyses.  
+  
+# Deuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)
+Pour tester les effets de l'activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triple interactions entre la supplémentation en caroténoïdes ou l'activité physique avec le sexe et la période (au début ou à la fin de l'expérience).   
+  
+## Modèle linéaire mixte
+Pour chaque variable, j'ai écrit une modèle linéaire mixte comme celui-ci :  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(nlme)
+m1<-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method="ML", data = Y, na.action=na.exclude)
+```
+Pour prendre en compte la variance biologique, l'identité de la volière et de l'individu étaient mis en facteurs aléatoires.  
+
+## Distribution des résidus du modèle
+Pour valider *à posteriori* l'utilisation d'un modèle **linéaire**, j'ai testé la distribution des résidus avec un test de Shapiro et un Q-Q plot.  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+shapiro.test(residuals(m1))
+qqnorm(residuals(m1));qqline(residuals(m1))
+```
+Si les résidus ne suivaient pas une loi normale, la variable était log-transformée puis un modèle linéaire mixte était refait.  
+  
+## Sélection de modèle avec élimination  
+Après le premier modèle, j'en ai réalisé un autre en retirant le facteur fixe le moins significatif, puis j'ai utilisé le critère d'information d'Akaike pour choisir le meilleur modèle.  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+anova(m1)
+summary(m1)
+
+m2<-lme(Oxy ~ Tarsus+Mass+Exp*Carot+Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method="ML", data = Y, na.action=na.exclude)
+anova(m1,m2)
+```
+Je garde le modèle avec l'AIC le plus faible ou si la différence entre les AIC est plus petite que 2, avec le plus parcimonieux.  
+  
+## Modèle final
+Les modèles finaux sont des modèles mixtes linéaire REML réalisés avec la même fonction lme et la fonction Anova du package car pour avoir les erreur de type 3.  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+mf<-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method="REML", data = Y, na.action=na.exclude)
+shapiro.test(residuals(mf))
+qqnorm(residuals(mf));qqline(residuals(mf))
+
+library(car)
+Anova(mf, type="III")
+summary(mf)
+```
+  
+## Effets aléatoires  
+Pour les modèles finaux, les facteurs aléatoires ne sont pas significatifs. Je l'ai testé comme ça :  
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+mfR<-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method="REML", data = Y, na.action=na.exclude)
+mfNR<-gls(Oxy ~ Sex+Exp*Plucking, method="REML", data = Y, na.action=na.exclude)
+anova(mfR,mfNR)
+```
+  
+# Troisième et dernière étape : Expliquer les résultats trouvés  
+La dernière étape et pas des moindre est d'analyser et expliquer les résultats pour écrire un article !  
+  
+Si vous avez lu jusqu'ici, merci !  
+Je reste à votre disposition pour toutes questions ou tous commentaires. Si vous voulez le pdf de l'article, le texte intégral est disponible  [ici](https://www.researchgate.net/publication/276209153_Is_oxidative_status_influenced_by_dietary_carotenoid_and_physical_activity_after_moult_in_the_great_tit_Parus_major).  

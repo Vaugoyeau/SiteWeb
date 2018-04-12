@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cor.test on Statistical and R blog</title>
+    <link>/tags/cor.test/</link>
+    <description>Recent content in Cor.test on Statistical and R blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 12 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/cor.test/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Start with the data</title>
+      <link>/post/how-i-check-the-data-2/</link>
+      <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/how-i-check-the-data-2/</guid>
+      <description>The distribution of each variableThe multi-test of correlationsAfter verifying that there is no one missprint in the data and before starting the true statistical analysis, I check the distribution of data and relationships between factors.
+For this blog article, I use data of air quality available in R.
+The distribution of each variableTo see distribution, I use a ggplot.
+library(tidyverse)D&amp;lt;-airquality# First time transform data of tidy onesD_tidy&amp;lt;-D %&amp;gt;% tidyr::gather(VAR, value, -Month, -Day) %&amp;gt;% mutate(Time = Month*30.</description>
+    </item>
+    
+  </channel>
+</rss>

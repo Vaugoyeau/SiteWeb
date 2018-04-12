@@ -1,38 +1,214 @@
 baseurl = "https://mvaugoyeau.netlify.com/"
 languageCode = "en-us"
 title = "Statistical and R blog"
-theme = "hugo-lithium-theme"
+theme = "hugo-future-imperfect/ml"
+preserveTaxonomyNames = true
+paginate = 3
+disqusShortname = "shortname"
 googleAnalytics = "UA-113773843-1"
+pluralizeListTitles = false
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
-[permalinks]
-    post = "/:year/:month/:day/:slug/"
+[params]
+  # Sets the meta tag description
+  description          = "HTML5 UP theme, Future Imperfect with some extra goodies, ported by Julio Pescador. Powered by Hugo"
+  # Sets the navbarTitle that appears in the top left of the navigation bar
+  navbarTitle          = "MStat"
+  # Sets where "View More Posts" links
+  viewMorePostLink     = "/post/"
 
-[[menu.main]]
-    name = "Home"
-    url = "/"
-    weight = 1
+# Optional Params
+  # Sets navbarTitle to match the section of the website
+  dynamicTitles        = true
+  # Sets RSS icons to appear on the sidebar with the social media buttons
+  rssAppearAtTop       = true
+  rssAppearAtBottom    = true
+  # Sets Social Media icons to appear on the sidebar
+  socialAppearAtTop    = true
+  socialAppearAtBottom = true
+  # Sets Categories to sort by number of posts instead of alphabetical
+  categoriesByCount    = true
+  # set to show or to hide categories in the sidebar
+  showSidebarCategories = true
+  # Sets Estimated Reading Time to appear in post headers
+  includeReadingTime   = true
+  # Sets the Favicon and Version for the site. Default support is for
+  # apple-touch-icon-precomposed.png, favicon.png, favicon.ico, and mstile.png.
+  # These are stored in the favicon folder. See the following for more information:
+  # https://github.com/audreyr/favicon-cheat-sheet
+  loadFavicon          = false
+  faviconVersion       = ""
+  # Sets Social Share links to appear on posts
+  socialShare          = true
+  # Sets specific share to appear on posts (default behavior is to appear)
+  socialShareTwitter   = true
+  socialShareGoogleplus = true
+  socialShareFacebook  = true
+  socialShareReddit    = true
+  socialShareLinkedin  = true
+  socialShareStumbleupon = true
+  socialSharePinterest = true
+  socialShareEmail     = true
+
+  # Load custom CSS or JavaScript files. The variable is an array so that you
+  # can load multiple files if necessary. You can also load the standard theme
+  # files by adding the value, "default".
+  # customCSS            = ["default", "/path/to/file"]
+  # customJS             = ["default", "/path/to/file"]
+  customCSS            = ["default"]
+  customJS             = ["default"]
+
+  # options for highlight.js (version, additional languages, and theme)
+  disable_highlight = false # set to true to disable Highlight
+  highlightjsVersion = "9.11.0"
+  highlightjsCDN = "//cdn.bootcss.com"
+  highlightjsLang = ["r", "yaml", "css"]
+  highlightjsTheme = "github"
+  MathJaxCDN = "//cdn.bootcss.com"
+  MathJaxVersion = "2.7.1"
+
+# Disqus will take priority over Staticman (github.com/eduardoboucas/staticman)
+# due to its ease of use. Feel free to check out both and decide what you would
+# prefer to use. See Staticman.yml for additional settings.
+[params.staticman]
+  # Sets Statiman to be active
+  staticman = false
+  # Sets the location for Staticman to connect to
+  username  = ""
+  repo      = ""
+  branch    = ""
+
+  [params.staticman.recaptcha]
+    sitekey = "SITE_KEY"
+    secret  = "ENCRYPTED_SECRET"
+
+[Languages]
+[Languages.en]
+LanguageName = "English"
+title = "Statistical and R blog"
+description = "The website of Marie Vaugoyeau"
+weight = 1
+
+[Languages.fr]
+LanguageName = "Français"
+title = "Site de Statistiques et R"
+description = "Le site de Marie Vaugoyeau"
+weight = 2
+# This will appear on the top left of the navigation bar
+navbarTitle = "MStat"
+
+# params.intro will appear on the sidebar
+# This is optional, but it's suggested to use
+[params.intro]
+header    = "Statistical and R blog"
+paragraph = "Marie Vaugoyeau website"
+about     = "This site is a place to share my statisitics and R-used.  I also propose services for analysing your data as freelance."
+
+[Languages.fr.intro]
+header    = "Statistiques et R"
+paragraph = "Le site de Marie Vaugoyeau"
+about     = "Sur ce site je partage les analyses statistiques et les utilisation de R que je fais. Je propose aussi des services d'analyses de données et des formations en tant que freelance."
+
+# This will also appear on the sidebar.
+# A width of less than 100px is recommended
+# This is optional
+[params.intro.pic]
+    src       = "/images/logo.png"
+    # modify your picture in the shape of a circle or
+    # future imperfect's hexagonal shape
+    circle    = true
+    imperfect = false
+    width     = "90px"
+    alt       = "Statistical and R blog"
+
+[Languages.fr.intro.pic]
+    src       = "/images/logo.png"
+    # modify your picture in the shape of a circle or
+    # future imperfect's hexagonal shape
+    circle    = true
+    imperfect = false
+    width     = "90px"
+    alt       = "Statistiques et R"
     
-[[menu.main]]
-    name = "GitHub"
-    url = "https://github.com/Vaugoyeau"
-    weight = 2
+# Adjust the amount of recent posts on the sidebar.
+# This is optional. The default value 5 will be used
+[params.postAmount]
+    sidebar = 4
+
+        
+# Sets the menu items in the navigation bar
+# Identifier prepends a Font Awesome icon to the menu item
+# Each language has its own menu.
+            [[Languages.en.menu.main]]
+                name = "Home"
+                url = "/"
+                identifier = "fa fa-home"
+                weight = 1
+
+            [[Languages.en.menu.main]]
+                name = "About"
+                url = "/about/"
+                identifier = "fa fa-id-card-o"
+                weight = 2
+
+            [[Languages.en.menu.main]]
+                name = "Curriculum"
+                url = "/curriculum/"
+                identifier = "fa fa-file-text-o"
+                weight = 3
+                
+            [[Languages.en.menu.main]]
+                name = "Contact"
+                url = "/contact/"
+                identifier = "fa fa-envelope-o"
+                weight = 4
+
+            [[Languages.en.menu.main]]
+                name = "Post"
+                url = "/post/"
+                identifier = "fa fa-newspaper-o"
+                weight = 5
     
-[[menu.main]]
-    name = "Twitter"
-    url = "https://twitter.com/MVaugoyeau"
-    weight = 3
+            [[Languages.fr.menu.main]]
+                name = "Accueil"
+                url = "/"
+                identifier = "fa fa-home"
+                weight = 1
 
-[[menu.main]]
-    name = "LinkedIn"
-    url = "https://www.linkedin.com/in/marie-vaugoyeau-72ab64153/"
-    weight = 4
+            [[Languages.fr.menu.main]]
+                name = "A propos"
+                url = "/about.fr/"
+                identifier = "fa fa-id-card-o"
+                weight = 2
 
-    # options for highlight.js (version, additional languages, and theme)
-    highlightjsVersion = "9.12.0"
-    highlightjsCDN = "//cdn.bootcss.com"
-    highlightjsLang = ["r", "yaml"]
-    highlightjsTheme = "github"
+            [[Languages.fr.menu.main]]
+                name = "Curriculum"
+                url = "/curriculum.fr/"
+                identifier = "fa fa-file-text-o"
+                weight = 3
+                
+            [[Languages.fr.menu.main]]
+                name = "Contact"
+                url = "/contact.fr/"
+                identifier = "fa fa-envelope-o"
+                weight = 4
 
-    MathJaxCDN = "//cdn.bootcss.com"
-    MathJaxVersion = "2.7.1"
+            [[Languages.fr.menu.main]]
+                name = "Post"
+                url = "/post/"
+                identifier = "fa fa-newspaper-o"
+                weight = 5
+
+# Sets Social Media icons to appear and link to your account. Value should be your
+# username unless otherwise noted. These are the icons affected by socialAppearAtTop
+# and socialAppearAtBottom.
+[social]
+  # Coding Communities
+  github           = "Vaugoyeau"
+  # Professional/Business Oriented Communities
+  linkedin         = "marie-vaugoyeau-72ab64153"
+    # WeChat and QQ need testing.
+  twitter          = "MVaugoyeau"
+  researchgate     = "Marie_Vaugoyeau"
+  # Email
+  email            = "marie.vaugoyeau@gmail.com"

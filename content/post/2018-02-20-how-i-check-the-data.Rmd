@@ -18,8 +18,7 @@ I think it is a nice occasion to explain how I check the data when I received th
   
 # There are outliers?
 ## First step: Outliers and Boxplot  
-Before to start anything, I test the data to find outliers (observation that has a
-relatively large or small value compared to the majority of observations [Zuur et al. (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract)).  
+Before to start anything, I test the data to find outliers (observation that has a relatively large or small value compared to the majority of observations [Zuur et al. (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract)).  
 ```{r setup, include=FALSE}
 X<-read.table("PhysicochimieJanvDec2017aVerifier.csv", header = TRUE, sep = ";")
 Y<-read.table("PhysicochimieJanvDec2017.csv", header = TRUE, sep = ";")
@@ -91,4 +90,3 @@ anova(mod)
   
 Next time, I will describe how I do data exploration and first analyse.  
   
-If you have any comments, do not hesitate to [contact me](https://mvaugoyeau.netlify.com/aboutme/) in English or in French.  

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cor.test on Site de Statistiques et R</title>
+    <link>/fr/tags/cor.test/</link>
+    <description>Recent content in Cor.test on Site de Statistiques et R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/fr/tags/cor.test/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Commencer avec les données</title>
+      <link>/fr/post/commencer-avec-les-donnees/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/post/commencer-avec-les-donnees/</guid>
+      <description>La distibution de chaque varibaleLe test multiple des corrélationsAprès avoir vérifié qu’il n’y avait pas erreur de typographie dans les données et avant de commencer les vraies analyses statistiques, je vérifie toujours la distribution des données et les relations entre les facteurs.
+Pour cet article de blog, je vais utiliser les données sur la qualité de l’air disponible sur R.
+La distibution de chaque varibalePour voir la distribution, j’utilise ggplot.</description>
+    </item>
+    
+  </channel>
+</rss>

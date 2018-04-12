@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Site de Statistiques et R</title>
+    <link>/fr/tags/</link>
+    <description>Recent content in Tags on Site de Statistiques et R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Article</title>
+      <link>/fr/tags/article/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/tags/article/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cor.test</title>
+      <link>/fr/tags/cor.test/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/tags/cor.test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Design experiemental</title>
+      <link>/fr/tags/design-experiemental/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/tags/design-experiemental/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stat</title>
+      <link>/fr/tags/stat/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/tags/stat/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

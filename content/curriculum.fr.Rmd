@@ -1,0 +1,150 @@
+---
+title: "Curriculum Vitae"
+date: "20-04-2018"
+output:
+  blogdown::html_page:
+    toc: true
+    fig_width: 6
+    dev: "svg"
+---
+
+# Marie VAUGOYEAU  
+**Docteure en écologie et évolution**  
+  
+Nationalité : Française  
+Née le 1^er^ 1986   
+  
+## Compétences  
+### Compétences sur le terrain (aviaire et squamates)  
+* Ecologogie comportementale (suivi du comportement d'incubation des femelles et du comportement de nourrissage des jeunes / mesure du comportement anti-prédateur et de l'agressivité / mesure du comportement exploratoire)  
+* Capture au nichoir et avec filets à poches pour les oiseaux / Capture à la main et à la canne à pêche pour les reptiles  
+* Measure de la longueur du tarse, de l'aile, de la masse / Mesure de la coloration par analyse photo et spectrophotométrie sur les plumes pour les oiseaux  
+* Measure de la longeur museau-cloaque et totale, de la masse et de la coloration de la gorge par comparaison visuelle pour les reptiles  
+* Prise de sang dans la veine brachiale pour les oiseaux et dans les yeux pour les lézards  
+
+### Compétence en laboratoire  
+* Traitement des échantillons (sang, plumes et oeufs) préléves sur le terrain  
+* Maintien d'animaux en volières et terrarium  
+* Utilisation d'enceintes climatiques  
+* Utilisation de kit-ELISA pour mesurer la corticostérone, la capacité antioxydante du plasma et de la concentration en ROM  
+* Identification et comptage de leucocytes sur lames  
+
+### Manipulation des vertébrés  
+* Autorisation française d'expérimentation animale de niveau 1 (2013)  
+* Formation sur le bien-être animale et l'expérimentation (2008)  
+* Certificat de pêche électrique (2008)  
+  
+### Langues
+* Anglais (TOEIC 2009): 835/990
+* Français : langue natale
+
+### Compétences informatiques 
+* Microsoft Office: niveau avancé  
+* R (analyses statistiques et site web): niveau avancé  
+* QGIS et ArcGIS: niveau basic  
+  
+  
+## Expériences
+### 2016-2017 **ATER à temps complet d'un an en biostatistiques**. Laboratoire Mer, Molécules, Santé. EA 2160. Le Mans Université  
+#### **Encadrement** :  
+Co-encadrement  d’un  doctorat  en  co-tutelle  France-Algérie  
+  
+#### **Recherche** :  
+Analyses statistiques pour mesurer l’influence de l’anthropisation sur les caractéristiques physico-chimique d'un lac urbain (Dayat Morsli) en Algérie. Un article est en cours de rédaction.  
+Mais aussi création de variables indépendantes et calcul du nombre de réplicas nécessaires dans l’analyse de données en fluorimétrie sur les microalgues.  
+  
+#### **Enseignements en biostatistiques** (176 HTD) :  
+*	Biologie cellulaire animale, *L1* (32 h de TP) : Cours repris à partir d’une base fournie  
+* Comportement animale,* L3* (4h) : Cours créés intégralement 
+*	Mesure et analyse de données, *L1* (30 h de TP) : Cours faits à partir d’une base fournie  
+*	Statistiques descriptives, *L1* (48 h de TP) : Cours repris à partir d’une base fournie  
+*	Statistiques appliquées à la biologie, *L3* (8 h de CM, 2 h de TD et 3 h de TP) : Cours fournis par le responsable du module
+*	Analyse et traitement des données, *L3-Pro Production Animale* (20 h de CM et 40 h de TP) : Cours recréés à partir d’une base fournie et de livres de statistiques  
+*	Biostatistiques, *M1* (14 h CM et 14 h de TP) : Cours complètement recréés à partir d’une base fournie et de livres de statistiques  
+  
+### 2014-2015 **ATER à mi-temps d'un an en écologie et évolution**. Laboratoire Ecologie, Systematique, Evolution, Paris-Sud Université.
+Encadrant: [Dr. Anders MØLLER](http://www.ese.u-psud.fr/article226.html?lang=en#encadrement)  
+  
+#### **Enseignements en biologie évolutive** (88 HTD) :  
+* Chimie-Biologie, *L1* (20 h de TD et 8 h de TP) : Cours fournis par les enseignants du module  
+* Biologie Plus, *L2* (31 h équivalent TD) : Cours créés à partir d’une base fournie par la responsable du module  
+* Biologie Evolutive, *L3* (10 h de TD) : Cours fournis par le responsable du module  
+* Génétique des populations, *L3* (3 h de TP et 16 h de TD) : Cours fournis par les enseignants du module  
+
+#### **Recherche** : Etude de l’influence de l’urbanisation sur les dates et tailles de pontes chez les mésanages bleues (*Cyanistes caeruleus*), les mésanges charbonnières (*Parus major*), les gobemouches à collier (*Ficedula albicollis*) et gobemouches noirs (*Ficedula hypoleuca*) 
+Mesure de l’influence de l’urbanisation en fonction de l’année d’étude et de la longitude sur la date et la taille de ponte de quatre espèces de passereaux entre 1948 et 2012 sur 199 sites d’études répartis à travers l’Europe, le Moyen-Orient et le Nord de l’Afrique.  
+Ajout d’une variable de mesure de l’urbanisation : le nombre de bâtiments autour des sites d’études à une base de données déjà. La date de ponte ne varie pas avec l’intensité locale d’urbanisation mais la taille de ponte des gobemouches diminue avec l’augmentation de l’intensité locale d’urbanisation. Les résultats de cette étude ont été publiés dans Ecology and Evolution.  
+Gestion d’un grand jeu de données (3 500 lignes, 30 colonnes) sous R.  
+  
+### 2011-2014 **Doctorat en écologie et évolution**. *Les effets maternels en tant que médiateur des changements globaux : Mécanismes et conséquences sur les populations de mésanges bleues et charbonnières*. Département d'écologie évolutive, iEES-Paris.
+Encadrantes: [Pr. Sandrine MEYLAN](https://iees-paris.ufr918.upmc.fr/index.php?page=fiche&id=51&droit=1) and [Dr. Clotilde BIARD](https://iees-paris.ufr918.upmc.fr/index.php?page=fiche&id=9&droit=1)  
+  
+#### **Recherche** : Décrire la phénologie et le succès de reproduction des mésanges bleues et charbonnières au sein et entre des populations à différents niveaux d'urbanisation.
+ 
+  
+**Etude corrélative avec suivi quotidien pendant trois saisons de reproduction des mésanges bleues et charbonnières :**  
+* Manipulation et baguage des adultes et des jeunes  
+*	Mesures du phénotype des oiseaux (masse et longueur du tarse)  
+*	Echantillonnage d'oeufs, de plumes et de sang  
+* Prise de photos pour quantifier la mélanisation des mésanges charbonnières  
+
+**Deux expériementations sur les mésanges charbonnières :**  
+* En volière sur les liens entre le status oxidatif, l'activité physique et les caroténoïdes. Résultats présentées pendant deux congrès, un national : Colloque d’EcoPhysiologie Animale à Lyon en 2013, et un international: 1st Young Natural History scientists' Meeting à Paris en 2014 et ont été publiés en 2015 par [The Journal of Experimental Biology](http://jeb.biologists.org/content/218/13/2106)  
+* In natura à propos de l'influence de la température sur le succès de reproduction. Résultats publiés en 2017 dans [Journal of Avian Biology](http://onlinelibrary.wiley.com/doi/10.1111/jav.01208/abstract;jsessionid=34C44663807B1B7CA81850CA6E577BE0.f01t03)  
+
+**Analyses en laboratoire :**
+*	Physiologie animale : activation du système immunitaire par mesure de la vitesse de sédimentation, réponse au stress par la quantification du ratio hétérophiles sur lymphocytes et status oxidatif par mesure des dommages oxidatifs et de la capacité anti-oxydante  
+*	Phénotype coloré : phénotype jaune par spectrophotométrie sur les plumes chez les deux espèces et mesure de la bande ventrale sur photos chez les méanges charbonnières  
+*	Investissement maternelle dans la reproduction : poids des oeufs frais, mesure de la forme et du volume des oeufs et mesure de l'épaisseur et de la couleur de la coquille  
+  
+**Analyse des données avec R**  
+Modèles mixtes linéaire généralisés et tests post-hoc  
+Tests de Pearson, Student, Welch et Khi^2^  
+Tests de Wilcoxon, Mann-Whitney et Kruskal-Wallis    
+  
+**Collaboration avec des chercheurs du [CEBC](http://www.cebc.cnrs.fr/)**  
+Resultats publiés en 2017 dans [Frontiers in Ecology and Evolution](https://www.frontiersin.org/articles/10.3389/fevo.2017.00079/full)  
+  
+#### **Enseignement en recherche bibliographique** (64 HTD/an) :  
+* Initiation (*L1*) et perfectionnement (*L3*, *M1* & *M2*) à la recherche bibliographique : Contenu adapté par mes soins aux besoins spécifiques de chaque cursus à partir d’une base commune construite en collaboration avec les bibliothécaires  
+* Initiation à l’utilisation de Zotéro (*M1* & *M2*) : Cours crées à partir d’une base fournie  
+  
+#### **Encadrement** : 12 stagiaires (cinq L2, quatre L3 et trois M1, de six à huit semaines)
+Un sujet unique et précis était décidé en collaboration avec chaque étudiant, déterminé à la fois par ses envies et les données disponibles  
+  
+### 2011-2011 **Stage de six mois**. *Etude de l’impact des changements globaux sur le développement*. CEBC CNRS.
+Encadrant : [Dr. Olivier LOURDAIS](http://www.cebc.cnrs.fr/Fidentite/lourdais/lourdais.htm)  
+**Recherche** : Etude de l’impact des changements globaux sur le développement : une étude expérimentale sur la vipère aspic (**Vipera aspis**)    
+* Organisation des expériementations  
+* Analyse des données avec R  
+* Maintien en captivité, réalisation des soins et du nourrissage des jeunes   
+  
+### 2010 **Stage de six mois**. *Etude de l'agressivité chez le lézard des murailles selon la température, le sexe et la couleur de la gorge*. SEEM CNRS.
+Encadrant : Drs. [Susanne](https://www.researchgate.net/profile/Susanne_Zajitschek) & [Felix](https://www.researchgate.net/profile/Felix_Zajitschek) ZAJITSCHEK  
+**Research**: Etude du comportement et de la physiologie des lézards des murailles (*Podarcis muralis*) et lézards vivipares (*Zootoca vivipara*)  
+* Mis en place d’une expérience de mesure de l’agressivité, approximé par la force de morsure du lézard des murailles, en fonction de la température, du sexe et de la couleur de la gorge des individus.  
+* Participation à des expériences de choix de partenaires chez le lézard des murailles et de choix de substrat, de timidité et de capacité à disperser chez le lézard vivipare afin de comparer les variations de phénotypes et de comportements entre et au sein de différentes populations.  
+* Maintien des populations en captivité, nettoyage des terrariums et nourrissage.  
+  
+### 2009-2010 **Stage de six mois**. *Etude de l’impact des changements globaux sur le développement*. CEBC CNRS.
+Encadrante : [Sophie LORIOUX](https://www.researchgate.net/profile/Sophie_Lorioux)  
+**Recherche** : Etude de l’impact des changements globaux sur le développement : une étude expérimentale sur la vipère aspic (**Vipera aspis**)  
+* Participation aux différentes manipulations expérimentales pour mesurer les réponses comportementales et physiologiques des femelles gestantes de vipères aspics aux variations de températures journalières ainsi que leurs effets sur le comportement et le phénotype des jeunes qui se sont développés pendant cette gestation. Un article reprenant les résultats de ce travail a été publié dans [American Naturalist](http://www.journals.uchicago.edu/doi/10.1086/670809).  
+  
+## Publications
+1. BIARD C., BRISCHOUX F. et al. ([2017](https://www.frontiersin.org/articles/10.3389/fevo.2017.00079/full)) *Growing in cities: an urban penalty for wild birds? A study of phenotypic differences between urban and rural great tit chicks (Parus major)*. **Frontiers in Ecology and Evolution** (Impact factor: unavailable). **5**(79)  
+La collaboration entre l’iEES-Paris et le CEBC a permis de comparer la condition corporelle et le phénotype coloré jaune des jeunes de mésanges charbonnières entre deux couples de populations urbains-rurales. Les jeunes de zones urbaines sont plus petits et ont une coloration jaune moins intense que les jeunes de zones rurales mais il n’y a pas de différence sur la longueur des télomères.   
+  
+2. VAUGOYEAU M., MEYLAN S. and BIARD C. ([2017](http://onlinelibrary.wiley.com/doi/10.1111/jav.01208/abstract;jsessionid=34C44663807B1B7CA81850CA6E577BE0.f01t03)) *How does an increase in minimum daily temperatures during incubation influence reproduction in the great tit (Parus major)?* **Journal of Avian Biology** (Impact factor: 2.2). **48**: 714-725  
+Dans le but de mieux comprendre l’influence de la température de développement sur le phénotype et la physiologie des futurs adultes, une expérience de chauffage des nichoirs a été réalisée. A l’éclosion les jeunes issus des nichoirs chauffés ont une masse plus grande que celle des jeunes issus des nichoirs contrôles mais il n’y avait pas de différence physiologique ou phénotypique associée. Cette différence de masse disparaît au cours de la croissance au nid et la masse des jeunes des deux types de nichoirs est similaire au moment de l’envol.  
+  
+3. VAUGOYEAU M., ADRIAENSEN F. et al. ([2016](http://onlinelibrary.wiley.com/doi/10.1002/ece3.2335/abstract)) *Interspecific variation in the relationship between clutch size, laying date and urbanization in four species of hole-nesting birds.* **Ecology and Evolution** (Impact factor: 2.5). **6**(16): 5907-5920  
+La date et taille de ponte de 199 sites de reproduction à travers l’Europe, le Maghreb et le Moyen-Orient, et sur une soixantaine d’année (1948-2012) ont été analysées en fonction du degré d’urbanisation chez quatre espèces de passereaux cavernicoles. Les mesures de date et la taille de ponte chez les mésanges bleues et charbonnières ainsi que chez les gobemouches noirs et à collier, ont permis de montrer que la date de ponte ne varie pas avec l’intensité locale d’urbanisation et que la taille de ponte des gobemouches diminue avec l’augmentation de l’intensité locale d’urbanisation.  
+  
+4. VAUGOYEAU M., DECENCIERE B. et al. ([2015](http://jeb.biologists.org/content/218/13/2106)) *Is oxidative status influenced by dietary carotenoids and flight ability during winter in great tit (Parus major)?* **The Journal of Experimental Biology** (Impact factor: 2.9). **218**(13): 2106-2115  
+Cette expérience a été réalisée sur les mésanges charbonnières durant l’automne 2012, afin de mieux comprendre l’influence des caractéristiques environnementales et de l’activité physique sur le statut oxydatif des oiseaux. Lors de cette expérience, les oiseaux capturés et mis en volière ont été soumis à un des trois traitements : handicap physique et supplémentation en caroténoïdes, handicap physique sans supplémentation et absence d’handicap physique et de supplémentation. La supplémentation en caroténoïdes a augmenté marginalement la concentration en ROM (Reactive Oxygen Metabolites) c’est-à-dire le stress oxydatif alors que le handicap n’a pas eu d’effet sur le statut oxydatif.  
+  
+5. LORIOUX S., VAUGOYEAU M. et al. ([2013](http://www.journals.uchicago.edu/doi/10.1086/670809)) *Stage dependence of phenotypical and phenological maternal effects: Insight into squamate reptile reproductive strategies.* **American Naturalist** (Impact factor: 4.45). **182**(2): 223-233.
+Lors de cette expérience des femelles gestantes ont été placées dans un des cinq traitements thermiques. Les femelles ont été exposées soit à un traitement froid pendant le premier, le deuxième ou le troisième tiers du développement embryonnaire soit à un traitement froid constant ou chaud constant. Les mesures morphologiques, physiologiques et comportementales sur les jeunes issus de ces traitements ont montré que le premier tiers de développement est la phase la plus sensible aux variations de températures.  
+  
+  

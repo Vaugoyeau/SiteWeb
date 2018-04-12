@@ -1,9 +1,6 @@
 ---
 title: "Curriculum Vitae"
 date: "2018-01-24"
-layout: "about"
-menu: "main"
-weight: 50
 output:
   blogdown::html_page:
     toc: true

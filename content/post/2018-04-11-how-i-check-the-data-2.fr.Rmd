@@ -1,0 +1,76 @@
+---
+title: Commencer avec les données
+author: "Marie Vaugoyeau"
+date: '2018-04-27'
+slug: Commencer-avec-les-donnees
+categories:
+- stat
+tags:
+- stat
+- cor.test
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+Après avoir vérifié qu'il n'y avait pas [erreur de typographie](https://mvaugoyeau.netlify.com/2018/02/22/how-i-check-the-data/) dans les données et avant de commencer les vraies analyses statistiques, je vérifie toujours la distribution des données et les relations entre les facteurs.  
+
+Pour cet article de blog, je vais utiliser les données sur la qualité de l'air disponible sur R.  
+
+# La distibution de chaque varibale  
+Pour voir la distribution, j'utilise ggplot.  
+```{r plot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(tidyverse)
+D<-airquality
+
+# Première étape, mettre les données sous forme tidy
+D_tidy<-D %>% tidyr::gather(VAR, value, -Month, -Day) %>% mutate(Time = Month*30.5+Day)
+
+ggplot(D_tidy) + geom_line(aes(x=Time, y=value, color=Month)) + scale_color_distiller("Month", palette = "Spectral") + facet_wrap(~VAR, scales = "free_y") + theme_minimal() + ylab("")
+
+```
+On peut voir qu'il manque des données dans la variable Ozone mais ce n'est pas un problème.  
+
+# Le test multiple des corrélations  
+Pour voir quelle variable est corrélée à quelle autre, j'analyse les relations linéaires avec la fonction *cor.test*.  
+J'utilise les lignes de codes suivantes dans R, modifiées d'après [Zuur et al. (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract)).  
+
+```{r cor.test, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+D<-airquality
+
+par(bty="n") # Je préfère quand il n'y a pas d'entourage autours des graphiques mais ce n'est pas nécessaire comme ligne de code
+
+# J'ai réécrit la fonction panel.smooth pour pouvoir changer la forme des points et l'épaisseur de la ligne rouge
+panel.smooth2=function (x, y, col = par("col"), bg = NA, pch = par("pch"),
+    cex = 1, col.smooth = "red", span = 2/3, iter = 3, ...)
+{
+  points(x, y, pch = 20, col = col, bg = bg, cex = cex)
+    ok <- is.finite(x) & is.finite(y)
+    if (any(ok))
+        lines(stats::lowess(x[ok], y[ok], f = span, iter = iter),
+            col = "red", lwd=2,...)
+}
+
+# J'ai modifier panel.cor pour ne montrer les estimations de corrélations que lorsque le cor.test est significatif
+panel.cor <- function(x, y, digits=1, prefix="", cex.cor)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r1=cor.test(x,y)
+  r <- abs(cor(x, y,use="pairwise.complete.obs"))
+  
+  txt <- format(c(r1[4], 0.123456789), digits=digits)[1]
+  txt <- paste(prefix, txt, sep="")
+  if(missing(cex.cor)) cex <- 0.9/strwidth(txt)
+  text(0.5, 0.5, if(r1[3]<0.005) txt, cex = cex * r)
+}
+
+pairs(D, lower.panel = panel.smooth2, upper.panel=panel.cor, cex.labels=1.3)
+```
+
+Ma principale modification est la case vide lorsque le test de corrélation n'est pas significatif.  
+
+Dans le triangle supérieur, le nombre est l'estimation de la corrélation entre la variable en ligne et celle en colonne.  
+
+Et vous, comment faites-vous lorsque que vous voulez tester des corrélations multiples ?  
+  

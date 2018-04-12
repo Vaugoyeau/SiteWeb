@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Site de Statistiques et R</title>
+    <link>/fr/</link>
+    <description>Recent content on Site de Statistiques et R</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/fr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Commencer avec les données</title>
+      <link>/fr/post/commencer-avec-les-donnees/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/post/commencer-avec-les-donnees/</guid>
+      <description>La distibution de chaque varibaleLe test multiple des corrélationsAprès avoir vérifié qu’il n’y avait pas erreur de typographie dans les données et avant de commencer les vraies analyses statistiques, je vérifie toujours la distribution des données et les relations entre les facteurs.
+Pour cet article de blog, je vais utiliser les données sur la qualité de l’air disponible sur R.
+La distibution de chaque varibalePour voir la distribution, j’utilise ggplot.</description>
+    </item>
+    
+    <item>
+      <title>Comment je vérifie les données</title>
+      <link>/fr/post/comment-je-verifie-les-donnees/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/post/comment-je-verifie-les-donnees/</guid>
+      <description>Recherche d’outliers ?Première étape : Les outliers et les boxplots (boîtes à moustaches)Deuxième étape : Outlier, moyenne et écart-typeVérification de la répétabilité des donnéesActuellement j’analyse des données obtenues par une thésarde qui mesure l’influence de l’urbanisation sur les caractéristiques physicochimiques d’un lac. L’étudiante prélève une fois par mois de l’eau en sept points autours du lac.
+Je pense que c’est la bonne occasion pour expliquer comment je vérifie les données quand je les reçois.</description>
+    </item>
+    
+    <item>
+      <title>Mon premier article : Un design croisé non équilibré</title>
+      <link>/fr/post/mon-premier-article/</link>
+      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/post/mon-premier-article/</guid>
+      <description>Première étape : Vérifier la répétabilité des donnéesDeuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)Modèle linéaire mixteDistribution des résidus du modèleSélection de modèle avec éliminationModèle finalEffets aléatoiresTroisième et dernière étape : Expliquer les résultats trouvésEn 2015, j’ai publié l’article: Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?</description>
+    </item>
+    
+    <item>
+      <title>Premier post</title>
+      <link>/fr/post/firstpost/</link>
+      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/post/firstpost/</guid>
+      <description>Ce n’est jamais facile de commencer, le premier pas est toujours le plus dur et je pense que c’est pareil ici. J’ai créé ce site dans le but d’expliquer les analyses statistiques que je fais ainsi que quelques utilisations de R.
+Ce site est évidement appelé à évoluer, sa première métamorphose est faite, il est maintenant en français en plus de l’anglais.
+A bientôt.</description>
+    </item>
+    
+    <item>
+      <title>A propos de moi</title>
+      <link>/fr/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/about/</guid>
+      <description>Docteur en écology et évolution in Ecologie
+Depuis 2011, je travaille en écologie et plus particulièrement j’ai étudié l’influence de l’urbanisation sur les écosystèmes.
+J’aime les statistiques et R et j’adore enseigner.
+J’ai ouvert ce site pour partager les statistiques que je fais avec R et aussi pour me faire de la pub en tant qu’analyste de données free-lance.
+Contact:
+marie.vaugoyeau@gmail.com
+Twitter
+LinkedIn</description>
+    </item>
+    
+    <item>
+      <title>Curriculum Vitae</title>
+      <link>/fr/curriculum/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/fr/curriculum/</guid>
+      <description>Marie VAUGOYEAUCompétencesCompétences sur le terrain (aviaire et squamates)Compétence en laboratoireManipulation des vertébrésLanguesCompétences informatiquesExpériences2016-2017 ATER à temps complet d’un an en biostatistiques. Laboratoire Mer, Molécules, Santé. EA 2160. Le Mans Université2014-2015 ATER à mi-temps d’un an en écologie et évolution. Laboratoire Ecologie, Systematique, Evolution, Paris-Sud Université.2011-2014 Doctorat en écologie et évolution. Les effets maternels en tant que médiateur des changements globaux : Mécanismes et conséquences sur les populations de mésanges bleues et charbonnières.</description>
+    </item>
+    
+  </channel>
+</rss>
