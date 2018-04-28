@@ -2,15 +2,19 @@
 title: Start with the data
 author: "Marie Vaugoyeau"
 date: '2018-04-12'
-slug: how-i-check-the-data-2
+slug: start-with-the-data
 categories:
 - stat
 tags:
 - stat
 - cor.test
-output:
-  blogdown::html_page:
-    toc: true
+featuredpath: "/images/featured/"
+featured: "start-with-the-data.png"
+featuredalt: "Start with the data"
+linktitle: "start-with-the-data"
+images: 
+  - /img/featured/start-with-the-data.png  
+description : "Check the distribution of data and relationship between factors" 
 ---
 
 After verifying that there is no one [missprint](https://mvaugoyeau.netlify.com/2018/02/22/how-i-check-the-data/) in the data and before starting the true statistical analysis, I check the distribution of data and relationships between factors.  
