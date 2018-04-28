@@ -73,4 +73,9 @@ My main modification is the blank when correlation test was not significant.
 In the upper triangle, number is estimate of the correlation between the line variable and the column one.  
 
 And you, how do you do multi-test of correlations?  
+<<<<<<< HEAD
   
+=======
+
+If you have any comments, do not hesitate to [contact me](https://mvaugoyeau.netlify.com/aboutme/) in English or in French.  
+>>>>>>> b3a53b4b9d3355725c97b7629b7290493b1feb90

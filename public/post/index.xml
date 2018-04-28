@@ -13,10 +13,17 @@
     
     <item>
       <title>Start with the data</title>
+<<<<<<< HEAD
       <link>/post/how-i-check-the-data-2/</link>
       <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/how-i-check-the-data-2/</guid>
+=======
+      <link>/2018/04/12/how-i-check-the-data-2/</link>
+      <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/04/12/how-i-check-the-data-2/</guid>
+>>>>>>> b3a53b4b9d3355725c97b7629b7290493b1feb90
       <description>The distribution of each variableThe multi-test of correlationsAfter verifying that there is no one missprint in the data and before starting the true statistical analysis, I check the distribution of data and relationships between factors.
 For this blog article, I use data of air quality available in R.
 The distribution of each variableTo see distribution, I use a ggplot.
