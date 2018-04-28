@@ -1,24 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Article on Statistical and R blog</title>
-    <link>/categories/article/</link>
-    <description>Recent content in Article on Statistical and R blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 06 Feb 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/categories/article/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>My first article: A not fully crossed design</title>
-      <link>/post/my-first-article/</link>
-      <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/my-first-article/</guid>
-      <description>First Step: Check the repeatability of the dataSecond step: Linear mixed models with backward eliminationLinear mixed modelDistribution of model residualsModel selection with backward eliminationFinal modelRandom effectThird and last step: Analyse resultsIn 2015, I published the article: Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)? about my first experimentation. In the aim to investigate on the relationship between dietary carotenoids, physical activity and oxidative status, I captured great tits and kept them in aviaries.</description>
-    </item>
-    
-  </channel>
-</rss>
