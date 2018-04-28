@@ -1,7 +1,7 @@
 baseurl = "https://mvaugoyeau.netlify.com/"
 languageCode = "en-us"
 title = "Statistical and R blog"
-theme = "hugo-future-imperfect/ml"
+theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
 disqusShortname = "shortname"
@@ -55,7 +55,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   # files by adding the value, "default".
   # customCSS            = ["default", "/path/to/file"]
   # customJS             = ["default", "/path/to/file"]
-  customCSS            = ["default"]
+  customCSS            = ["default", "/css/personal.css"]
   customJS             = ["default"]
 
   # options for highlight.js (version, additional languages, and theme)
