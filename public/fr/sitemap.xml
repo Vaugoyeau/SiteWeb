@@ -3,254 +3,254 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/post/commencer-avec-les-donnees/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/post/commencer-avec-les-donnees/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/post/how-i-check-the-data-2/"
+                href="/post/how-i-check-the-data-2/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/post/commencer-avec-les-donnees/"
+                href="/fr/post/commencer-avec-les-donnees/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/post/comment-je-verifie-les-donnees/</loc>
-    <lastmod>2018-02-20T00:00:00+00:00</lastmod>
+    <loc>/fr/post/comment-je-verifie-les-donnees/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/post/how-i-check-the-data/"
+                href="/post/how-i-check-the-data/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/post/comment-je-verifie-les-donnees/"
+                href="/fr/post/comment-je-verifie-les-donnees/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/post/mon-premier-article/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/post/mon-premier-article/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/post/my-first-article/"
+                href="/post/my-first-article/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/post/mon-premier-article/"
+                href="/fr/post/mon-premier-article/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/post/firstpost/</loc>
-    <lastmod>2018-01-24T00:00:00+00:00</lastmod>
+    <loc>/fr/post/firstpost/</loc>
+    <lastmod>2018-04-19T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/post/firstpost/"
+                href="/post/firstpost/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/post/firstpost/"
+                href="/fr/post/firstpost/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/about/</loc>
+    <loc>/fr/about/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/about/"
+                href="/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/about/"
+                href="/fr/about/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/tags/article/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/tags/article/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/tags/article/"
+                href="/tags/article/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/tags/article/"
+                href="/fr/tags/article/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/categories/article/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/categories/article/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/categories/article/"
+                href="/categories/article/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/categories/article/"
+                href="/fr/categories/article/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/categories/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/categories/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/categories/"
+                href="/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/categories/"
+                href="/fr/categories/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/contact/</loc>
+    <loc>/fr/contact/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/contact/"
+                href="/contact/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/contact/"
+                href="/fr/contact/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/tags/cor.test/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/tags/cor.test/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/tags/cor.test/"
+                href="/tags/cor.test/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/tags/cor.test/"
+                href="/fr/tags/cor.test/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/curriculum/</loc>
+    <loc>/fr/curriculum/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/curriculum/"
+                href="/curriculum/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/curriculum/"
+                href="/fr/curriculum/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/tags/design-experiemental/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/tags/design-experiemental/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/post/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/post/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/post/"
+                href="/post/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/post/"
+                href="/fr/post/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/"
+                href="/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/"
+                href="/fr/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/tags/stat/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/tags/stat/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/tags/stat/"
+                href="/tags/stat/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/tags/stat/"
+                href="/fr/tags/stat/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/categories/stat/</loc>
-    <lastmod>2018-04-11T00:00:00+00:00</lastmod>
+    <loc>/fr/categories/stat/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/categories/stat/"
+                href="/categories/stat/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/categories/stat/"
+                href="/fr/categories/stat/"
                 />
   </url>
   
   <url>
-    <loc>https://mvaugoyeau.netlify.com/fr/tags/</loc>
-    <lastmod>2018-02-06T00:00:00+00:00</lastmod>
+    <loc>/fr/tags/</loc>
+    <lastmod>2018-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://mvaugoyeau.netlify.com/tags/"
+                href="/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://mvaugoyeau.netlify.com/fr/tags/"
+                href="/fr/tags/"
                 />
   </url>
   

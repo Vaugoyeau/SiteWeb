@@ -162,6 +162,12 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 url = "/contact/"
                 identifier = "fa fa-envelope-o"
                 weight = 4
+
+            [[Languages.en.menu.main]]
+                name = "Post"
+                url = "/post/"
+                identifier = "fa fa-newspaper-o"
+                weight = 5
     
             [[Languages.fr.menu.main]]
                 name = "Accueil"
@@ -186,6 +192,12 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 url = "/contact.fr/"
                 identifier = "fa fa-envelope-o"
                 weight = 4
+
+            [[Languages.fr.menu.main]]
+                name = "Post"
+                url = "/post/"
+                identifier = "fa fa-newspaper-o"
+                weight = 5
 
 # Sets Social Media icons to appear and link to your account. Value should be your
 # username unless otherwise noted. These are the icons affected by socialAppearAtTop

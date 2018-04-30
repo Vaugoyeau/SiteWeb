@@ -2,48 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Statistical and R blog</title>
-    <link>https://mvaugoyeau.netlify.com/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Statistical and R blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 06 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mvaugoyeau.netlify.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Article</title>
-      <link>https://mvaugoyeau.netlify.com/tags/article/</link>
+      <link>/tags/article/</link>
       <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mvaugoyeau.netlify.com/tags/article/</guid>
+      <guid>/tags/article/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Cor.test</title>
-      <link>https://mvaugoyeau.netlify.com/tags/cor.test/</link>
+      <link>/tags/cor.test/</link>
       <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mvaugoyeau.netlify.com/tags/cor.test/</guid>
+      <guid>/tags/cor.test/</guid>
       <description></description>
     </item>
     
     <item>
+<<<<<<< HEAD
       <title>Experiemental design</title>
-      <link>https://mvaugoyeau.netlify.com/tags/experiemental-design/</link>
+=======
+      <title>Experiemental Design</title>
+>>>>>>> b3a53b4b9d3355725c97b7629b7290493b1feb90
+      <link>/tags/experiemental-design/</link>
       <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mvaugoyeau.netlify.com/tags/experiemental-design/</guid>
+      <guid>/tags/experiemental-design/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Stat</title>
-      <link>https://mvaugoyeau.netlify.com/tags/stat/</link>
+      <link>/tags/stat/</link>
       <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mvaugoyeau.netlify.com/tags/stat/</guid>
+      <guid>/tags/stat/</guid>
       <description></description>
     </item>
     
