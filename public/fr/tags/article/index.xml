@@ -6,7 +6,7 @@
     <description>Recent content in Article on Site de Statistiques et R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 06 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/fr/tags/article/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Mon premier article : Un design croisé non équilibré</title>
       <link>/fr/post/mon-premier-article/</link>
-      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/fr/post/mon-premier-article/</guid>
       <description>Première étape : Vérifier la répétabilité des donnéesDeuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)Modèle linéaire mixteDistribution des résidus du modèleSélection de modèle avec éliminationModèle finalEffets aléatoiresTroisième et dernière étape : Expliquer les résultats trouvésEn 2015, j’ai publié l’article: Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?</description>

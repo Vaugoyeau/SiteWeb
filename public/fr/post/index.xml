@@ -6,7 +6,7 @@
     <description>Recent content in Post on Site de Statistiques et R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 11 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/fr/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Commencer avec les données</title>
       <link>/fr/post/commencer-avec-les-donnees/</link>
-      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 11 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>/fr/post/commencer-avec-les-donnees/</guid>
       <description>La distibution de chaque varibaleLe test multiple des corrélationsAprès avoir vérifié qu’il n’y avait pas erreur de typographie dans les données et avant de commencer les vraies analyses statistiques, je vérifie toujours la distribution des données et les relations entre les facteurs.
@@ -25,7 +25,7 @@ La distibution de chaque varibalePour voir la distribution, j’utilise ggplot.
     <item>
       <title>Comment je vérifie les données</title>
       <link>/fr/post/comment-je-verifie-les-donnees/</link>
-      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 20 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/fr/post/comment-je-verifie-les-donnees/</guid>
       <description>Recherche d’outliers ?Première étape : Les outliers et les boxplots (boîtes à moustaches)Deuxième étape : Outlier, moyenne et écart-typeVérification de la répétabilité des donnéesActuellement j’analyse des données obtenues par une thésarde qui mesure l’influence de l’urbanisation sur les caractéristiques physicochimiques d’un lac. L’étudiante prélève une fois par mois de l’eau en sept points autours du lac.
@@ -35,7 +35,7 @@ Je pense que c’est la bonne occasion pour expliquer comment je vérifie les do
     <item>
       <title>Mon premier article : Un design croisé non équilibré</title>
       <link>/fr/post/mon-premier-article/</link>
-      <pubDate>Fri, 27 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/fr/post/mon-premier-article/</guid>
       <description>Première étape : Vérifier la répétabilité des donnéesDeuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)Modèle linéaire mixteDistribution des résidus du modèleSélection de modèle avec éliminationModèle finalEffets aléatoiresTroisième et dernière étape : Expliquer les résultats trouvésEn 2015, j’ai publié l’article: Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?</description>
@@ -44,7 +44,7 @@ Je pense que c’est la bonne occasion pour expliquer comment je vérifie les do
     <item>
       <title>Premier post</title>
       <link>/fr/post/firstpost/</link>
-      <pubDate>Thu, 19 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 24 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>/fr/post/firstpost/</guid>
       <description>Ce n’est jamais facile de commencer, le premier pas est toujours le plus dur et je pense que c’est pareil ici. J’ai créé ce site dans le but d’expliquer les analyses statistiques que je fais ainsi que quelques utilisations de R.
