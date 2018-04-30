@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Statistical and R blog</title>
-    <link>/categories/</link>
+    <link>https://mvaugoyeau.netlify.com/categories/</link>
     <description>Recent content in Categories on Statistical and R blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 06 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mvaugoyeau.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Article</title>
-      <link>/categories/article/</link>
+      <link>https://mvaugoyeau.netlify.com/categories/article/</link>
       <pubDate>Tue, 06 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/article/</guid>
+      <guid>https://mvaugoyeau.netlify.com/categories/article/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Stat</title>
-      <link>/categories/stat/</link>
+      <link>https://mvaugoyeau.netlify.com/categories/stat/</link>
       <pubDate>Thu, 12 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/stat/</guid>
+      <guid>https://mvaugoyeau.netlify.com/categories/stat/</guid>
       <description></description>
     </item>
     
