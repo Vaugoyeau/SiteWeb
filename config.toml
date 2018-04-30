@@ -1,7 +1,7 @@
 baseurl = "https://mvaugoyeau.netlify.com/"
 languageCode = "en-us"
 title = "Statistical and R blog"
-theme = "hugo-future-imperfect/ml"
+theme = "hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
 disqusShortname = "shortname"
