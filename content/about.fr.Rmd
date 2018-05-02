@@ -7,12 +7,13 @@ output:
     fig_width: 6
     dev: "svg"
 ---
-![](/images/PhotoId.png)
-**Docteur en écology et évolution in Ecologie**
+![](/images/PhotoId.png)  
+
+**Docteure en écologie et évolution**  
   
 Depuis 2011, je travaille en écologie et plus particulièrement j'ai étudié l'influence de l'urbanisation sur les écosystèmes.  
 J'aime les statistiques et R et j'adore enseigner.  
-
+  
 J'ai ouvert ce site pour partager les statistiques que je fais avec R et aussi pour me faire de la pub en tant qu'analyste de données free-lance.  
   
 Contact:  

@@ -4,7 +4,6 @@ title = "Statistical and R blog"
 theme = "new-hugo-future-imperfect"
 preserveTaxonomyNames = true
 paginate = 3
-disqusShortname = "shortname"
 googleAnalytics = "UA-113773843-1"
 pluralizeListTitles = false
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
@@ -118,7 +117,7 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
     # future imperfect's hexagonal shape
     circle    = true
     imperfect = false
-    width     = "90px"
+    width     = "100px"
     alt       = "Statistical and R blog"
 
 [Languages.fr.intro.pic]
@@ -127,7 +126,7 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
     # future imperfect's hexagonal shape
     circle    = true
     imperfect = false
-    width     = "90px"
+    width     = "100px"
     alt       = "Statistiques et R"
     
 # Adjust the amount of recent posts on the sidebar.
