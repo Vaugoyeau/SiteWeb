@@ -177,19 +177,19 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
 
             [[Languages.fr.menu.main]]
                 name = "A propos"
-                url = "/about.fr/"
+                url = "/about/"
                 identifier = "fa fa-id-card-o"
                 weight = 2
 
             [[Languages.fr.menu.main]]
                 name = "Curriculum"
-                url = "/curriculum.fr/"
+                url = "/curriculum/"
                 identifier = "fa fa-file-text-o"
                 weight = 3
                 
             [[Languages.fr.menu.main]]
                 name = "Contact"
-                url = "/contact.fr/"
+                url = "/contact/"
                 identifier = "fa fa-envelope-o"
                 weight = 4
 

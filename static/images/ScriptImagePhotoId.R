@@ -1,4 +1,4 @@
-######### Script pour faire mon logo à partir de ma photo avec la méthode Antonio S. Chinchón’s traveling salesperson #####
+######### Script pour faire mon logo avec la méthode Antonio S. Chinchón’s traveling salesperson #####
 
 library(imager)
 library(dplyr)
