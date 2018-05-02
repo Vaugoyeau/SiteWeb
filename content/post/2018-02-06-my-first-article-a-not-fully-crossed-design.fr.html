@@ -10,6 +10,13 @@ tags:
 categories:
 - stat
 - article
+featuredpath: "/images/featured/"
+featured: "DesignCroise.png"
+featuredalt: "Mon premier article"
+linktitle: "mon-premier-article"
+images: 
+  - /img/featured/DesignCroise.png  
+description : "Les analyses statistiques que j'ai réalisé pour mon premier article publié"
 output:
   blogdown::html_page:
     toc: true
@@ -19,7 +26,7 @@ output:
 <div id="TOC">
 <ul>
 <li><a href="#premiere-etape-verifier-la-repetabilite-des-donnees">Première étape : Vérifier la répétabilité des données</a></li>
-<li><a href="#deuxieme-etape-modeles-lineaires-mixte-avec-elimination-a-reculons-backward-elimination">Deuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)</a><ul>
+<li><a href="#deuxieme-etape-modeles-lineaires-mixtes-avec-backward-elimination">Deuxième étape : Modèles linéaires mixtes avec backward élimination</a><ul>
 <li><a href="#modele-lineaire-mixte">Modèle linéaire mixte</a></li>
 <li><a href="#distribution-des-residus-du-modele">Distribution des résidus du modèle</a></li>
 <li><a href="#selection-de-modele-avec-elimination">Sélection de modèle avec élimination</a></li>
@@ -30,7 +37,9 @@ output:
 </ul>
 </div>
 
-<p>En 2015, j’ai publié <a href="http://jeb.biologists.org/content/218/13/2106">l’article</a>: <em>Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?</em> sur ma première expérimentation. Dans le but de tester les relations entre caroténoïdes alimentaires, activité physique et status oxidatif, j’ai capturé et gardé en volière des mésanges charbonnières. Initialement, nous avions prévu de faire une expérience avec un design croisé équilibré : avec ou sans caroténoïdes dans l’alimentation et avec ou sans rémiges primaires enlevées (retirer des rémiges augmente l’activité physique des oiseaux).</p>
+<p>En 2015, j’ai publié <a href="http://jeb.biologists.org/content/218/13/2106">l’article</a> : <em>Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?</em> sur ma première expérimentation.<br />
+Dans le but de tester les relations entre caroténoïdes alimentaires, activité physique et status oxidatif, j’ai capturé et gardé en volière des mésanges charbonnières.<br />
+Initialement, nous avions prévu de faire une expérience avec un design croisé équilibré : avec ou sans caroténoïdes dans l’alimentation et avec ou sans rémiges primaires enlevées (retirer des rémiges augmente l’activité physique des oiseaux).</p>
 <table>
 <caption><span id="tab:table1">Table 1: </span>Design expérimental prévu</caption>
 <thead>
@@ -77,10 +86,10 @@ output:
 </tr>
 </tbody>
 </table>
-<p>Si dessous, je détaille les analyses statistiques menées à l’époque.</p>
+<p>Ci-dessous, je détaille les analyses statistiques menées à l’époque.</p>
 <div id="premiere-etape-verifier-la-repetabilite-des-donnees" class="section level1">
 <h1>Première étape : Vérifier la répétabilité des données</h1>
-<p>Pour certaines variables (comptage d’hétérophiles sur lymphocytes, couleur des plumes…), j’ai fair deux ou trois mesures. Afin de mesurer la répétabilité, j’ai utilisé un modèle linéaire qui m’a donnée la statistique de test <em>F</em> avec le degré de liberté et la <em>p</em>-value.</p>
+<p>Pour certaines variables (comptage d’hétérophiles sur lymphocytes, couleur des plumes…), j’ai fais deux ou trois mesures. Afin de quantifier la répétabilité, j’ai utilisé un modèle linéaire qui m’a donnée la statistique de test <em>F</em> avec le degré de liberté et la <em>p</em>-value.</p>
 <pre class="r"><code>mod&lt;-lm(Area~Identity, data=X)
 anova(mod)</code></pre>
 <pre><code>## Analysis of Variance Table
@@ -94,9 +103,9 @@ anova(mod)</code></pre>
 <p>Dans cet article j’ai aussi calculé manuellement le facteur de corrélation intraclass selon la méthode de Lessells and Boag <a href="http://www.jstor.org/stable/4087240?seq=1#page_scan_tab_contents">1987</a>: r = (MS<sub>A</sub> - MS<sub>w</sub>)/(MS<sub>A</sub> + MS<sub>W</sub>(n-1)).</p>
 <p>Une fois la répétabilité calculée, j’ai calculé et utilisé les moyennes pour le reste des analyses.</p>
 </div>
-<div id="deuxieme-etape-modeles-lineaires-mixte-avec-elimination-a-reculons-backward-elimination" class="section level1">
-<h1>Deuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)</h1>
-<p>Pour tester les effets de l’activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triple interactions entre la supplémentation en caroténoïdes ou l’activité physique avec le sexe et la période (au début ou à la fin de l’expérience).</p>
+<div id="deuxieme-etape-modeles-lineaires-mixtes-avec-backward-elimination" class="section level1">
+<h1>Deuxième étape : Modèles linéaires mixtes avec backward élimination</h1>
+<p>Pour tester les effets de l’activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triples interactions entre la supplémentation en caroténoïdes ou l’activité physique avec le sexe et la période (au début ou à la fin de l’expérience).</p>
 <div id="modele-lineaire-mixte" class="section level2">
 <h2>Modèle linéaire mixte</h2>
 <p>Pour chaque variable, j’ai écrit une modèle linéaire mixte comme celui-ci :</p>
@@ -209,7 +218,7 @@ anova(m1,m2)</code></pre>
 <pre><code>##    Model df      AIC      BIC    logLik   Test    L.Ratio p-value
 ## m1     1 17 772.4558 813.1614 -369.2279                          
 ## m2     2 16 770.4925 808.8036 -369.2462 1 vs 2 0.03665401  0.8482</code></pre>
-<p>Je garde le modèle avec l’AIC le plus faible ou si la différence entre les AIC est plus petite que 2, avec le plus parcimonieux.</p>
+<p>Je garde le modèle avec l’AIC le plus faible ou si la différence entre les AIC est plus petite que 2, le plus parcimonieux.</p>
 </div>
 <div id="modele-final" class="section level2">
 <h2>Modèle final</h2>

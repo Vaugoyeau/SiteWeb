@@ -10,7 +10,13 @@ tags:
 output:
   blogdown::html_page:
     toc: true
-cover: "/images/Outlier.png"
+featuredpath: "/images/featured/"
+featured: "ValidationDonnees.png"
+featuredalt: "Comment je vérifie les données"
+linktitle: "comment-je-verifie-les-donnees"
+images: 
+  - /img/featured/ValidationDonnees.png  
+description : "Vérification des données pour trouver les erreurs de typographie"
 ---
 
 Actuellement j'analyse des données obtenues par une thésarde qui mesure l'influence de l'urbanisation sur les caractéristiques physicochimiques d'un lac. L'étudiante prélève une fois par mois de l'eau en sept points autours du lac.  
@@ -35,7 +41,7 @@ print(bp)
 A part pour NO~3~^-^ au 128^ème^ jour après le début de l'année, il ne semble pas avoir de valeurs extrêmes.  
 
 ## Deuxième étape : Outlier, moyenne et écart-type
-Dans les données que j'utilise, les mesures ont été réalisées trois fois à chaque fois. Avec la library plotrix je vais calculer la moyenne et l'écart-type par site et par jour de prélèvement.  
+Dans les données que j'utilise, les mesures ont été réalisées en triplicata à chaque fois. Avec la library **plotrix** je vais calculer la moyenne et l'écart-type par site et par jour de prélèvement.  
 ```{r mean, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 library(plotrix)
 
@@ -79,7 +85,7 @@ Maintenant, il est visible que certaines erreurs sont bien plus grandes que les 
 Cette méthode m'a permis de trouver et de corriger cinq fautes de frappe dans ces données. Pour les valeurs extrêmes qui ne sont pas associées à des erreurs au moment de rentrer les données, je les garde dans un coin de ma tête pour vérifier leurs influences sur les futures analyses.  
 
 # Vérification de la répétabilité des données  
-Comme dans mon article de [blog précédent](https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/), je vérifie la répétabilité des données avec un simple modèle linéaire.  
+Comme dans mon article de [blog précédent](https://mvaugoyeau.netlify.com/fr/post/mon-premier-article/), je vérifie la répétabilité des données avec un simple modèle linéaire.  
 ```{r repeatability, echo=TRUE, message=FALSE, warning=FALSE}
 Y$rep<-paste(as.factor(Y$Site), as.factor(Y$Date))
 

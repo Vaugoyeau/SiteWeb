@@ -10,6 +10,13 @@ tags:
 categories:
 - stat
 - article
+featuredpath: "/images/featured/"
+featured: "DesignCroise.png"
+featuredalt: "My first article"
+linktitle: "my-first-article"
+images: 
+  - /img/featured/DesignCroise.png  
+description : "Statistical analyses for my first article published"
 output:
   blogdown::html_page:
     toc: true

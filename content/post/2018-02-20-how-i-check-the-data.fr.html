@@ -10,7 +10,13 @@ tags:
 output:
   blogdown::html_page:
     toc: true
-cover: "/images/Outlier.png"
+featuredpath: "/images/featured/"
+featured: "ValidationDonnees.png"
+featuredalt: "Comment je vérifie les données"
+linktitle: "comment-je-verifie-les-donnees"
+images: 
+  - /img/featured/ValidationDonnees.png  
+description : "Vérification des données pour trouver les erreurs de typographie"
 ---
 
 
@@ -42,7 +48,7 @@ print(bp)
 </div>
 <div id="deuxieme-etape-outlier-moyenne-et-ecart-type" class="section level2">
 <h2>Deuxième étape : Outlier, moyenne et écart-type</h2>
-<p>Dans les données que j’utilise, les mesures ont été réalisées trois fois à chaque fois. Avec la library plotrix je vais calculer la moyenne et l’écart-type par site et par jour de prélèvement.</p>
+<p>Dans les données que j’utilise, les mesures ont été réalisées en triplicata à chaque fois. Avec la library <strong>plotrix</strong> je vais calculer la moyenne et l’écart-type par site et par jour de prélèvement.</p>
 <pre class="r"><code>library(plotrix)
 
 X$rep&lt;-paste(as.factor(X$Site), as.factor(X$Date))
@@ -83,7 +89,7 @@ Cette méthode m’a permis de trouver et de corriger cinq fautes de frappe dans
 </div>
 <div id="verification-de-la-repetabilite-des-donnees" class="section level1">
 <h1>Vérification de la répétabilité des données</h1>
-<p>Comme dans mon article de <a href="https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/">blog précédent</a>, je vérifie la répétabilité des données avec un simple modèle linéaire.</p>
+<p>Comme dans mon article de <a href="https://mvaugoyeau.netlify.com/fr/post/mon-premier-article/">blog précédent</a>, je vérifie la répétabilité des données avec un simple modèle linéaire.</p>
 <pre class="r"><code>Y$rep&lt;-paste(as.factor(Y$Site), as.factor(Y$Date))
 
 # Répétabilité du pH par example

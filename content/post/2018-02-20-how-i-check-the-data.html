@@ -10,7 +10,13 @@ tags:
 output:
   blogdown::html_page:
     toc: true
-cover: "/images/Outlier.png"
+featuredpath: "/images/featured/"
+featured: "ValidationDonnees.png"
+featuredalt: "How I check the data"
+linktitle: "how-i-check-the-data"
+images: 
+  - /img/featured/ValidationDonnees.png  
+description : "Check data to find misprints"
 ---
 
 
@@ -83,7 +89,7 @@ This method allows me to found and correct five misprint in the data. I will tak
 </div>
 <div id="verify-the-repeatability-of-the-data" class="section level1">
 <h1>Verify the repeatability of the data</h1>
-<p>As in the previous <a href="https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/">blog article</a>, I verify the repeatability of the corrected data with simple linear model.</p>
+<p>As in the previous <a href="https://mvaugoyeau.netlify.com/post/my-first-article/">blog article</a>, I verify the repeatability of the corrected data with simple linear model.</p>
 <pre class="r"><code>Y$rep&lt;-paste(as.factor(Y$Site), as.factor(Y$Date))
 
 # The repeatability of the pH for exemple

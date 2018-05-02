@@ -10,7 +10,13 @@ tags:
 output:
   blogdown::html_page:
     toc: true
-cover: "/images/Outlier.png"
+featuredpath: "/images/featured/"
+featured: "ValidationDonnees.png"
+featuredalt: "How I check the data"
+linktitle: "how-i-check-the-data"
+images: 
+  - /img/featured/ValidationDonnees.png  
+description : "Check data to find misprints"
 ---
 
 Actually I analyse data from a thesis which measure urbanisation's influence on physicochemical characteristics. The PhD student sample water once by month during 2017 at seven spots around a lake.  
@@ -79,7 +85,7 @@ Now, we can see some standard error were higher than other (example for Pb one p
 This method allows me to found and correct five misprint in the data. I will take in mind other outlier to check their influences on the futur analyses.  
 
 # Verify the repeatability of the data  
-As in the previous [blog article](https://mvaugoyeau.netlify.com/2018/02/06/my-first-article/), I verify the repeatability of the corrected data with simple linear model.  
+As in the previous [blog article](https://mvaugoyeau.netlify.com/post/my-first-article/), I verify the repeatability of the corrected data with simple linear model.  
 ```{r repeatability, echo=TRUE, message=FALSE, warning=FALSE}
 Y$rep<-paste(as.factor(Y$Site), as.factor(Y$Date))
 

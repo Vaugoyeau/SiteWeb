@@ -10,12 +10,20 @@ tags:
 categories:
 - stat
 - article
+featuredpath: "/images/featured/"
+featured: "DesignCroise.png"
+featuredalt: "Mon premier article"
+linktitle: "mon-premier-article"
+images: 
+  - /img/featured/DesignCroise.png  
+description : "Les analyses statistiques que j'ai réalisé pour mon premier article publié"
 output:
   blogdown::html_page:
     toc: true
 ---
   
-En 2015, j'ai publié [l'article](http://jeb.biologists.org/content/218/13/2106): *Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?* sur ma première expérimentation. Dans le but de tester les relations entre caroténoïdes alimentaires, activité physique et status oxidatif, j'ai capturé et gardé en volière des mésanges charbonnières.
+En 2015, j'ai publié [l'article](http://jeb.biologists.org/content/218/13/2106) : *Is oxidative status influenced by dietary carotenoid and physical activity after moult in the great tit (Parus major)?* sur ma première expérimentation.  
+Dans le but de tester les relations entre caroténoïdes alimentaires, activité physique et status oxidatif, j'ai capturé et gardé en volière des mésanges charbonnières.  
 Initialement, nous avions prévu de faire une expérience avec un design croisé équilibré : avec ou sans caroténoïdes dans l'alimentation et avec ou sans rémiges primaires enlevées (retirer des rémiges augmente l'activité physique des oiseaux).  
   
 ```{r table1, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
@@ -36,10 +44,10 @@ rownames(RD)<-c("Activité physique augmentée", "Activité physique normale")
 kable(RD, caption="Design expérimental réel")
 ```
   
-Si dessous, je détaille les analyses statistiques menées à l'époque.  
+Ci-dessous, je détaille les analyses statistiques menées à l'époque.  
   
 # Première étape : Vérifier la répétabilité des données 
-Pour certaines variables (comptage d'hétérophiles sur lymphocytes, couleur des plumes...), j'ai fair deux ou trois mesures. Afin de mesurer la répétabilité, j'ai utilisé un modèle linéaire qui m'a donnée la statistique de test *F* avec le degré de liberté et la *p*-value.  
+Pour certaines variables (comptage d'hétérophiles sur lymphocytes, couleur des plumes...), j'ai fais deux ou trois mesures. Afin de quantifier la répétabilité, j'ai utilisé un modèle linéaire qui m'a donnée la statistique de test *F* avec le degré de liberté et la *p*-value.  
   
 ```{r setup, include=FALSE}
 X<-read.table("BV.csv", header = TRUE, sep = ";")
@@ -55,8 +63,8 @@ Dans cet article j'ai aussi calculé manuellement le facteur de corrélation int
   
 Une fois la répétabilité calculée, j'ai calculé et utilisé  les moyennes pour le reste des analyses.  
   
-# Deuxième étape : Modèles linéaires mixte avec élimination à reculons (backward elimination)
-Pour tester les effets de l'activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triple interactions entre la supplémentation en caroténoïdes ou l'activité physique avec le sexe et la période (au début ou à la fin de l'expérience).   
+# Deuxième étape : Modèles linéaires mixtes avec backward élimination
+Pour tester les effets de l'activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triples interactions entre la supplémentation en caroténoïdes ou l'activité physique avec le sexe et la période (au début ou à la fin de l'expérience).   
   
 ## Modèle linéaire mixte
 Pour chaque variable, j'ai écrit une modèle linéaire mixte comme celui-ci :  
@@ -83,7 +91,7 @@ summary(m1)
 m2<-lme(Oxy ~ Tarsus+Mass+Exp*Carot+Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method="ML", data = Y, na.action=na.exclude)
 anova(m1,m2)
 ```
-Je garde le modèle avec l'AIC le plus faible ou si la différence entre les AIC est plus petite que 2, avec le plus parcimonieux.  
+Je garde le modèle avec l'AIC le plus faible ou si la différence entre les AIC est plus petite que 2, le plus parcimonieux.  
   
 ## Modèle final
 Les modèles finaux sont des modèles mixtes linéaire REML réalisés avec la même fonction lme et la fonction Anova du package car pour avoir les erreur de type 3.  
