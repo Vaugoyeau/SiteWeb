@@ -25,6 +25,7 @@ J'ai utilisé la fonction écrite par [Evan Tachovsky](https://twitter.com/EvanT
   
 # Le logo d'origine  
 Pour mon blog, j'ai choisi de modifier le logo que j'avais pour ma thèse (je travaillais sur les mésanges bleues (*Cyanistes caeruleus*) et les mésanges charbonnières (*Parus major*) pour mesurer [l'influence de l'urbanisation sur la reproduction des oiseaux](http://www.theses.fr/2015PA066172)).  
+  
 ![](/images/MesSeb.png)  
   
 # La méthode de déplacement du vendeur 

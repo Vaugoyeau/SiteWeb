@@ -25,6 +25,7 @@ I use function writed by Evan Tachovsky.
   
 # The logo originally 
 For my blog, I chose to modify my thesis logo (I worked on blue tits (*Cyanistes caeruleus*) and great tits (*Parus major*) to measure [influence of urbanisation on birds reproduction](http://www.theses.fr/2015PA066172)).  
+  
 ![](/images/MesSeb.png)  
   
 # The method of traveling salsedperson  
