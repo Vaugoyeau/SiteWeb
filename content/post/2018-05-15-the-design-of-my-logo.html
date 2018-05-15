@@ -1,0 +1,105 @@
+---
+title: The design of my logo
+author: "Marie Vaugoyeau"
+date: '2018-05-15'
+slug: the-design-of-my-logo
+categories:
+- graph
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "LogoCreation.jpg"
+featuredalt: "The design of my logo"
+linktitle: "the-design-of-my-logo"
+images: 
+  - /img/featured/LogoCreation.jpg  
+description : "How I create my logo" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#the-logo-originally">The logo originally</a></li>
+<li><a href="#the-method-of-traveling-salsedperson">The method of traveling salsedperson</a></li>
+<li><a href="#my-logo">My logo</a></li>
+</ul>
+</div>
+
+<p>Today, I explain how I design my logo for the blog from the one drawn by <a href="https://statnmap.com/">Sébastien Rochette</a> for my thesis and the method of traveling salesperson by <a href="https://fronkonstin.com/2018/04/04/the-travelling-salesman-portrait/">Antonio S. Chinchón</a>.<br />
+I use function writed by Evan Tachovsky.</p>
+<div id="the-logo-originally" class="section level1">
+<h1>The logo originally</h1>
+<p>For my blog, I chose to modify my thesis logo (I worked on blue tits (<em>Cyanistes caeruleus</em>) and great tits (<em>Parus major</em>) to measure <a href="http://www.theses.fr/2015PA066172">influence of urbanisation on birds reproduction</a>).<br />
+<img src="MesSeb.jpg" /></p>
+</div>
+<div id="the-method-of-traveling-salsedperson" class="section level1">
+<h1>The method of traveling salsedperson</h1>
+<p>I used function writed by Evan Tachovsky and available on <a href="https://gist.github.com/etachov/1ef225e3824486ca039cc0ccf4511702">her github</a>.</p>
+<pre class="r"><code>library(imager)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(TSP)
+
+tspDraw &lt;- function(raw_img, point_sample_size, line_color, back_color) {
+  
+  # load the image and get started
+  raw_img &lt;- load.image(raw_img)
+  
+  # get the sample points
+  data &lt;- raw_img %&gt;%
+    grayscale() %&gt;%
+    as.cimg() %&gt;%
+    as.data.frame() %&gt;%
+    # adjust the point_sample_size variable to adjust the texture of the tsp image
+    # smaller sample looks jagged, large sample looks smooth
+    sample_n(size = point_sample_size, weight = (1 - value)) %&gt;%
+    select(x, y)
+  
+  # solve the tsp problem and return a data.frame with the values
+  solution &lt;- as.TSP(dist(data)) %&gt;% 
+    solve_TSP(method = &quot;arbitrary_insertion&quot;) %&gt;%
+    as.integer()
+  
+  order &lt;- data.frame(id = solution) %&gt;%
+    mutate(order = row_number())
+  
+  # join the tsp solution 
+  data_to_plot &lt;- data %&gt;%
+    mutate(id = row_number()) %&gt;%
+    inner_join(order, by = &quot;id&quot;) %&gt;%
+    arrange(order) %&gt;%
+    select(x, y)
+  
+  
+  p &lt;- ggplot(data_to_plot, aes(x, y)) +
+    geom_path(color = line_color) +
+    scale_y_continuous(trans=reverse_trans())+
+    coord_fixed() +
+    theme_void() +
+    theme(plot.background = element_rect(fill = back_color))
+  
+  
+  return(p)
+  
+}</code></pre>
+</div>
+<div id="my-logo" class="section level1">
+<h1>My logo</h1>
+<pre class="r"><code>for (n in c(1000, 2000, 4000, 5000))
+{
+logo &lt;- tspDraw(raw_img = &quot;MesSeb.jpg&quot;,
+                 point_sample_size = n,
+                 line_color = c(1:n), 
+                 back_color = &quot;white&quot;)
+plot(logo)
+}</code></pre>
+<p><img src="/post/2018-05-15-the-design-of-my-logo_files/figure-html/plot-1.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo_files/figure-html/plot-2.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo_files/figure-html/plot-3.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo_files/figure-html/plot-4.png" width="672" /></p>
+<pre class="r"><code># I chose n=4000 and I save file
+ggsave(&quot;logo.png&quot;, logo)</code></pre>
+<p>I thank <a href="https://twitter.com/aschinchon">Antonio Chinchón</a> for his wonderful idea and <a href="https://twitter.com/EvanTachovsky">Eva Tachovsky</a> for her code lines.</p>
+</div>

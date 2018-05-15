@@ -1,0 +1,98 @@
+---
+title: The design of my logo
+author: "Marie Vaugoyeau"
+date: '2018-05-15'
+slug: the-design-of-my-logo
+categories:
+- graph
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "LogoCreation.jpg"
+featuredalt: "The design of my logo"
+linktitle: "the-design-of-my-logo"
+images: 
+  - /img/featured/LogoCreation.jpg  
+description : "How I create my logo" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+Today, I explain how I design my logo for the blog from the one drawn by [Sébastien Rochette](https://statnmap.com/) for my thesis and the method of traveling salesperson by [Antonio S. Chinchón](https://fronkonstin.com/2018/04/04/the-travelling-salesman-portrait/).  
+I use function writed by Evan Tachovsky.  
+  
+# The logo originally 
+For my blog, I chose to modify my thesis logo (I worked on blue tits (*Cyanistes caeruleus*) and great tits (*Parus major*) to measure [influence of urbanisation on birds reproduction](http://www.theses.fr/2015PA066172)).  
+![](MesSeb.jpg)  
+  
+# The method of traveling salsedperson  
+I used function writed by Evan Tachovsky and available on [her github](https://gist.github.com/etachov/1ef225e3824486ca039cc0ccf4511702).  
+```{r function tspDraw, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(imager)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(TSP)
+
+tspDraw <- function(raw_img, point_sample_size, line_color, back_color) {
+  
+  # load the image and get started
+  raw_img <- load.image(raw_img)
+  
+  # get the sample points
+  data <- raw_img %>%
+    grayscale() %>%
+    as.cimg() %>%
+    as.data.frame() %>%
+    # adjust the point_sample_size variable to adjust the texture of the tsp image
+    # smaller sample looks jagged, large sample looks smooth
+    sample_n(size = point_sample_size, weight = (1 - value)) %>%
+    select(x, y)
+  
+  # solve the tsp problem and return a data.frame with the values
+  solution <- as.TSP(dist(data)) %>% 
+    solve_TSP(method = "arbitrary_insertion") %>%
+    as.integer()
+  
+  order <- data.frame(id = solution) %>%
+    mutate(order = row_number())
+  
+  # join the tsp solution 
+  data_to_plot <- data %>%
+    mutate(id = row_number()) %>%
+    inner_join(order, by = "id") %>%
+    arrange(order) %>%
+    select(x, y)
+  
+  
+  p <- ggplot(data_to_plot, aes(x, y)) +
+    geom_path(color = line_color) +
+    scale_y_continuous(trans=reverse_trans())+
+    coord_fixed() +
+    theme_void() +
+    theme(plot.background = element_rect(fill = back_color))
+  
+  
+  return(p)
+  
+}
+```
+  
+# My logo  
+```{r plot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+for (n in c(1000, 2000, 4000, 5000))
+{
+logo <- tspDraw(raw_img = "MesSeb.jpg",
+                 point_sample_size = n,
+                 line_color = c(1:n), 
+                 back_color = "white")
+plot(logo)
+}
+
+# I chose n=4000 and I save file
+ggsave("logo.png", logo)
+```
+  
+I thank [Antonio Chinchón](https://twitter.com/aschinchon) for his wonderful idea and [Eva Tachovsky](https://twitter.com/EvanTachovsky) for her code lines.  

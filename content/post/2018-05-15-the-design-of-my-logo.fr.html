@@ -1,0 +1,105 @@
+---
+title: La création de mon logo
+author: "Marie Vaugoyeau"
+date: '2018-05-15'
+slug: la-creation-de-mon-logo
+categories:
+- graphique
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "LogoCreation.jpg"
+featuredalt: "La création de mon logo"
+linktitle: "la-creation-de-mon-logo"
+images: 
+  - /img/featured/LogoCreation.jpg  
+description : "Comment j'ai créé mon logo" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#le-logo-dorigine">Le logo d’origine</a></li>
+<li><a href="#la-methode-de-deplacement-du-vendeur">La méthode de déplacement du vendeur</a></li>
+<li><a href="#mon-logo">Mon logo</a></li>
+</ul>
+</div>
+
+<p>Aujourd’hui, je vais expliquer comment j’ai créé le logo du blog en appliquant la méthode de déplacement du vendeur (the method of traveling salesperson) imaginé par <a href="https://fronkonstin.com/2018/04/04/the-travelling-salesman-portrait/">Antonio S. Chinchón</a> à celui de ma thèse dessiné par <a href="https://statnmap.com/">Sébastien Rochette</a>.<br />
+J’ai utilisé la fonction écrite par <a href="https://twitter.com/EvanTachovsky">Evan Tachovsky</a> en mettant le trajet en couleur (cf. dernière partie).</p>
+<div id="le-logo-dorigine" class="section level1">
+<h1>Le logo d’origine</h1>
+<p>Pour mon blog, j’ai choisi de modifier le logo que j’avais pour ma thèse (je travaillais sur les mésanges bleues (<em>Cyanistes caeruleus</em>) et les mésanges charbonnières (<em>Parus major</em>) pour mesurer <a href="http://www.theses.fr/2015PA066172">l’influence de l’urbanisation sur la reproduction des oiseaux</a>).<br />
+<img src="MesSeb.jpg" /></p>
+</div>
+<div id="la-methode-de-deplacement-du-vendeur" class="section level1">
+<h1>La méthode de déplacement du vendeur</h1>
+<p>J’ai utilisé la fonction écrite par Evan Tachovsky et disponible sur son espace <a href="https://gist.github.com/etachov/1ef225e3824486ca039cc0ccf4511702">github</a>.</p>
+<pre class="r"><code>library(imager)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(TSP)
+
+tspDraw &lt;- function(raw_img, point_sample_size, line_color, back_color) {
+  
+  # Téléchargement l&#39;image
+  raw_img &lt;- load.image(raw_img)
+  
+  # Récupération des points
+  data &lt;- raw_img %&gt;%
+    grayscale() %&gt;%
+    as.cimg() %&gt;%
+    as.data.frame() %&gt;%
+    # Ajustement de la variable point_sample_size pour modifier la texture de l&#39;image finale (peu de points, l&#39;image semble dentelée mais trop la lisse)
+    sample_n(size = point_sample_size, weight = (1 - value)) %&gt;%
+    select(x, y)
+  
+  # Résolution du déplacement du vendeur qui renvoie un fichier de données avec des valeurs
+  solution &lt;- as.TSP(dist(data)) %&gt;% 
+    solve_TSP(method = &quot;arbitrary_insertion&quot;) %&gt;%
+    as.integer()
+  
+  order &lt;- data.frame(id = solution) %&gt;%
+    mutate(order = row_number())
+  
+  # Utilisation de la solution trouvée pour créer les données à dessiner 
+  data_to_plot &lt;- data %&gt;%
+    mutate(id = row_number()) %&gt;%
+    inner_join(order, by = &quot;id&quot;) %&gt;%
+    arrange(order) %&gt;%
+    select(x, y)
+  
+  
+  p &lt;- ggplot(data_to_plot, aes(x, y)) +
+    geom_path(color = line_color) +
+    scale_y_continuous(trans=reverse_trans())+
+    coord_fixed() +
+    theme_void() +
+    theme(plot.background = element_rect(fill = back_color))
+  
+  
+  return(p)
+  
+}</code></pre>
+</div>
+<div id="mon-logo" class="section level1">
+<h1>Mon logo</h1>
+<pre class="r"><code># Choix du nombre de points en fonction de la complexité de l&#39;image
+for (n in c(1000, 2000, 4000, 5000))
+{
+logo &lt;- tspDraw(raw_img = &quot;MesSeb.jpg&quot;,
+                 point_sample_size = n,
+                 line_color = c(1:n), 
+                 back_color = &quot;white&quot;)
+plot(logo)
+}</code></pre>
+<p><img src="/post/2018-05-15-the-design-of-my-logo.fr_files/figure-html/plot-1.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo.fr_files/figure-html/plot-2.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo.fr_files/figure-html/plot-3.png" width="672" /><img src="/post/2018-05-15-the-design-of-my-logo.fr_files/figure-html/plot-4.png" width="672" /></p>
+<pre class="r"><code># J&#39;ai choisi 4000, il ne me reste plus qu&#39;à l&#39;enregistrer
+ggsave(&quot;logo.png&quot;, logo)</code></pre>
+<p>Je remercie <a href="https://twitter.com/aschinchon">Antonio Chinchón</a> pour sa merveilleuse idée et <a href="https://twitter.com/EvanTachovsky">Eva Tachovsky</a> pour l’écriture de la fonction.</p>
+</div>

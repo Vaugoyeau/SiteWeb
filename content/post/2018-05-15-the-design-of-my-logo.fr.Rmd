@@ -1,0 +1,99 @@
+---
+title: La création de mon logo
+author: "Marie Vaugoyeau"
+date: '2018-05-15'
+slug: la-creation-de-mon-logo
+categories:
+- graphique
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "LogoCreation.jpg"
+featuredalt: "La création de mon logo"
+linktitle: "la-creation-de-mon-logo"
+images: 
+  - /img/featured/LogoCreation.jpg  
+description : "Comment j'ai créé mon logo" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+Aujourd'hui, je vais expliquer comment j'ai créé le logo du blog en appliquant la méthode de déplacement du vendeur (the method of traveling salesperson) imaginé par [Antonio S. Chinchón](https://fronkonstin.com/2018/04/04/the-travelling-salesman-portrait/) à celui de ma thèse dessiné par [Sébastien Rochette](https://statnmap.com/).  
+J'ai utilisé la fonction écrite par [Evan Tachovsky](https://twitter.com/EvanTachovsky) en mettant le trajet en couleur (cf. dernière partie).  
+  
+# Le logo d'origine  
+Pour mon blog, j'ai choisi de modifier le logo que j'avais pour ma thèse (je travaillais sur les mésanges bleues (*Cyanistes caeruleus*) et les mésanges charbonnières (*Parus major*) pour mesurer [l'influence de l'urbanisation sur la reproduction des oiseaux](http://www.theses.fr/2015PA066172)).  
+![](MesSeb.jpg)  
+  
+# La méthode de déplacement du vendeur 
+J'ai utilisé la fonction écrite par Evan Tachovsky et disponible sur son espace [github](https://gist.github.com/etachov/1ef225e3824486ca039cc0ccf4511702).  
+
+```{r function tspDraw, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(imager)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(TSP)
+
+tspDraw <- function(raw_img, point_sample_size, line_color, back_color) {
+  
+  # Téléchargement l'image
+  raw_img <- load.image(raw_img)
+  
+  # Récupération des points
+  data <- raw_img %>%
+    grayscale() %>%
+    as.cimg() %>%
+    as.data.frame() %>%
+    # Ajustement de la variable point_sample_size pour modifier la texture de l'image finale (peu de points, l'image semble dentelée mais trop la lisse)
+    sample_n(size = point_sample_size, weight = (1 - value)) %>%
+    select(x, y)
+  
+  # Résolution du déplacement du vendeur qui renvoie un fichier de données avec des valeurs
+  solution <- as.TSP(dist(data)) %>% 
+    solve_TSP(method = "arbitrary_insertion") %>%
+    as.integer()
+  
+  order <- data.frame(id = solution) %>%
+    mutate(order = row_number())
+  
+  # Utilisation de la solution trouvée pour créer les données à dessiner 
+  data_to_plot <- data %>%
+    mutate(id = row_number()) %>%
+    inner_join(order, by = "id") %>%
+    arrange(order) %>%
+    select(x, y)
+  
+  
+  p <- ggplot(data_to_plot, aes(x, y)) +
+    geom_path(color = line_color) +
+    scale_y_continuous(trans=reverse_trans())+
+    coord_fixed() +
+    theme_void() +
+    theme(plot.background = element_rect(fill = back_color))
+  
+  
+  return(p)
+  
+}
+```
+  
+# Mon logo  
+```{r plot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+# Choix du nombre de points en fonction de la complexité de l'image
+for (n in c(1000, 2000, 4000, 5000))
+{
+logo <- tspDraw(raw_img = "MesSeb.jpg",
+                 point_sample_size = n,
+                 line_color = c(1:n), 
+                 back_color = "white")
+plot(logo)
+}
+
+# J'ai choisi 4000, il ne me reste plus qu'à l'enregistrer
+ggsave("logo.png", logo)
+```
+  
+Je remercie [Antonio Chinchón](https://twitter.com/aschinchon) pour sa merveilleuse idée et [Eva Tachovsky](https://twitter.com/EvanTachovsky) pour l'écriture de la fonction.  

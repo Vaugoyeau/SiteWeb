@@ -12,7 +12,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   # Sets the meta tag description
   description          = "HTML5 UP theme, Future Imperfect with some extra goodies, ported by Julio Pescador. Powered by Hugo"
   # Sets the navbarTitle that appears in the top left of the navigation bar
-  navbarTitle          = "MStat"
+  navbarTitle          = "MStats"
   # Sets where "View More Posts" links
   viewMorePostLink     = "/post/"
 
@@ -94,7 +94,7 @@ title = "Site de Statistiques et R"
 description = "Le site de Marie Vaugoyeau"
 weight = 2
 # This will appear on the top left of the navigation bar
-navbarTitle = "MStat"
+navbarTitle = "MStats"
 
 # params.intro will appear on the sidebar
 # This is optional, but it's suggested to use
@@ -167,7 +167,13 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 url = "/post/"
                 identifier = "fa fa-newspaper-o"
                 weight = 5
-    
+
+            [[Languages.en.menu.main]]
+                name = "Photographer"
+                url = "https://500px.com/antoinemach"
+                identifier = "fa fa-camera"
+                weight = 6
+
             [[Languages.fr.menu.main]]
                 name = "Accueil"
                 url = "/"
@@ -197,6 +203,12 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 url = "/post/"
                 identifier = "fa fa-newspaper-o"
                 weight = 5
+
+            [[Languages.fr.menu.main]]
+                name = "Photographe"
+                url = "https://500px.com/antoinemach"
+                identifier = "fa fa-camera"
+                weight = 6
 
 # Sets Social Media icons to appear and link to your account. Value should be your
 # username unless otherwise noted. These are the icons affected by socialAppearAtTop
