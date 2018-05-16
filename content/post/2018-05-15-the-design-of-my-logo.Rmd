@@ -28,7 +28,7 @@ For my blog, I chose to modify my thesis logo (I worked on blue tits (*Cyanistes
   
 ![](/images/MesSeb.png)  
   
-# The method of traveling salsedperson  
+# The method of traveling salesperson  
 I used function writed by Evan Tachovsky and available on [her github](https://gist.github.com/etachov/1ef225e3824486ca039cc0ccf4511702).  
 ```{r function tspDraw, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 library(imager)
