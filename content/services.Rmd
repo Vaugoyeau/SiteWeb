@@ -1,0 +1,23 @@
+---
+title: "Services"
+author: "Marie Vaugoyeau"
+output:
+  blogdown::html_page:
+    toc: true
+    fig_width: 6
+    dev: "svg"
+---
+  
+I offer my services as a freelance data analyst and teacher.  
+You will find here a non-exhaustive list of what I propose.  
+Do not hesitate to [contact me](https://mvaugoyeau.netlify.com/contact/) for more information.  
+  
+```{r services, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(knitr)
+AnDo<-c("Bayesian and Frequentist Statistics", "Means Test", "Correlation Test", "PCA", "ANOVA", "Linear and Generalized Mixed Models with Random Effects", "Tuckey Post-hoc Tests")
+Ens <-c ("Start with R", "Start with Dropbox", "Use Microsoft Office Software", "Start with Statistics", "Doing a PCA", "Doing ANOVA", "...")
+Service<-matrix(c(AnDo,Ens), ncol=2, nrow=max(c(length(Ens), length(AnDo))))
+colnames(Service)<-c("Analyse","Training")
+rownames(Service)<-c("S","E","R","V","I","C","E")
+kable(Service, caption="Services")
+```

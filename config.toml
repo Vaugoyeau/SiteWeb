@@ -163,9 +163,9 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 weight = 4
 
             [[Languages.en.menu.main]]
-                name = "Post"
-                url = "/post/"
-                identifier = "fa fa-newspaper-o"
+                name = "Services"
+                url = "/services/"
+                identifier = "fa fa-user"
                 weight = 5
 
             [[Languages.en.menu.main]]
@@ -199,9 +199,9 @@ about     = "Sur ce site je partage les analyses statistiques et les utilisation
                 weight = 4
 
             [[Languages.fr.menu.main]]
-                name = "Post"
-                url = "/post/"
-                identifier = "fa fa-newspaper-o"
+                name = "Services"
+                url = "/services/"
+                identifier = "fa fa-user"
                 weight = 5
 
             [[Languages.fr.menu.main]]

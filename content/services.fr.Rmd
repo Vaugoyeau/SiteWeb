@@ -1,0 +1,23 @@
+---
+title: "Services"
+author: "Marie Vaugoyeau"
+output:
+  blogdown::html_page:
+    toc: true
+    fig_width: 6
+    dev: "svg"
+---
+  
+Je propose mes services en tant qu'analyste de données et formateur en free-lance.  
+Vous trouverez ici une liste non-exhaustive de ce que je propose.  
+N'hésitez pas à [me contacter](https://mvaugoyeau.netlify.com/fr/contact/) pour plus de renseignements.  
+  
+```{r services, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(knitr)
+AnDo<-c("Statiques bayésiennes et fréquentistes", "Test de moyennes", "Test de corrélation", "ACP", "ANOVA","Modèles linéaires et généralisés mixtes à effets aléatoires","Tests post-hoc deTuckey")
+Ens<-c("Débuter avec R", "Débuter avec Dropbox", "Utiliser un logiciel de Microsoft Office", "Initiation aux statistiques", "Faire une ACP", "Faire une ANOVA", "...")
+Service<-matrix(c(AnDo,Ens), ncol=2, nrow=max(c(length(Ens), length(AnDo))))
+colnames(Service)<-c("Analyse","Enseignements")
+rownames(Service)<-c("S","E","R","V","I","C","E")
+kable(Service, caption="Services")
+```
