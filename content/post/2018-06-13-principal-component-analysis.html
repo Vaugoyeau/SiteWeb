@@ -1,0 +1,111 @@
+---
+title: Principal Component Analysis
+author: "Marie Vaugoyeau"
+date: '2018-06-13'
+slug: principal-component-analysis
+categories:
+- stat
+- graphique
+tags:
+- stat
+- graphique
+featuredpath: "/images/featured/"
+featured: "Fleur.jpg"
+featuredalt: "Principal Component Analysis"
+linktitle: "Principal Component Analysis"
+images: 
+  - /img/featured/Fleur.jpg  
+description : "How I do Principal Component Analysis and choice of n factors" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#pca">PCA</a></li>
+<li><a href="#number-of-factor-retained-by-psychon_factors">Number of factor retained by psycho::n_factors()</a></li>
+<li><a href="#extraction-of-the-variables">Extraction of the variables</a></li>
+</ul>
+</div>
+
+<p>With <a href="https://mvaugoyeau.netlify.com/post/start-with-the-data/">article about correlations</a>, we saw data from airquality were correlated.<br />
+Sometimes it is need to use Principal Component Analysis (PCA) to determine non correlated variables in order to analyze data.<br />
+It is the subject of this blog article and especially, how many new variables were needed.</p>
+<div id="pca" class="section level1">
+<h1>PCA</h1>
+<p>As previously I use airquality as data.<br />
+To do PCA, I use the package <strong>FactoMineR</strong>.</p>
+<pre class="r"><code>library(FactoMineR)
+D&lt;-airquality
+
+pca&lt;-PCA(D)</code></pre>
+<p><img src="/post/2018-06-13-principal-component-analysis_files/figure-html/PCA-1.png" width="672" /><img src="/post/2018-06-13-principal-component-analysis_files/figure-html/PCA-2.png" width="672" /></p>
+<pre class="r"><code>pca$eig</code></pre>
+<pre><code>##        eigenvalue percentage of variance cumulative percentage of variance
+## comp 1  2.3175145              38.625242                          38.62524
+## comp 2  1.1646466              19.410776                          58.03602
+## comp 3  0.9830994              16.384990                          74.42101
+## comp 4  0.7904881              13.174802                          87.59581
+## comp 5  0.4347422               7.245704                          94.84151
+## comp 6  0.3095092               5.158486                         100.00000</code></pre>
+<p>The question is how much dimensions do we need to keep?</p>
+<p>The wonderful package <strong>psycho</strong> of <a href="https://neuropsychology.github.io/psycho.R/2018/05/24/n_factors.html">Dominique Makowski</a> has the response. Thank him!</p>
+</div>
+<div id="number-of-factor-retained-by-psychon_factors" class="section level1">
+<h1>Number of factor retained by psycho::n_factors()</h1>
+<pre class="r"><code>library(magrittr)
+library(psycho)
+
+choice &lt;- D %&gt;% psycho::n_factors()
+choice</code></pre>
+<pre><code>## The choice of 2 factors is supported by 4 (out of 10; 40%) methods (Eigenvalues (Kaiser Criterion), BIC, Sample Size Adjusted BIC, VSS Complexity 1).</code></pre>
+<pre class="r"><code>summary(choice)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   n.Factors n.Methods Eigenvalues Cum.Variance
+##       &lt;int&gt;     &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1         1         3       2.43         0.406
+## 2         2         4       1.17         0.601
+## 3         3         1       0.997        0.768
+## 4         4         0       0.790        0.899
+## 5         5         1       0.407        0.967
+## 6         6         1       0.198        1</code></pre>
+<pre class="r"><code>plot(choice)</code></pre>
+<p><img src="/post/2018-06-13-principal-component-analysis_files/figure-html/nfacteurs-1.png" width="672" /></p>
+<p>On the plot which shows the summary, you can see in yellow, the number of methods. The red line is the Eigenvalues and the blue line, the cumulative proportion of explained variance.<br />
+According to this method, we can keep the two first dimensions from PCA.</p>
+</div>
+<div id="extraction-of-the-variables" class="section level1">
+<h1>Extraction of the variables</h1>
+<p>dimdesc from <strong>FactoMineR</strong> gives correlations and <em>p</em>-value.<br />
+X is the new data comes from PCA.</p>
+<pre class="r"><code>dimdesc(pca, axes = 1:2)</code></pre>
+<pre><code>## $Dim.1
+## $Dim.1$quanti
+##         correlation      p.value
+## Temp      0.8657470 3.027143e-47
+## Ozone     0.8283780 7.735036e-40
+## Month     0.4466436 7.164874e-09
+## Solar.R   0.3851781 8.816862e-07
+## Wind     -0.7145176 3.380623e-25
+## 
+## 
+## $Dim.2
+## $Dim.2$quanti
+##         correlation      p.value
+## Month     0.5579040 6.798713e-14
+## Day       0.5418723 4.714049e-13
+## Wind     -0.1779546 2.775569e-02
+## Solar.R  -0.7203875 9.044341e-26</code></pre>
+<pre class="r"><code>X&lt;-cbind(pca$ind$coord[,1], pca$ind$coord[,2]) %&gt;% set_colnames(c(&quot;PC1&quot;, &quot;PC2&quot;))
+head(X)</code></pre>
+<pre><code>##          PC1        PC2
+## 1 -0.5697737 -1.5388946
+## 2 -0.6628665 -0.9220601
+## 3 -1.5357042 -1.2459632
+## 4 -1.5359488 -2.4670249
+## 5 -2.1908721 -1.6677619
+## 6 -1.9484779 -1.5487626</code></pre>
+<p>And you, how do you choice the number of factors kept from PCA?</p>
+</div>

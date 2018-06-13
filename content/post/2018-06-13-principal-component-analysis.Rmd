@@ -1,0 +1,68 @@
+---
+title: Principal Component Analysis
+author: "Marie Vaugoyeau"
+date: '2018-06-13'
+slug: principal-component-analysis
+categories:
+- stat
+- graphique
+tags:
+- stat
+- graphique
+featuredpath: "/images/featured/"
+featured: "Fleur.jpg"
+featuredalt: "Principal Component Analysis"
+linktitle: "Principal Component Analysis"
+images: 
+  - /img/featured/Fleur.jpg  
+description : "How I do Principal Component Analysis and choice of n factors" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+With [article about correlations](https://mvaugoyeau.netlify.com/post/start-with-the-data/), we saw data from airquality were correlated.  
+Sometimes it is need to use Principal Component Analysis (PCA) to determine non correlated variables in order to analyze data.  
+It is the subject of this blog article and especially, how many new variables were needed.  
+
+# PCA  
+As previously I use airquality as data.  
+To do PCA, I use the package **FactoMineR**.  
+```{r PCA, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(FactoMineR)
+D<-airquality
+
+pca<-PCA(D)
+pca$eig
+```  
+  
+The question is how much dimensions do we need to keep?  
+  
+The wonderful package **psycho** of  [Dominique Makowski](https://neuropsychology.github.io/psycho.R/2018/05/24/n_factors.html) has the response. Thank him!  
+  
+# Number of factor retained by psycho::n_factors()  
+  
+```{r nfacteurs, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(magrittr)
+library(psycho)
+
+choice <- D %>% psycho::n_factors()
+choice
+summary(choice)
+plot(choice)
+```  
+  
+On the plot which shows the summary, you can see in yellow, the number of methods. The red line is the Eigenvalues and the blue line, the cumulative proportion of explained variance.  
+According to this method, we can keep the two first dimensions from PCA.  
+  
+# Extraction of the variables  
+dimdesc from **FactoMineR** gives correlations and *p*-value.  
+X is the new data comes from PCA.  
+```{r extraction donnees, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+dimdesc(pca, axes = 1:2)
+
+X<-cbind(pca$ind$coord[,1], pca$ind$coord[,2]) %>% set_colnames(c("PC1", "PC2"))
+head(X)
+```
+  
+And you, how do you choice the number of factors kept from PCA?  

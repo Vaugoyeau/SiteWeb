@@ -1,0 +1,69 @@
+---
+title: Analyse en Composantes Principales
+author: "Marie Vaugoyeau"
+date: '2018-06-13'
+slug: analyse-en-composantes-principales
+categories:
+- stats
+- graph
+tags:
+- stats
+- graph
+featuredpath: "/images/featured/"
+featured: "Fleur.jpg"
+featuredalt: "Analyse en Composantes Principales"
+linktitle: "analyse-en-composantes-principales"
+images: 
+  - /img/featured/Fleur.jpg  
+description : "La réalisation d'un Analyse en Composantes Principales et le choix du nombre de facteurs à conserver" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+Dans [l'article à propos des corrélations](analyse-en-composantes-principales), nous avons vu que les données du jeu airquality étaient corrélées.  
+Pour faire certaines analyses statistiques, il est nécessaire de ne pas avoir de corrélations entre les variables. Dans ce but, il est possible de faire une Analyse en Composantes Principales (ACP) pour extraire des variables non corrélées.  
+C'est le sujet de cet article de blog et plus particulièrement le nombre de variables que l'on doit conserver.  
+  
+# ACP  
+Comme précédemment je vais utiliser airquality comme jeu de données.  
+Pour faire une ACP, j'utilise le package **FactoMineR**.  
+```{r PCA, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(FactoMineR)
+D<-airquality
+
+acp<-PCA(D)
+acp$eig
+```  
+  
+Maintenant la question est de savoir combien de dimension on doit conserver, 2 ? 3 ?  
+  
+Le super package **psycho** de  [Dominique Makowski](https://neuropsychology.github.io/psycho.R/2018/05/24/n_factors.html) permet de comparer plusieurs méthodes et de choisir le nombre adéquat de facteurs.  Merci à lui !  
+  
+# Nombre de facteurs conservés avec psycho::n_factors()  
+  
+```{r nfacteurs, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+library(magrittr)
+library(psycho)
+
+choix <- D %>% psycho::n_factors()
+choix
+summary(choix)
+plot(choix)
+```  
+  
+Sur le graphique créer à partir du summary de la méthode, vous pouvez voir en jaune le nombre de méthodes qui choisissent le nombre de facteurs visibles en abscisse. La ligne rouge représente kes valeurs de Eigen et la bleue, la proportion cumulée de la variance expliquée.  
+Selon cette méthode, il faut conserver 2 dimensions pour l'ACP.  
+  
+# Extraction des variables  
+dimdesc de **FactoMineR** donne les corrélations et les *p*-valeurs associées aux nouvelles variables.  
+X est le nouveau jeu de données issu de l'ACP.  
+```{r extraction donnees, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+dimdesc(acp, axes = 1:2)
+
+X<-cbind(acp$ind$coord[,1], acp$ind$coord[,2]) %>% set_colnames(c("PC1", "PC2"))
+head(X)
+```
+  
+Et vous, comment choisissez vous le nombre de facteurs à conserver à la suite d'une ACP ?  
+  
