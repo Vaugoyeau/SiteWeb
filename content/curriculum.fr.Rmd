@@ -9,7 +9,7 @@ output:
 ---
 
 # Marie VAUGOYEAU  
-**Analyste de données**
+**Analyste de données**  
 **Docteure en écologie et évolution**  
 **Ingénieure agronome**
   
@@ -26,7 +26,7 @@ Née le 1^er^ mai 1986
 * R (analyses statistiques, shiny et site web): niveau avancé  
 * QGIS et ArcGIS: niveau basic  
   
-### Compétences biologiques  
+### Compétences en biologie  
 #### Compétences sur le terrain (aviaire et squamates)  
 * Ecologogie comportementale (suivi du comportement d'incubation des femelles et du comportement de nourrissage des jeunes / mesure du comportement anti-prédateur et de l'agressivité / mesure du comportement exploratoire)  
 * Capture au nichoir et avec filets à poches pour les oiseaux / Capture à la main et à la canne à pêche pour les reptiles  
