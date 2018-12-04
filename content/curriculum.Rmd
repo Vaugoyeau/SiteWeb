@@ -9,42 +9,53 @@ output:
 ---
 
 # Marie VAUGOYEAU 
+**Data analyst**  
 **Ph.D. in Ecology and Evolution**  
+**Agronomist**  
   
 Nationality: French  
 Born May 1^st^ 1986  
 
-## Skills
-### Field skills on birds and reptiles
+## Skills  
+### Language  
+* English (TOEIC 2009): 835/990  
+* French: native speaker  
+  
+### Computer skills  
+* Microsoft Office: advanced level  
+* R (statistical analyses for all kind of data, shiny and website): advanced level  
+* QGIS - ArcGIS: basic level  
+  
+### Biological skills  
+#### Field skills on birds and reptiles
 * Behavioural ecology (female incubation and nestling feeding behaviour / anti-predator behaviour and aggressiveness / exploratory behaviour)
 * Capture in nest boxes and with mist nets in birds and by hand and with trap in reptiles
 * Measure of tarsus and wing length, body mass and feather colour by pictures analyse or spectophotometry in birds
 * Measure of snout-vent and total length, body mass and throat * colouration by visual comparison in reptiles
 * Blood sample in brachial vein in birds. 
 
-### Lab skills
+#### Lab skills
 * Treatment of samples (blood, feather, eggs) taken from the field
 * Keeping animals in aviaries and terrariums
 * Used of climatic chambers
 * Used of ELISA-tests for corticosterone, antioxidant capacity and ROMs concentration
 * Leucocytes count on slides
 
-### Vertebrates’ manipulation
+#### Vertebrates’ manipulation
 * French authorisation for animal experimentation Level 1 (2013)
 * Training on animal welfare applied on experimental use of animals (2008)
 * Electrofishing certificate (2008)
 
-### Language
-* English (TOEIC 2009): 835/990
-* French: native speaker
 
-### Computer skills 
-* Microsoft Office: advanced level
-* R (statistical analyses for all kind of data): advanced level
-* ArcGIS: basic level
+
   
 
-## Experiences
+## Experiences  
+### Since June 2018 **Freelance data-analyst**  
+* Shiny app  
+* Data cleaning, formatting and analysis  
+* Functions and packages development  
+  
 ### 2016-2017 **1-year teaching assistant in biostatistics**. Laboratory Mer, Molécules, Santé. EA 2160. Le Mans University  
 #### Research: Analyse human influence on physicochemical characteristics of one urban lake (Dayat Morsli) in Algeria
 * Analyse physicochemical variation according time (once per month during one year) and space (seven study plots)
