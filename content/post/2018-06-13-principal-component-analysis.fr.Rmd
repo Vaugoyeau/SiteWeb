@@ -21,7 +21,7 @@ output:
     toc: true
 ---
   
-Dans [l'article à propos des corrélations](analyse-en-composantes-principales), nous avons vu que les données du jeu airquality étaient corrélées.  
+Dans [l'article à propos des corrélations](https://mvaugoyeau.netlify.com/fr/post/commencer-avec-les-donnees/), nous avons vu que les données du jeu airquality étaient corrélées.  
 Pour faire certaines analyses statistiques, il est nécessaire de ne pas avoir de corrélations entre les variables. Dans ce but, il est possible de faire une Analyse en Composantes Principales (ACP) pour extraire des variables non corrélées.  
 C'est le sujet de cet article de blog et plus particulièrement le nombre de variables que l'on doit conserver.  
   

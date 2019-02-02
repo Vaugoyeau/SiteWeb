@@ -30,7 +30,7 @@ output:
 </ul>
 </div>
 
-<p>Dans <a href="analyse-en-composantes-principales">l’article à propos des corrélations</a>, nous avons vu que les données du jeu airquality étaient corrélées.<br />
+<p>Dans <a href="https://mvaugoyeau.netlify.com/fr/post/commencer-avec-les-donnees/">l’article à propos des corrélations</a>, nous avons vu que les données du jeu airquality étaient corrélées.<br />
 Pour faire certaines analyses statistiques, il est nécessaire de ne pas avoir de corrélations entre les variables. Dans ce but, il est possible de faire une Analyse en Composantes Principales (ACP) pour extraire des variables non corrélées.<br />
 C’est le sujet de cet article de blog et plus particulièrement le nombre de variables que l’on doit conserver.</p>
 <div id="acp" class="section level1">
@@ -60,7 +60,7 @@ library(psycho)
 
 choix &lt;- D %&gt;% psycho::n_factors()
 choix</code></pre>
-<pre><code>## The choice of 2 factors is supported by 4 (out of 10; 40%) methods (Eigenvalues (Kaiser Criterion), BIC, Sample Size Adjusted BIC, VSS Complexity 1).</code></pre>
+<pre><code>## The choice of 2 factors is supported by 4 (out of 9; 44.44%) methods (Eigenvalues (Kaiser Criterion), BIC, Sample Size Adjusted BIC, VSS Complexity 1).</code></pre>
 <pre class="r"><code>summary(choix)</code></pre>
 <pre><code>## # A tibble: 6 x 4
 ##   n.Factors n.Methods Eigenvalues Cum.Variance
@@ -70,7 +70,7 @@ choix</code></pre>
 ## 3         3         1       0.997        0.768
 ## 4         4         0       0.790        0.899
 ## 5         5         1       0.407        0.967
-## 6         6         1       0.198        1</code></pre>
+## 6         6         0       0.198        1</code></pre>
 <pre class="r"><code>plot(choix)</code></pre>
 <p><img src="/post/2018-06-13-principal-component-analysis.fr_files/figure-html/nfacteurs-1.png" width="672" /></p>
 <p>Sur le graphique créer à partir du summary de la méthode, vous pouvez voir en jaune le nombre de méthodes qui choisissent le nombre de facteurs visibles en abscisse. La ligne rouge représente kes valeurs de Eigen et la bleue, la proportion cumulée de la variance expliquée.<br />

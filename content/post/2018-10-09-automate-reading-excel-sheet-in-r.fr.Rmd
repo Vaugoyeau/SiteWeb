@@ -1,0 +1,77 @@
+---
+title: Automatiser l'ouverture de fichiers Excel dans R
+author: "Marie Vaugoyeau"
+date: '2018-10-10'
+slug: automatiser-ouverture-fichiers-excel-dans-r
+categories:
+- trucs et astuces
+tags:
+- trucs et astuces
+featuredpath: "/images/featured/"
+featured: "Lego.jpg"
+featuredalt: "Automatiser l'ouverture de fichiers Excel dans R"
+linktitle: "automatiser-ouverture-fichiers-excel-dans-r"
+images: 
+  - /img/featured/Lego.jpg  
+description : "Comment automatiser la lecture et l'ouverture de fichiers Excel (ou csv ou autres) dans R" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+Après une longue période sans article, j'ai décidé de vous expliquer comment j'automatise l'ouverture et la lecture de fichiers `.xlsx`, `.csv` ou autres dans R.  
+Si vous avez d'autres méthodes ou des remarques, [n'hésitez pas à me contacter](https://mvaugoyeau.netlify.com/fr/contact/).  
+  
+# Création de jeux de données factices  
+J'ai décidé de créer des fichiers Excel factices puis de les importer.  
+  
+```{r fichiers_excel_factices, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+openxlsx::write.xlsx(airquality, file = "airquality.xlsx")
+openxlsx::write.xlsx(iris, file = "iris2.xlsx")
+openxlsx::write.xlsx(Orange, file = "orange.xlsx")
+openxlsx::write.xlsx(mtcars, file = "mtcars3.xlsx")
+
+```
+  
+# Importation des fichiers  
+Maintenant je vais réimporter ces fichiers, je vais aussi aller plus loin en utilisant une expression régulière (regex) afin de n'avoir que les fichiers qui ont un chiffre à la fin de leurs noms.  
+Je ne suis pas une spécialiste des expressions régulières. Si vous vous en savoir plus à ce propos, je vous conseille l'article de [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/) que je relis à chaque fois que j'ai un doute !  
+  
+```{r lire_fichier_excel, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+fichiers_excel <-  list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
+  str_subset(".xlsx") %>% 
+  map(openxlsx::read.xlsx) %>% 
+  set_names(list.files(path = here::here("content", "post"), full.names=TRUE) %>%
+              str_subset(".xlsx") %>% 
+              str_extract("\\w+.xlsx") %>% 
+              str_remove(".xlsx"))
+
+str(fichiers_excel)
+```
+
+Maintenant on ne veut que les fichiers Excel dont le nom a un chiffre à la fin.  
+
+```{r lire_fichier_excel_sans_majuscule, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+
+fichiers_excel_bis <-  list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
+  str_subset("[0-9].xlsx") %>% 
+  map(openxlsx::read.xlsx) %>% 
+  set_names(list.files(path = here::here("content", "post"), full.names=TRUE) %>%
+              str_subset("[0-9].xlsx") %>% 
+              str_extract("\\w+.xlsx") %>% 
+              str_remove("[0-9].xlsx"))
+
+str(fichiers_excel_bis)
+```
+  
+Bon j'avoue là, ce n'est pas transcendant et ça ne présente pas un intérêt fou mais c'est pour vous exposer le principe.  
+Bien entendu, c'est possible de faire la même chose avec des fichiers `.csv` en utilisant `read.csv()` et en mettant ".csv" dans la regex.  
+  
+Après on peut compliquer la donne en allant chercher des fichiers avec des noms spécifiques, comme le lieu et la date d'échantillonnage ou des sorties d'appareils de mesure.  
+Si on prend le cas de fichier d'échantillonnage avec des noms de cette forme "Paris20-03-2014", "Foljuif10-04-2012", l'expression régulière serait "([A-z]+)\\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})".  
+  
+Voilà, en espérant que cet article vous soit un peu utile !  
+  

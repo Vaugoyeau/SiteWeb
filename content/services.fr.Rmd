@@ -9,7 +9,15 @@ output:
 ---
   
 Je propose mes services en tant qu'analyste de données et formateur en free-lance.  
-Vous trouverez ici une liste non-exhaustive de ce que je propose.  
+Les missions que j'ai déjà réalisées :  
+_ Nettoyage et mise en forme de jeux de données  
+_ Analyse de jeux de données  
+_ Automatisation de lecture/création/analyse de fichiers  
+_ Ecriture de fonctions / Création de package  
+_ Création d'application Shiny  
+_ Animation d'une communauté sur un réseau social  
+  
+Vous trouverez ci-dessous une liste non-exhaustive des analyses et des formations que je propose.  
 N'hésitez pas à [me contacter](https://mvaugoyeau.netlify.com/fr/contact/) pour plus de renseignements.  
   
 ```{r services, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}

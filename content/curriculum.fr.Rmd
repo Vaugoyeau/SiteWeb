@@ -9,42 +9,50 @@ output:
 ---
 
 # Marie VAUGOYEAU  
+**Analyste de données**  
 **Docteure en écologie et évolution**  
+**Ingénieure agronome**
   
 Nationalité : Française  
 Née le 1^er^ mai 1986   
   
 ## Compétences  
-### Compétences sur le terrain (aviaire et squamates)  
+### Langues
+* Anglais (TOEIC 2009): 835/990
+* Français : langue natale  
+  
+### Compétences informatiques  
+* Microsoft Office: niveau avancé  
+* R (analyses statistiques, shiny et site web): niveau avancé  
+* QGIS et ArcGIS: niveau basic  
+  
+### Compétences en biologie  
+#### Compétences sur le terrain (aviaire et squamates)  
 * Ecologogie comportementale (suivi du comportement d'incubation des femelles et du comportement de nourrissage des jeunes / mesure du comportement anti-prédateur et de l'agressivité / mesure du comportement exploratoire)  
 * Capture au nichoir et avec filets à poches pour les oiseaux / Capture à la main et à la canne à pêche pour les reptiles  
 * Measure de la longueur du tarse, de l'aile, de la masse / Mesure de la coloration par analyse photo et spectrophotométrie sur les plumes pour les oiseaux  
 * Measure de la longeur museau-cloaque et totale, de la masse et de la coloration de la gorge par comparaison visuelle pour les reptiles  
 * Prise de sang dans la veine brachiale pour les oiseaux et dans les yeux pour les lézards  
 
-### Compétence en laboratoire  
+#### Compétence en laboratoire  
 * Traitement des échantillons (sang, plumes et oeufs) préléves sur le terrain  
 * Maintien d'animaux en volières et terrarium  
 * Utilisation d'enceintes climatiques  
 * Utilisation de kit-ELISA pour mesurer la corticostérone, la capacité antioxydante du plasma et de la concentration en ROM  
 * Identification et comptage de leucocytes sur lames  
 
-### Manipulation des vertébrés  
+#### Manipulation des vertébrés  
 * Autorisation française d'expérimentation animale de niveau 1 (2013)  
 * Formation sur le bien-être animale et l'expérimentation (2008)  
 * Certificat de pêche électrique (2008)  
   
-### Langues
-* Anglais (TOEIC 2009): 835/990
-* Français : langue natale
-
-### Compétences informatiques 
-* Microsoft Office: niveau avancé  
-* R (analyses statistiques et site web): niveau avancé  
-* QGIS et ArcGIS: niveau basic  
   
+## Expériences  
+### Depuis juin 2018 **Analyste de données en freelance**  
+* Réalisation d'applications Shiny  
+* Nettoyage, mise en forme et analyse de données  
+* Création de fonctions et packages (automatisation d'import, mise en forme et analyse de données)  
   
-## Expériences
 ### 2016-2017 **ATER à temps complet d'un an en biostatistiques**. Laboratoire Mer, Molécules, Santé. EA 2160. Le Mans Université  
 #### **Encadrement** :  
 Co-encadrement  d’un  doctorat  en  co-tutelle  France-Algérie  
