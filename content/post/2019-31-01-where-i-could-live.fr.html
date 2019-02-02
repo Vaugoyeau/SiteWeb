@@ -1,0 +1,106 @@
+---
+title: Visualiser des zones géographiques autours de points d'intérêts avec `leaflet`
+author: "Marie Vaugoyeau"
+date: '2019-02-01'
+slug: trouver-ou-habiter
+categories:
+- graphique
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "MontSaintMichel.png"
+featuredalt: "Utilisation de leaflet pour créer des cerles"
+linktitle: "trouver-ou-habiter"
+images: 
+  - /img/featured/MontSaintMichel.png  
+description : "Utilisation du package `leaflet` pour visualiser une intersection de zone" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#compte-cloud-google-et-utilisation-des-api">Compte Cloud Google et utilisation des API</a></li>
+<li><a href="#creation-du-fond-de-carte-et-des-zones">Création du fond de carte et des zones</a></li>
+</ul>
+</div>
+
+<p>Le but de ce nouvel article de blog est de visualiser des zones sur une carte.<br />
+Le but in fine est de créer un jour une application Shiny pour que chacun puisse éditer sa carte mais chaque chose en son temps ! ^ ^</p>
+<div id="compte-cloud-google-et-utilisation-des-api" class="section level1">
+<h1>Compte Cloud Google et utilisation des API</h1>
+<p>Pour commencer, si vous n’avez pas utiliser ggmap depuis juillet 2018, il va falloir que vous vous créer un compte <a href="https://console.developers.google.com/projectselector/apis/api/static_maps_backend?supportedpurview=project">Google Cloud Plateforme</a> pour éviter ce type de message :<br />
+*Error in download.file(url, destfile = tmp, quiet = !messaging, mode = “wb”) : impossible d’ouvrir l’URL ’<a href="http://maps.googleapis.com/maps/api/staticmap?center=gare+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false&#39;*" class="uri">http://maps.googleapis.com/maps/api/staticmap?center=gare+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false'*</a><br />
+Puis que vous réinstalliez ggmap en utilisant le code de <span class="citation">@dkahle</span> disponible <a href="https://github.com/dkahle/ggmap">ici</a><br />
+<code>devtools::install_github(&quot;dkahle/ggmap&quot;, ref = &quot;tidyup&quot;)</code><br />
+Redémarrer R<br />
+Puis <code>library(ggmap)</code><br />
+<code>register_google(key = 'copié-collé-ici-votre-clé-API')</code><br />
+Et voilà, cela m’a pris du temps pour pas grand chose alors je le mets dans l’article !</p>
+</div>
+<div id="creation-du-fond-de-carte-et-des-zones" class="section level1">
+<h1>Création du fond de carte et des zones</h1>
+<p>Je commence par charger le fond de carte, en mettant 15 km de rayon autours de mon point de recherche (la gare du Mans).<br />
+Ici je n’utilise <code>ggmap</code> que pour récupérer les coordonnées GPS de la gare du Mans, mon choix se portant sur <code>leaflet</code> pour visualiser afin de pouvoir, zoomer et dézoomer sur la carte.</p>
+<pre class="r"><code>library(ggmap)
+library(dplyr)
+library(leaflet)
+
+coordonnees_point_central &lt;- geocode(&quot;gare du Mans&quot;) %&gt;% 
+  rename(lng = lon)
+
+distance_max &lt;- 10
+
+fond_carte &lt;- leaflet() %&gt;% 
+  addTiles() %&gt;% 
+  setView(lng = coordonnees_point_central[1], lat = coordonnees_point_central[2], zoom = 10) %&gt;%
+  addCircles(lng = as.numeric(coordonnees_point_central[1]), lat = as.numeric(coordonnees_point_central[2]), radius = distance_max * 1000, color = &quot;yellow&quot;) 
+  
+fond_carte</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[47.9956173,0.1924459,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"yellow","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"setView":[{"lat":47.9956173,"lng":0.1924459},10,[]],"limits":{"lat":[47.9956173,47.9956173],"lng":[0.1924459,0.1924459]}},"evals":[],"jsHooks":[]}</script>
+<p>Une première zone c’est bien mais généralement, plusieurs endroits nous intéresse. On peut rajouter à cette base, le nombre voulu de point d’intérêt.</p>
+<p>Déjà un deuxième point d’intérêt.</p>
+<pre class="r"><code>coordonnees_point_deux &lt;- c(0.139636, 47.921906)
+ 
+distance_max_deux &lt;- 10
+
+carte &lt;- fond_carte %&gt;% 
+  addCircles(lng = coordonnees_point_deux[1], lat = coordonnees_point_deux[2], radius = distance_max_deux * 1000, color = &quot;red&quot;)
+
+carte</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[47.9956173,0.1924459,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"yellow","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[47.921906,0.139636,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"setView":[{"lat":47.9956173,"lng":0.1924459},10,[]],"limits":{"lat":[47.921906,47.9956173],"lng":[0.139636,0.1924459]}},"evals":[],"jsHooks":[]}</script>
+<p>Et un petit dernier pour la route.</p>
+<pre class="r"><code>coordonnees_point_trois &lt;- geocode(&quot;Chaufour-Notre-Dame&quot;) %&gt;% 
+  rename(lng = lon)
+ 
+distance_max_trois &lt;- 8
+
+carte_avec_3 &lt;- fond_carte %&gt;% 
+  addCircles(lng = as.numeric(coordonnees_point_trois[1]), lat = as.numeric(coordonnees_point_trois[2]), radius = distance_max_trois * 1000, color = &quot;blue&quot;)
+
+carte_avec_3</code></pre>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[47.9956173,0.1924459,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"yellow","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[48.024825,0.0737469,8000,null,null,{"interactive":true,"className":"","stroke":true,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"setView":[{"lat":47.9956173,"lng":0.1924459},10,[]],"limits":{"lat":[47.9956173,48.024825],"lng":[0.0737469,0.1924459]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>carte &lt;- carte %&gt;%
+  addCircles(lng = as.numeric(coordonnees_point_trois[1]), lat = as.numeric(coordonnees_point_trois[2]), radius = distance_max_trois * 1000, color = &quot;blue&quot;)
+
+carte</code></pre>
+<div id="htmlwidget-4" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[47.9956173,0.1924459,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"yellow","weight":5,"opacity":0.5,"fill":true,"fillColor":"yellow","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[47.921906,0.139636,10000,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[48.024825,0.0737469,8000,null,null,{"interactive":true,"className":"","stroke":true,"color":"blue","weight":5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"setView":[{"lat":47.9956173,"lng":0.1924459},10,[]],"limits":{"lat":[47.921906,48.024825],"lng":[0.0737469,0.1924459]}},"evals":[],"jsHooks":[]}</script>
+<p>Je vais m’arrêter là pour aujourd’hui.<br />
+La suite à venir.</p>
+</div>

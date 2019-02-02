@@ -1,0 +1,106 @@
+---
+title: Visualize geographical areas around points of interest with `leaflet`
+author: "Marie Vaugoyeau"
+date: '2019-02-01'
+slug: where-I-live
+categories:
+- graphique
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "MontSaintMichel.png"
+featuredalt: "Using leaflet to create circles on map"
+linktitle: "where-I-live"
+images: 
+  - /img/featured/MontSaintMichel.png  
+description : "Using the `leaflet` package to view a zone intersection" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+```{r initialisation, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+
+library(ggmap)
+register_google(key = 'AIzaSyBSFPR2-whBN5QhZ2drmDM0h2llZyZUZtI')
+
+```
+  
+The aim of this new blog post is to visualize areas on a map.  
+The futur goal is to create one day a Shiny application but everything in his time! ^ ^  
+  
+# Google Cloud Account and use of APIs  
+For starters, if you have not used ggmap since July 2018, you will need to create a [Google Cloud Platform account](https://console.developers.google.com/projectselector/apis/api/static_maps_backend? supportedpurview = project) to avoid this type of message:  
+*Error in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") : impossible d'ouvrir l'URL 'http://maps.googleapis.com/maps/api/staticmap?center=gare+du+Mans&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false'*  
+Then you reinstall ggmap using the available @dkahle code [here](https://github.com/dkahle/ggmap)  
+`devtools::install_github("dkahle/ggmap", ref = "tidyup")`  
+Reboot R  
+Then  
+`library(ggmap)`  
+`register_google(key = 'copié-collé-ici-votre-clé-API')`  
+It took me time to find this solution, so I put it in the article!  
+  
+# Creating the base map and zones  
+I start by loading the base map, putting 15 km radius around my research point (Le Mans station).  
+Here I use `ggmap` only to retrieve the GPS coordinates of the station of Le Mans, my visualisation choice is ` leaflet` in order to zoom in and out on the map.  
+  
+```{r import_du_fond_de_carte, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+library(ggmap)
+library(dplyr)
+library(leaflet)
+
+coordonnees_point_central <- geocode("gare du Mans") %>% 
+  rename(lng = lon)
+
+distance_max <- 10
+
+fond_carte <- leaflet() %>% 
+  addTiles() %>% 
+  setView(lng = coordonnees_point_central[1], lat = coordonnees_point_central[2], zoom = 10) %>%
+  addCircles(lng = as.numeric(coordonnees_point_central[1]), lat = as.numeric(coordonnees_point_central[2]), radius = distance_max * 1000, color = "yellow") 
+  
+fond_carte
+```
+  
+A first zone is good but generally, several places interests us. We can add to this base, the desired number of interest points.  
+  
+Already a second point of interest.  
+  
+```{r ajout_deuxieme_point, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+coordonnees_point_deux <- c(0.139636, 47.921906)
+ 
+distance_max_deux <- 10
+
+carte <- fond_carte %>% 
+  addCircles(lng = coordonnees_point_deux[1], lat = coordonnees_point_deux[2], radius = distance_max_deux * 1000, color = "red")
+
+carte
+
+```
+  
+And the last one.  
+  
+```{r ajout_dernier_point, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+coordonnees_point_trois <- geocode("Chaufour-Notre-Dame") %>% 
+  rename(lng = lon)
+ 
+distance_max_trois <- 8
+
+carte_avec_3 <- fond_carte %>% 
+  addCircles(lng = as.numeric(coordonnees_point_trois[1]), lat = as.numeric(coordonnees_point_trois[2]), radius = distance_max_trois * 1000, color = "blue")
+
+carte_avec_3
+
+carte <- carte %>%
+  addCircles(lng = as.numeric(coordonnees_point_trois[1]), lat = as.numeric(coordonnees_point_trois[2]), radius = distance_max_trois * 1000, color = "blue")
+
+carte
+
+```
+  
+I stop here for today.  
+  
+  
