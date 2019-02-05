@@ -1,5 +1,5 @@
 ---
-title: Visualiser des zones géographiques autours de points d'intérêts avec `leaflet`
+title: Visualiser des zones géographiques autour de points d'intérêts avec leaflet
 author: "Marie Vaugoyeau"
 date: '2019-02-01'
 slug: trouver-ou-habiter
@@ -14,44 +14,31 @@ featuredalt: "Utilisation de leaflet pour créer des cerles"
 linktitle: "trouver-ou-habiter"
 images: 
   - /img/featured/MontSaintMichel.png  
-description : "Utilisation du package `leaflet` pour visualiser une intersection de zone" 
+description : "Utilisation du package leaflet pour visualiser une intersection de zone" 
 output:
   blogdown::html_page:
     toc: true
 ---
-```{r initialisation, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE}
-
-library(ggmap)
-register_google(key = 'AIzaSyBSFPR2-whBN5QhZ2drmDM0h2llZyZUZtI')
-
-```
   
-Le but de ce nouvel article de blog est de visualiser des zones sur une carte.  
-Le but in fine est de créer un jour une application Shiny pour que chacun puisse éditer sa carte mais chaque chose en son temps ! ^ ^  
+# But : Tracer des cercles autour de points d'intérêts  
+Cette article est pour moi l'occasion de partager un truc que j'ai découvert sur R en utilisant le package `leaflet` : la possibilité de dessiner une zone de couleur autour d'un point GPS donné.  
   
-# Compte Cloud Google et utilisation des API  
-Pour commencer, si vous n'avez pas utiliser ggmap depuis juillet 2018, il va falloir que vous vous créer un compte [Google Cloud Plateforme](https://console.developers.google.com/projectselector/apis/api/static_maps_backend?supportedpurview=project) pour éviter ce type de message :  
-*Error in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") : impossible d'ouvrir l'URL 'http://maps.googleapis.com/maps/api/staticmap?center=gare+du+Mans&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false'*  
-Puis que vous réinstalliez ggmap en utilisant le code de @dkahle disponible [ici](https://github.com/dkahle/ggmap)  
-`devtools::install_github("dkahle/ggmap", ref = "tidyup")`  
-Redémarrer R  
-Puis
-`library(ggmap)`  
-`register_google(key = 'copié-collé-ici-votre-clé-API')`  
-Et voilà, cela m'a pris du temps pour pas grand chose alors je le mets dans l'article !  
+Pour information, il est possible de demander à R de vous donner les coordonnées GPS d'un point mais pour cela il faut utiliser la fonction `geocode()` du package `ggmap`.  
+Malheureusement depuis juillet 2018, pour l'utiliser il faut se créer un compte *Cloud Google* en rentrant son numéro de carte bancaire (sic). J'ai donc décidé de m'en passer ici.  
+Pour le code, il faut juste mettre le lieu entre guillemets comme ceci `geocode("gare du Mans")`.  
+Cependant, si vous voulez utiliser `ggmap` et que vous avez un problème pour charger la carte, je vous explique dans la dernière partie comment résoudre le problème.  
   
-# Création du fond de carte et des zones  
-Je commence par charger le fond de carte, en mettant 15 km de rayon autours de mon point de recherche (la gare du Mans).  
-Ici je n'utilise `ggmap` que pour récupérer les coordonnées GPS de la gare du Mans, mon choix se portant sur `leaflet` pour visualiser afin de pouvoir, zoomer et dézoomer sur la carte.  
+# Importer un fond de carte avec `leaflet`  
+Pour visualiser des cartes sous R il existe plusieurs outils.  
+Le package `leaflet` est très pratique car il permet de zoomer/dézoomer mais aussi de se déplacer sur la carte.  
+  
+Je commence par charger le fond de carte, axé sur mon point d'intérêt principal, ici la gare du Mans (longitude = 0.192612, latitude = 47.995675), auquel j'ajoute un cercle jaune de 10 km de rayon.  
   
 ```{r import_du_fond_de_carte, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-library(ggmap)
-library(dplyr)
 library(leaflet)
 
-coordonnees_point_central <- geocode("gare du Mans") %>% 
-  rename(lng = lon)
+coordonnees_point_central <- c(lng = 0.192612, lat = 47.995675)
 
 distance_max <- 10
 
@@ -63,9 +50,11 @@ fond_carte <- leaflet() %>%
 fond_carte
 ```
   
-Une première zone c'est bien mais généralement, plusieurs endroits nous intéresse. On peut rajouter à cette base, le nombre voulu de point d'intérêt.    
+Une première zone c'est bien mais en général, nous sommes intéressés par plusieurs endroits.  
+Vous pouvez ajouter à cette carte le nombre de points d'intérêt voulu.  
   
-Déjà un deuxième point d'intérêt.  
+# Ajouter des points d'intêrêts avec leurs zones  
+Un deuxième :    
 ```{r ajout_deuxieme_point, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
 coordonnees_point_deux <- c(0.139636, 47.921906)
@@ -79,11 +68,10 @@ carte
 
 ```
   
-Et un petit dernier pour la route.  
+Et un petit dernier pour la route :  
 ```{r ajout_dernier_point, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-coordonnees_point_trois <- geocode("Chaufour-Notre-Dame") %>% 
-  rename(lng = lon)
+coordonnees_point_trois <- c(lng = 0.07, lat = 48.02) 
  
 distance_max_trois <- 8
 
@@ -99,6 +87,28 @@ carte
 
 ```
   
-Je vais m'arrêter là pour aujourd'hui.  
-La suite à venir.  
+Je ne sais pas si vous l'avez remarqué mais il y a une petite différence entre l'ajout du point 2 et du point 3. En effet, lorsque que l'on donne des noms aux valeurs, la fonction `addCircles()` a besoin d'une valeur numérique, j'ai donc rajouté `as.numeric()` dans la ligne de code.  
+  
+Voilà pour cette article, en esperant qu'il vous soit utile.  
+  
+Comme préciser en début d'article, je vous mets ci-dessous la démarche pour créer un compte *Google Cloud* et mettre à jour `ggmap`.  
+  
+# Astuce : Compte Cloud Google et utilisation des API  
+Si vous n'avez pas utiliser `ggmap` depuis juillet 2018, vous ne vous êtes peut-être pas rendu compte du problème.  
+  
+En écrivant cet article, j'ai eu la désagréable surprise de voir l'erreur suivante.  
+*Error in download.file(url, destfile = tmp, quiet = !messaging, mode = "wb") : impossible d'ouvrir l'URL 'http://maps.googleapis.com/maps/api/staticmap?center=gare+du+Mans&zoom=13&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false'*  
+  
+Google a décidé de "fermer" l'utilisation des API, il faut donc maintenant un code / une clé pour les utiliser. Pour pouvoir obtenir cette clé, il faut tout d'abord se créer un compte en rentrant votre numéro de carte bancaire...  
+  
+Pour créer le compte, rendez-vous sur [Google Cloud Plateforme](https://console.developers.google.com/projectselector/apis/api/static_maps_backend?supportedpurview=project).  
+Une fois que c'est fait, il faut que vous réinstalliez ggmap en utilisant le code de @dkahle disponible [ici](https://github.com/dkahle/ggmap)  
+`devtools::install_github("dkahle/ggmap", ref = "tidyup")`  
+Redémarrer R  
+Puis  
+`library(ggmap)`  
+`register_google(key = 'copié-collé-ici-votre-clé-API')`  
+Et voilà, cela m'a pris du temps pour le faire alors je le mets ici !  
+  
+Bonne journée à tous.  
   
