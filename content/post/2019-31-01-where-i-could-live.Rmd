@@ -22,6 +22,7 @@ output:
   
 # Aim: Draw circles around points of interest  
 This article is for me the opportunity to share something I discovered on R using the `leaflet` package: the possibility to draw a color area around a given GPS point.  
+**Utility**: Visualize an area that meets one or more location criteria to find a house, school or other...  
   
 For information, it is possible to ask R to give you the GPS coordinates of a point but for this purpose you must use the `geocode()` function of the `ggmap` package.  
 Unfortunately since July 2018, to use it you need to create a Google Cloud account by entering your credit card number (sic). So I decided to do without it here.  

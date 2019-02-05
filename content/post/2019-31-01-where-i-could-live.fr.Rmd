@@ -21,7 +21,8 @@ output:
 ---
   
 # But : Tracer des cercles autour de points d'intérêts  
-Cette article est pour moi l'occasion de partager un truc que j'ai découvert sur R en utilisant le package `leaflet` : la possibilité de dessiner une zone de couleur autour d'un point GPS donné.  
+Cette article est pour moi l'occasion de partager quelque chose que j'ai découvert sur R en utilisant le package `leaflet` : la possibilité de dessiner une zone de couleur autour d'un point GPS donné.  
+**Utilité** : Visualiser une zone qui obéit à un ou plusieurs critères de localisation afin de trouver une maison, une école ou autre...    
   
 Pour information, il est possible de demander à R de vous donner les coordonnées GPS d'un point mais pour cela il faut utiliser la fonction `geocode()` du package `ggmap`.  
 Malheureusement depuis juillet 2018, pour l'utiliser il faut se créer un compte *Cloud Google* en rentrant son numéro de carte bancaire (sic). J'ai donc décidé de m'en passer ici.  
