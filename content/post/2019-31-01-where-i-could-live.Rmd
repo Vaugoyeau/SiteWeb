@@ -109,5 +109,37 @@ And then
 `register_google(key = "copy-paste-here-your-API-key")`  
 And that's it, it took me a while to do much so I put it here!  
   
+# Small bonus: How to use the package `opencage` to find GPS coordinates  
+Following [Maëlle Salmon's tweet](https://twitter.com/ma_salmon/status/1092779815105634304), I decided to add this part to the article.  
+  
+Indeed, Maëlle pointed out to me that *Open Cage Data* was a very good alternative to no longer using `geocode()`, so I take this opportunity to pass on the information here!  
+  
+First step, as for *Google Cloud* you need to create an account [here](https://opencagedata.com/) to get a key but no need to enter your credit card number!  
+  
+Then it is necessary to register the key in the environment of R by doing `usethis::edit_r_environ()` which opens a file .Renviron.  
+In this file you must add `OPENCAGE_KEY="copy-paste-your-key"`.  
+**Caution** the file must always end with a blank line! So if your file is blank, first line you put the key in and tap on enter to have a second blank line.  
+  
+Now it is necessary to restart R to be able to use the database.  
+  
+I'm not going to detail all the features here, just tell you how to get the coordinates. For the rest, I refer you to the [GitHub page of *Open Cage Data* which is much more accurate](https://github.com/ropensci/opencage).   
+  
+To obtain coordinates  
+Install the package  
+`library("devtools")`  
+`install_github("ropensci/opencage")`  
+  
+Load the package 
+`library("opencage")`  
+  
+Then search for your place with the function `opencage_forward()`  
+  
+**Caution** Unlike the `geocode()` function, the `opencage_forward()` function gives much more information so associated it with a name.  
+`geographical_data <- opencage_forward(placename = "Gare du Mans")`  
+  
+Here we have a results file with 3 entries, so you have to choose the right one.  
+What interests us is Le Mans station only and not the other stations nearby so we choose the third line and keep the GPS coordinates that interest us.  
+`coordinates <- geographical_data$results[3, c(55,56)]`  
+  
 Have a good day.  
   

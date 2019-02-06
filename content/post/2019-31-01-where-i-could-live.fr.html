@@ -36,6 +36,7 @@ output:
 <li><a href="#importer-un-fond-de-carte-avec-leaflet">Importer un fond de carte avec <code>leaflet</code></a></li>
 <li><a href="#ajouter-des-points-dinterets-avec-leurs-zones">Ajouter des points d’intêrêts avec leurs zones</a></li>
 <li><a href="#astuce-compte-cloud-google-et-utilisation-des-api">Astuce : Compte Cloud Google et utilisation des API</a></li>
+<li><a href="#petit-bonus-comment-utiliser-le-package-opencage-pour-trouver-des-coordonnees-gps">Petit bonus : Comment utiliser le package <code>opencage</code> pour trouver des coordonnées GPS</a></li>
 </ul>
 </div>
 
@@ -118,5 +119,28 @@ Puis<br />
 <code>library(ggmap)</code><br />
 <code>register_google(key = 'copié-collé-ici-votre-clé-API')</code><br />
 Et voilà, cela m’a pris du temps pour le faire alors je le mets ici !</p>
+</div>
+<div id="petit-bonus-comment-utiliser-le-package-opencage-pour-trouver-des-coordonnees-gps" class="section level1">
+<h1>Petit bonus : Comment utiliser le package <code>opencage</code> pour trouver des coordonnées GPS</h1>
+<p>Suite <a href="https://twitter.com/ma_salmon/status/1092779815105634304">au tweet de Maëlle Salmon</a>, j’ai décidé d’ajouter cette partie à l’article.</p>
+<p>En effet, Maëlle m’a fait remarqué que <em>Open Cage Data</em> était une très bonne alternative pour ne plus utiliser <code>geocode()</code>, donc je profite de l’occasion pour faire passer l’information ici !</p>
+<p>Première étape, comme pour <em>Google Cloud</em> il faut se créer un compte <a href="https://opencagedata.com/">ici</a> pour obtenir une clé mais pas besoin de rentrer son numéro de carte bancaire !</p>
+<p>Ensuite il faut enregistrer la clé dans l’environnement de R en faisant <code>usethis::edit_r_environ()</code> ce qui ouvre un fichier .Renviron.<br />
+Dans ce fichier il faut ajouter <code>OPENCAGE_KEY=&quot;copier-coller-votre-clé&quot;</code>.<br />
+<strong>Attention</strong> le fichier .Renviron doit toujours se finir par une ligne vierge ! Donc si votre fichier est vierge, vous mettez la clé sur la première ligne et vous tapez sur Entrée pour obtenir une deuxième ligne vierge.</p>
+<p>Il est maintenant nécessaire de redémarer R pour pouvoir questionner la base.</p>
+<p>Je ne vais pas détailler ici toutes les fonctionnalitées du package, juste vous dire comment obtenir les coordonnées. Pour le reste, je vous renvoie à la <a href="https://github.com/ropensci/opencage">page GitHub de <em>Open Cage Data</em> qui est bien plus précise</a>.</p>
+<p>Pour obtenir des coordonnées<br />
+Installer le package<br />
+<code>library(&quot;devtools&quot;)</code><br />
+<code>install_github(&quot;ropensci/opencage&quot;)</code></p>
+<p>Charger le package <code>library(&quot;opencage&quot;)</code></p>
+<p>Puis chercher votre lieu avec la fonction <code>opencage_forward()</code><br />
+<strong>Attention</strong> Contrairement à la fonction <code>geocode()</code>, la fonction <code>opencage_forward()</code> donne beaucoup plus d’informations donc associez la à un nom.<br />
+<code>donnees_geographiques &lt;- opencage_forward(placename = &quot;Gare du Mans&quot;)</code></p>
+<p>Ici nous avons un fichier de résultats avec 3 entrées, il faut donc choisir le bon.<br />
+Ce qui nous intéresse c’est la gare du Mans uniquement et non les autres gares à proximité donc on choisit la troisième ligne et on garde les coordonnées GPS qui nous intéresse.<br />
+<code>coordonnes &lt;- donnees_geographiques$results[3, c(55,56)]</code><br />
+Et voilà !</p>
 <p>Bonne journée à tous.</p>
 </div>

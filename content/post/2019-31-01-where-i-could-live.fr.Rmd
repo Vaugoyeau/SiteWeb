@@ -111,5 +111,37 @@ Puis
 `register_google(key = 'copié-collé-ici-votre-clé-API')`  
 Et voilà, cela m'a pris du temps pour le faire alors je le mets ici !  
   
+# Petit bonus : Comment utiliser le package `opencage` pour trouver des coordonnées GPS  
+Suite [au tweet de Maëlle Salmon](https://twitter.com/ma_salmon/status/1092779815105634304), j'ai décidé d'ajouter cette partie à l'article.  
+  
+En effet, Maëlle m'a fait remarqué que *Open Cage Data* était une très bonne alternative pour ne plus utiliser `geocode()`, donc je profite de l'occasion pour faire passer l'information ici !  
+  
+Première étape, comme pour *Google Cloud* il faut se créer un compte [ici](https://opencagedata.com/) pour obtenir une clé mais pas besoin de rentrer son numéro de carte bancaire !  
+  
+Ensuite il faut enregistrer la clé dans l'environnement de R en faisant `usethis::edit_r_environ()` ce qui ouvre un fichier .Renviron.  
+Dans ce fichier il faut ajouter `OPENCAGE_KEY="copier-coller-votre-clé"`.  
+**Attention** le fichier .Renviron doit toujours se finir par une ligne vierge ! Donc si votre fichier est vierge, vous mettez la clé sur la première ligne et vous tapez sur Entrée pour obtenir une deuxième ligne vierge.  
+  
+Il est maintenant nécessaire de redémarer R pour pouvoir questionner la base.  
+  
+Je ne vais pas détailler ici toutes les fonctionnalitées du package, juste vous dire comment obtenir les coordonnées. Pour le reste, je vous renvoie à la [page GitHub de *Open Cage Data* qui est bien plus précise](https://github.com/ropensci/opencage).   
+  
+Pour obtenir des coordonnées  
+Installer le package  
+`library("devtools")`  
+`install_github("ropensci/opencage")`  
+  
+Charger le package 
+`library("opencage")`  
+  
+Puis chercher votre lieu avec la fonction `opencage_forward()`  
+**Attention** Contrairement à la fonction `geocode()`, la fonction `opencage_forward()` donne beaucoup plus d'informations donc associez la à un nom.  
+`donnees_geographiques <- opencage_forward(placename = "Gare du Mans")`  
+  
+Ici nous avons un fichier de résultats avec 3 entrées, il faut donc choisir le bon.  
+Ce qui nous intéresse c'est la gare du Mans uniquement et non les autres gares à proximité donc on choisit la troisième ligne et on garde les coordonnées GPS qui nous intéresse.  
+`coordonnes <- donnees_geographiques$results[3, c(55,56)]`  
+Et voilà !  
+  
 Bonne journée à tous.  
   

@@ -36,6 +36,7 @@ output:
 <li><a href="#import-a-base-map-with-leaflet">Import a base map with <code>leaflet</code></a></li>
 <li><a href="#add-points-of-interest-with-their-zones">Add points of interest with their zones</a></li>
 <li><a href="#trick-google-cloud-account-and-api-use">Trick: Google Cloud Account and API use</a></li>
+<li><a href="#small-bonus-how-to-use-the-package-opencage-to-find-gps-coordinates">Small bonus: How to use the package <code>opencage</code> to find GPS coordinates</a></li>
 </ul>
 </div>
 
@@ -117,5 +118,27 @@ And then<br />
 <code>library(ggmap)</code><br />
 <code>register_google(key = &quot;copy-paste-here-your-API-key&quot;)</code><br />
 And that’s it, it took me a while to do much so I put it here!</p>
+</div>
+<div id="small-bonus-how-to-use-the-package-opencage-to-find-gps-coordinates" class="section level1">
+<h1>Small bonus: How to use the package <code>opencage</code> to find GPS coordinates</h1>
+<p>Following <a href="https://twitter.com/ma_salmon/status/1092779815105634304">Maëlle Salmon’s tweet</a>, I decided to add this part to the article.</p>
+<p>Indeed, Maëlle pointed out to me that <em>Open Cage Data</em> was a very good alternative to no longer using <code>geocode()</code>, so I take this opportunity to pass on the information here!</p>
+<p>First step, as for <em>Google Cloud</em> you need to create an account <a href="https://opencagedata.com/">here</a> to get a key but no need to enter your credit card number!</p>
+<p>Then it is necessary to register the key in the environment of R by doing <code>usethis::edit_r_environ()</code> which opens a file .Renviron.<br />
+In this file you must add <code>OPENCAGE_KEY=&quot;copy-paste-your-key&quot;</code>.<br />
+<strong>Caution</strong> the file must always end with a blank line! So if your file is blank, first line you put the key in and tap on enter to have a second blank line.</p>
+<p>Now it is necessary to restart R to be able to use the database.</p>
+<p>I’m not going to detail all the features here, just tell you how to get the coordinates. For the rest, I refer you to the <a href="https://github.com/ropensci/opencage">GitHub page of <em>Open Cage Data</em> which is much more accurate</a>.</p>
+<p>To obtain coordinates<br />
+Install the package<br />
+<code>library(&quot;devtools&quot;)</code><br />
+<code>install_github(&quot;ropensci/opencage&quot;)</code></p>
+<p>Load the package <code>library(&quot;opencage&quot;)</code></p>
+<p>Then search for your place with the function <code>opencage_forward()</code></p>
+<p><strong>Caution</strong> Unlike the <code>geocode()</code> function, the <code>opencage_forward()</code> function gives much more information so associated it with a name.<br />
+<code>geographical_data &lt;- opencage_forward(placename = &quot;Gare du Mans&quot;)</code></p>
+<p>Here we have a results file with 3 entries, so you have to choose the right one.<br />
+What interests us is Le Mans station only and not the other stations nearby so we choose the third line and keep the GPS coordinates that interest us.<br />
+<code>coordinates &lt;- geographical_data$results[3, c(55,56)]</code></p>
 <p>Have a good day.</p>
 </div>
