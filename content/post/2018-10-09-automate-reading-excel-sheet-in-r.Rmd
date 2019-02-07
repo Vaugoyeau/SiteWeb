@@ -19,13 +19,22 @@ output:
     toc: true
 ---
   
-After a long period without an article, I decided to explain how I automate the opening and reading of `.xlsx`, `.csv` or other files in R.  
-If you have other methods or remarks, [do not hesitate to contact me](https://mvaugoyeau.netlify.com/contact/).  
+# Goal: Open a large number of files in R  
+It can happen that you have a folder full of data files (Excel or other) and you need to import several or even all of them into R.  
+Doing it by hand can be long, time-consuming and error-prone... so let R works.  
   
-# Creating dummy datasets  
-I decided to create dummy Excel files and then import them.  
+# The process  
+The process is quite simple:  
+_ With the function `list.files()` of the `base` package, R can list all the files in a folder.  
+_ Choice of files to import: either all or a selection.  
+_ Import files by associating them with their original names.  
   
-```{r fichiers_excel_factices, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+# Creation of dummy data sets  
+Before starting, you must create a folder containing data sets that can be re-imported.  
+  
+I decided to create dummy `.xlsx` Excel files but this is valid for any format `.csv`...  
+  
+```{r files_excel, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
 openxlsx::write.xlsx(airquality, file = "airquality.xlsx")
 openxlsx::write.xlsx(iris, file = "iris2.xlsx")
@@ -35,13 +44,13 @@ openxlsx::write.xlsx(mtcars, file = "mtcars3.xlsx")
 ```
   
 # Importing files  
-Now I'm going to re-import these files, I'll also go further by using a regular expression (regex) to have only files that have a number at the end of their names.  
-I am not a specialist in regular expressions. If you know more about this, I recommend the article writed in french by [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/) but I am sure there are a lot of very good articles in english!    
+Now the folder is created, I will be able to import them.  
   
-```{r lire_fichier_excel, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+I start by re-importing all of them.  
+```{r read_excel_file, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)
 
-fichiers_excel <-  list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
+files_excel <- list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
   str_subset(".xlsx") %>% 
   map(openxlsx::read.xlsx) %>% 
   set_names(list.files(path = here::here("content", "post"), full.names=TRUE) %>%
@@ -49,14 +58,27 @@ fichiers_excel <-  list.files(path = here::here("content", "post"), full.names=T
               str_extract("\\w+.xlsx") %>% 
               str_remove(".xlsx"))
 
-str(fichiers_excel)
+str(files_excel)
 ```
   
-Now we only want Excel files whose name has a number at the end.  
+So I now have 4 data files in my environment that I can use.  
+Of course, it is possible to do the same with `.csv` files by using the `read.csv()` function and putting ".csv" instead of ".xlsx".  
   
-```{r lire_fichier_excel_sans_majuscule, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+Maybe you noticed that I use a very simple regular expression  which allows me to select only the files whose format interests me.  
+A "regular expression" is a string of characters encoded in a language that will allow you to find strings that obey the condition. Well, it's not very clear, so I'll take an example.  
+When you take a picture with your phone or camera, it will give it a name composed of a fixed base often "img" and a variable part often linked to the date.  
+So, if you want to find all the photos taken, you can search all the files with the name "img" or "img2018".  
+For you the names of linked files can be obvious to find, it is a place or a machine name, etc.... but for R it is not so obvious, you have to teach him the format you are looking for.  
+For example, to be able to find files in the form "Paris20-03-2014", "Foljuif10-04-2012", the regular expression would be"([A-z]+)\\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})".  
+I therefore explain to R that I am looking for files with at the beginning an alphabet string followed by a number in the format 00-00-00-0000.  
+  
+I'm not a regular expression specialist. If you know more about this, I recommend the french article by [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/) that I read every time I have a doubt!  
+  
+Well, now that this is a little clearer (I hope so), I'm going to use a very simple regular expression that will allow me to retrieve only Excel files whose name has a number at the end.  
+  
+```{r read_excel_file_with_number, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 
-fichiers_excel_bis <-  list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
+files_excel_bis <- list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
   str_subset("[0-9].xlsx") %>% 
   map(openxlsx::read.xlsx) %>% 
   set_names(list.files(path = here::here("content", "post"), full.names=TRUE) %>%
@@ -64,14 +86,12 @@ fichiers_excel_bis <-  list.files(path = here::here("content", "post"), full.nam
               str_extract("\\w+.xlsx") %>% 
               str_remove("[0-9].xlsx"))
 
-str(fichiers_excel_bis)
+str(files_excel_bis)
 ```
   
-Well I admit it, it does not represent a crazy interest but it is just to expose you the principle.  
-Of course, it's possible to do the same thing with `.csv` files using`read.csv ()` and putting ".csv" in regex.  
+Here we are, hoping that this article will be a little useful to you!  
   
-Then you can complicate it by searching for files with specific names like the place and date of sampling or the output of measuring devices.  
-If we take the sampling file case with names of this form "Paris20-03-2014", "Foljuif10-04-2012", the regular expression would be "([A-z] +) \\ w + ([0 -9] {2} [: punct:] [0-9] {2} [: punct:] [0-9] {4})".    
+If you have other methods or comments, [feel free to contact me](https://mvaugoyeau.netlify.com/fr/contact/).  
   
-Here, hoping that this article is a little useful!  
+Good coding!  
   

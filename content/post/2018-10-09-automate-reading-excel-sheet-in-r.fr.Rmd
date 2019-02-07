@@ -19,11 +19,20 @@ output:
     toc: true
 ---
   
-Après une longue période sans article, j'ai décidé de vous expliquer comment j'automatise l'ouverture et la lecture de fichiers `.xlsx`, `.csv` ou autres dans R.  
-Si vous avez d'autres méthodes ou des remarques, [n'hésitez pas à me contacter](https://mvaugoyeau.netlify.com/fr/contact/).  
+# But : Ouvrir un grand nombre de fichiers dans R  
+Il peut arriver que vous ayez un dossier rempli de fichiers de données (Excel ou autres) et que vous ayez besoin d'en importer plusieurs voir même tous dans R.  
+Le faire à la main peut-être long, fastidieux et source d'erreur...  donc autant laisser R travailler.  
+  
+# La démarche  
+La démarche est assez simple :  
+_ Avec la fonction `list.files()` du package `base`, R peut lister tout les fichiers présents dans un dossier.  
+_ Choix des fichiers que l'on veut importer : soit tous, soit une sélection.  
+_ Importation des fichiers en les associant à leurs noms d'origine.  
   
 # Création de jeux de données factices  
-J'ai décidé de créer des fichiers Excel factices puis de les importer.  
+Avant de commencer, il faut créer un dossier contenant des jeux de données que l'on puisse réimporter.  
+  
+J'ai décidé de créer des fichiers Excel `.xlsx` factices mais c'est valable pour n'importe quel format, `.csv`...  
   
 ```{r fichiers_excel_factices, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
@@ -35,9 +44,9 @@ openxlsx::write.xlsx(mtcars, file = "mtcars3.xlsx")
 ```
   
 # Importation des fichiers  
-Maintenant je vais réimporter ces fichiers, je vais aussi aller plus loin en utilisant une expression régulière (regex) afin de n'avoir que les fichiers qui ont un chiffre à la fin de leurs noms.  
-Je ne suis pas une spécialiste des expressions régulières. Si vous vous en savoir plus à ce propos, je vous conseille l'article de [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/) que je relis à chaque fois que j'ai un doute !  
+Maintenant le dossier est crée, je vais pouvoir les importer.  
   
+Je commence par tous les réimporter.  
 ```{r lire_fichier_excel, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)
 
@@ -51,10 +60,23 @@ fichiers_excel <-  list.files(path = here::here("content", "post"), full.names=T
 
 str(fichiers_excel)
 ```
-
-Maintenant on ne veut que les fichiers Excel dont le nom a un chiffre à la fin.  
-
-```{r lire_fichier_excel_sans_majuscule, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+  
+J'ai donc maintenant dans mon environnement 4 fichiers de données que je peux utiliser.  
+Bien entendu, il est possible de faire la même chose avec des fichiers `.csv` en utilisant la fonction `read.csv()` et en mettant ".csv" à la place de ".xlsx".  
+  
+Peut-être avez-vous remarqué que j'utilise une expression régulière, ici très simple qui me permet de sélectionner que les fichiers dont le format m'intéresse.  
+Une "expression régulière" est une chaîne de caractères codée dans un langage qui va permettre de retrouver toutes les chaînes de caractères qui obéissent à la condition. Bon dis comme ça c'est n'est pas très clair, je vais donc prendre un exemple.  
+Lorsque que vous prenez une photo avec votre téléphone ou votre appareil photo, celui-ci va lui attribuer un nom composé d'une base fixe souvent "img" et d'une partie variable souvent lié à la date.  
+Ainsi, si vous voulez retrouver toutes les photos faites, vous pouvez chercher tous les fichiers avec le nom "img" ou "img2018".  
+Pour vous les noms de fichiers liés peuvent-être évident à retrouver, c'est un lieu ou un nom de machine, etc... mais pour R ce n'est pas si évident, il faut qu'il faut lui apprendre le format que vous rechercher.  
+Par exemple, pour pouvoir retrouver des fichiers sous la forme "Paris20-03-2014", "Foljuif10-04-2012", l'expression régulière serait "([A-z]+)\\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})".  
+J'explicite donc à R que je cherche des fichiers avec au début une chaine de caractères alphabétques suivie d'un nombre sous le format 00-00-0000.  
+  
+Je ne suis pas une spécialiste des expressions régulières. Si vous vous en savoir plus à ce propos, je vous conseille l'article de [Lise Vaudor](http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/) que je relis à chaque fois que j'ai un doute !  
+  
+Bien, maitenant que ceci est un peu plus clair (j'espère en tout cas), je vais utiliser une expression régulière très simple qui va me permettre de récupérer uniquement les fichiers Excel dont le nom a un chiffre à la fin.  
+  
+```{r lire_fichier_excel_avec_numero, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 
 fichiers_excel_bis <-  list.files(path = here::here("content", "post"), full.names=TRUE) %>% 
   str_subset("[0-9].xlsx") %>% 
@@ -67,11 +89,9 @@ fichiers_excel_bis <-  list.files(path = here::here("content", "post"), full.nam
 str(fichiers_excel_bis)
 ```
   
-Bon j'avoue là, ce n'est pas transcendant et ça ne présente pas un intérêt fou mais c'est pour vous exposer le principe.  
-Bien entendu, c'est possible de faire la même chose avec des fichiers `.csv` en utilisant `read.csv()` et en mettant ".csv" dans la regex.  
-  
-Après on peut compliquer la donne en allant chercher des fichiers avec des noms spécifiques, comme le lieu et la date d'échantillonnage ou des sorties d'appareils de mesure.  
-Si on prend le cas de fichier d'échantillonnage avec des noms de cette forme "Paris20-03-2014", "Foljuif10-04-2012", l'expression régulière serait "([A-z]+)\\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})".  
-  
 Voilà, en espérant que cet article vous soit un peu utile !  
   
+Si vous avez d'autres méthodes ou des remarques, [n'hésitez pas à me contacter](https://mvaugoyeau.netlify.com/fr/contact/).  
+  
+Bon codage !  
+

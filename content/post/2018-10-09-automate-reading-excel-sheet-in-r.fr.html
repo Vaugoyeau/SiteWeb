@@ -22,16 +22,29 @@ output:
 
 <div id="TOC">
 <ul>
+<li><a href="#but-ouvrir-un-grand-nombre-de-fichiers-dans-r">But : Ouvrir un grand nombre de fichiers dans R</a></li>
+<li><a href="#la-demarche">La démarche</a></li>
 <li><a href="#creation-de-jeux-de-donnees-factices">Création de jeux de données factices</a></li>
 <li><a href="#importation-des-fichiers">Importation des fichiers</a></li>
 </ul>
 </div>
 
-<p>Après une longue période sans article, j’ai décidé de vous expliquer comment j’automatise l’ouverture et la lecture de fichiers <code>.xlsx</code>, <code>.csv</code> ou autres dans R.<br />
-Si vous avez d’autres méthodes ou des remarques, <a href="https://mvaugoyeau.netlify.com/fr/contact/">n’hésitez pas à me contacter</a>.</p>
+<div id="but-ouvrir-un-grand-nombre-de-fichiers-dans-r" class="section level1">
+<h1>But : Ouvrir un grand nombre de fichiers dans R</h1>
+<p>Il peut arriver que vous ayez un dossier rempli de fichiers de données (Excel ou autres) et que vous ayez besoin d’en importer plusieurs voir même tous dans R.<br />
+Le faire à la main peut-être long, fastidieux et source d’erreur… donc autant laisser R travailler.</p>
+</div>
+<div id="la-demarche" class="section level1">
+<h1>La démarche</h1>
+<p>La démarche est assez simple :<br />
+_ Avec la fonction <code>list.files()</code> du package <code>base</code>, R peut lister tout les fichiers présents dans un dossier.<br />
+_ Choix des fichiers que l’on veut importer : soit tous, soit une sélection.<br />
+_ Importation des fichiers en les associant à leurs noms d’origine.</p>
+</div>
 <div id="creation-de-jeux-de-donnees-factices" class="section level1">
 <h1>Création de jeux de données factices</h1>
-<p>J’ai décidé de créer des fichiers Excel factices puis de les importer.</p>
+<p>Avant de commencer, il faut créer un dossier contenant des jeux de données que l’on puisse réimporter.</p>
+<p>J’ai décidé de créer des fichiers Excel <code>.xlsx</code> factices mais c’est valable pour n’importe quel format, <code>.csv</code>…</p>
 <pre class="r"><code>openxlsx::write.xlsx(airquality, file = &quot;airquality.xlsx&quot;)
 openxlsx::write.xlsx(iris, file = &quot;iris2.xlsx&quot;)
 openxlsx::write.xlsx(Orange, file = &quot;orange.xlsx&quot;)
@@ -39,8 +52,8 @@ openxlsx::write.xlsx(mtcars, file = &quot;mtcars3.xlsx&quot;)</code></pre>
 </div>
 <div id="importation-des-fichiers" class="section level1">
 <h1>Importation des fichiers</h1>
-<p>Maintenant je vais réimporter ces fichiers, je vais aussi aller plus loin en utilisant une expression régulière (regex) afin de n’avoir que les fichiers qui ont un chiffre à la fin de leurs noms.<br />
-Je ne suis pas une spécialiste des expressions régulières. Si vous vous en savoir plus à ce propos, je vous conseille l’article de <a href="http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/">Lise Vaudor</a> que je relis à chaque fois que j’ai un doute !</p>
+<p>Maintenant le dossier est crée, je vais pouvoir les importer.</p>
+<p>Je commence par tous les réimporter.</p>
 <pre class="r"><code>library(tidyverse)
 
 fichiers_excel &lt;-  list.files(path = here::here(&quot;content&quot;, &quot;post&quot;), full.names=TRUE) %&gt;% 
@@ -82,7 +95,17 @@ str(fichiers_excel)</code></pre>
 ##   ..$ Tree         : chr [1:35] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
 ##   ..$ age          : num [1:35] 118 484 664 1004 1231 ...
 ##   ..$ circumference: num [1:35] 30 58 87 115 120 142 145 33 69 111 ...</code></pre>
-<p>Maintenant on ne veut que les fichiers Excel dont le nom a un chiffre à la fin.</p>
+<p>J’ai donc maintenant dans mon environnement 4 fichiers de données que je peux utiliser.<br />
+Bien entendu, il est possible de faire la même chose avec des fichiers <code>.csv</code> en utilisant la fonction <code>read.csv()</code> et en mettant “.csv” à la place de “.xlsx”.</p>
+<p>Peut-être avez-vous remarqué que j’utilise une expression régulière, ici très simple qui me permet de sélectionner que les fichiers dont le format m’intéresse.<br />
+Une “expression régulière” est une chaîne de caractères codée dans un langage qui va permettre de retrouver toutes les chaînes de caractères qui obéissent à la condition. Bon dis comme ça c’est n’est pas très clair, je vais donc prendre un exemple.<br />
+Lorsque que vous prenez une photo avec votre téléphone ou votre appareil photo, celui-ci va lui attribuer un nom composé d’une base fixe souvent “img” et d’une partie variable souvent lié à la date.<br />
+Ainsi, si vous voulez retrouver toutes les photos faites, vous pouvez chercher tous les fichiers avec le nom “img” ou “img2018”.<br />
+Pour vous les noms de fichiers liés peuvent-être évident à retrouver, c’est un lieu ou un nom de machine, etc… mais pour R ce n’est pas si évident, il faut qu’il faut lui apprendre le format que vous rechercher.<br />
+Par exemple, pour pouvoir retrouver des fichiers sous la forme “Paris20-03-2014”, “Foljuif10-04-2012”, l’expression régulière serait “([A-z]+)\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})”.<br />
+J’explicite donc à R que je cherche des fichiers avec au début une chaine de caractères alphabétques suivie d’un nombre sous le format 00-00-0000.</p>
+<p>Je ne suis pas une spécialiste des expressions régulières. Si vous vous en savoir plus à ce propos, je vous conseille l’article de <a href="http://perso.ens-lyon.fr/lise.vaudor/strings-et-expressions-regulieres/">Lise Vaudor</a> que je relis à chaque fois que j’ai un doute !</p>
+<p>Bien, maitenant que ceci est un peu plus clair (j’espère en tout cas), je vais utiliser une expression régulière très simple qui va me permettre de récupérer uniquement les fichiers Excel dont le nom a un chiffre à la fin.</p>
 <pre class="r"><code>fichiers_excel_bis &lt;-  list.files(path = here::here(&quot;content&quot;, &quot;post&quot;), full.names=TRUE) %&gt;% 
   str_subset(&quot;[0-9].xlsx&quot;) %&gt;% 
   map(openxlsx::read.xlsx) %&gt;% 
@@ -111,9 +134,7 @@ str(fichiers_excel_bis)</code></pre>
 ##   ..$ am  : num [1:32] 1 1 1 0 0 0 0 0 0 0 ...
 ##   ..$ gear: num [1:32] 4 4 4 3 3 3 3 4 4 4 ...
 ##   ..$ carb: num [1:32] 4 4 1 1 2 1 4 2 2 4 ...</code></pre>
-<p>Bon j’avoue là, ce n’est pas transcendant et ça ne présente pas un intérêt fou mais c’est pour vous exposer le principe.<br />
-Bien entendu, c’est possible de faire la même chose avec des fichiers <code>.csv</code> en utilisant <code>read.csv()</code> et en mettant “.csv” dans la regex.</p>
-<p>Après on peut compliquer la donne en allant chercher des fichiers avec des noms spécifiques, comme le lieu et la date d’échantillonnage ou des sorties d’appareils de mesure.<br />
-Si on prend le cas de fichier d’échantillonnage avec des noms de cette forme “Paris20-03-2014”, “Foljuif10-04-2012”, l’expression régulière serait “([A-z]+)\w+ ([0-9]{2}[:punct:][0-9]{2}[:punct:][0-9]{4})”.</p>
 <p>Voilà, en espérant que cet article vous soit un peu utile !</p>
+<p>Si vous avez d’autres méthodes ou des remarques, <a href="https://mvaugoyeau.netlify.com/fr/contact/">n’hésitez pas à me contacter</a>.</p>
+<p>Bon codage !</p>
 </div>
