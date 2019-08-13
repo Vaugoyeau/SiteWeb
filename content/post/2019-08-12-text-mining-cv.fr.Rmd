@@ -1,5 +1,5 @@
 ---
-title: Text-mining pour créer un nuage de mots représentatif à partir d'un PDF
+title: Text-mining pour créer un nuage de mots à partir d'un PDF
 author: "Marie Vaugoyeau"
 date: '2019-08-12'
 slug: analyse-cv
@@ -15,7 +15,7 @@ featuredalt: "Text-mining, nuage de mots et récupération d'informations sur in
 linktitle: "analyser-le-cv"
 images: 
   - /img/featured/PetitAnjou.png  
-description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}" 
+description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}. Tout ça en un article !" 
 output:
   blogdown::html_page:
     toc: true
@@ -56,7 +56,10 @@ curriculum <- pdftools::pdf_text("MVaugoyeauCV.pdf") %>%
   
 ## Récupération d'une liste de mots en français  
   
-Pour pouvoir travailler sur la liste de mots, il faut une liste des mots à retirer. Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n'y en a pas (à ma connaissance) en français donc j'ai été la récupérer sur le [site count words](https://countwordsfree.com/stopwords/french). Ce site a l'avantage de proposer pleins de langues !    
+Tous les mots ne sont pas intéressant, il faut donc retirer les mots inutiles comme `et`, `le`, `à`...  
+Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n'y en a pas (à ma connaissance) en français.  
+
+J'ai donc été la récupérer sur le [site count words](https://countwordsfree.com/stopwords/french). Ce site a l'avantage de proposer pleins de langues !    
   
 ```{r creation_liste_mot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
@@ -73,7 +76,7 @@ stop_words_fr <-
 
 ```
   
-## Mesure des répétitions des mots seuls  
+## Mesure des fréquences des mots  
   
 La première étape est créer une liste de mots simples.  
   
@@ -81,7 +84,7 @@ Attention aux accents, ici, je les ai ici retirés.
   
 ```{r fichier_mot_seul, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-# création de la liste de mots et graphique associé
+# création de la liste de mots
 texte <- curriculum %>% 
   mutate(texte = texte %>% 
            str_remove_all("\\d") %>%
@@ -122,6 +125,7 @@ texte <- curriculum %>%
     ) %>% 
   count(mot, sort = TRUE) 
 
+#  et graphique associé
 texte %>%
   filter(n > 2) %>% 
   ggplot() +
@@ -139,17 +143,19 @@ texte %>%
 
 ```
   
-Si vous regardez attentitivement le code vous verrez que j'ai fait de la lemnisation, c'est-à-dire que j'ai chercher à exploiter la signification des mots et non le mot en tant que telle.  
+Si vous regardez attentivement le code vous verrez que j'ai fait de la lemmatisation, c'est-à-dire que j'ai cherché à exploiter la signification des mots et non le mot en tant que telle.  
   
 Par exemple, `analyste`, `analyser`, `analyses` ou `analyse` ont pour moi le même sens d'`analyse` donc je les ai rassembler sous le même mot.  
   
+Il existe peut-être une liste officiel pour faire de la lemmatisation mais je ne la connais pas, désolée !  
+  
 ## Mesure des bigrammes  
   
-Un mot seul ne signifie pas toujours quelque chose, d'où a necessité d'exploiter aussi les n-grammmes (ici je m'arreterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l'on veut !).  
+Un mot seul ne signifie pas toujours quelque chose, d'où la nécessité  d'exploiter aussi les n-grammmes (ici je m'arrêterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l'on veut !).  
   
-```{r creation_du_fichier_bigram, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+```{r creation_du_fichier_bigramme, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-# Creation du fichier bigram pour les expressions et représentation graphique
+# Création du fichier bigramme pour les expressions 
 bigram <- curriculum %>% 
   mutate(texte = texte %>% 
            str_remove_all("\\d") %>%
@@ -182,6 +188,7 @@ bigram <- curriculum %>%
   unite(bigramme, mot1, mot2, sep = " ") %>% 
   count(bigramme, sort = TRUE) 
 
+# et représentation graphique
 bigram %>%
   filter(n > 1) %>% 
   ggplot() +
@@ -226,7 +233,7 @@ liste_nuage_de_mots <- tibble(
     )
   )
 
-# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigram
+# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigramme
 
 liste_nuage_de_mots %<>% 
   bind_rows(

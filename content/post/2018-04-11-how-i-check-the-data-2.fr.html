@@ -47,12 +47,13 @@ ggplot(D_tidy) +
   facet_wrap(~VAR, scales = &quot;free_y&quot;) +
   theme_minimal() +
   ylab(&quot;&quot;)</code></pre>
-<p><img src="/post/2018-04-11-how-i-check-the-data-2.fr_files/figure-html/plot-1.png" width="672" /> On peut voir qu’il manque des données dans la variable Ozone mais ce n’est pas un problème.</p>
+<p><img src="/post/2018-04-11-how-i-check-the-data-2.fr_files/figure-html/plot-1.png" width="672" />
+On peut voir qu’il manque des données dans la variable Ozone mais ce n’est pas un problème.</p>
 </div>
 <div id="le-test-multiple-des-correlations" class="section level1">
 <h1>Le test multiple des corrélations</h1>
 <p>Pour voir quelle variable est corrélée à quelle autre, j’analyse les relations linéaires avec la fonction <em>cor.test</em>.<br />
-J’utilise les lignes de codes suivantes dans R, modifiées d’après <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
+J’utilise les lignes de codes suivantes dans R, modifiées d’après <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
 <pre class="r"><code>D &lt;- airquality
 
 par(bty = &quot;n&quot;) # Je préfère quand il n&#39;y a pas d&#39;entourage autours des graphiques mais ce n&#39;est pas nécessaire comme ligne de code

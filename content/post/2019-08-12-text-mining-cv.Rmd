@@ -15,7 +15,7 @@ featuredalt: "Text-mining, word cloud and information retrieval on the internet"
 linktitle: "analyse-le-cv"
 images: 
   - /img/featured/PetitAnjou.png  
-description: "Text-mining with the package {tidytext}, word cloud with the package {wordcloud} and retrieving a list of words on the internet with the package {rvest}" 
+description: "Text-mining with the package {tidytext}, word cloud with the package {wordcloud} and retrieving a list of words on the internet with the package {rvest}. All this in an article!" 
 output:
   blogdown::html_page:
     toc: true
@@ -23,7 +23,7 @@ output:
   
 # Purpose: To check that my CV is adapted to the image I want to send back  
 When updating my CV, I wondered if the keywords used were representative of my skills.  
-And I admit, especially, I wanted to use the packages {rvest}, {tidytext} and {wordcloud} so I killed two birds with one stone!   
+And I admit, especially, I wanted to use the packages {rvest}, {tidytext} and {wordcloud} so GO!   
   
 # Import of used packages  
   
@@ -38,7 +38,7 @@ library(magrittr)
   
 # Creation of the word/expression files  
   
-## Retrieving my CV  
+## Importing my CV  
   
 To do things properly and to make it reproducible for you, I will start from my [CV](/post/MVaugoyeauCV.pdf) in `PDF` version.  
   
@@ -54,9 +54,12 @@ curriculum <- pdftools::pdf_text("MVaugoyeauCV.pdf") %>%
 
 ```
   
-## Retrieving a list of words in French  
+## Harvesting a list of words in French  
   
-To be able to work on the word list, you need a list of words to remove. For the English language, this list is directly available in the {tidytext} package but there is none (to my knowledge) in French so I went to get it from the [count words site](https://countwordsfree.com/stopwords/french). This site has the advantage of offering a lot of languages!    
+Not all words are interesting, so you should remove unnecessary words like `and,`le,``to`....  
+For the English language, this list is directly available in the {tidytext} package but there are none (to my knowledge) in French.  
+  
+So I got it from the [count words site](https://countwordsfree.com/stopwords/french). This site has the advantage of offering a lot of languages!  
   
 ```{r creation_liste_mot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
@@ -73,7 +76,7 @@ stop_words_fr <-
 
 ```
   
-## Measurement of word repetitions alone  
+## Word frequency measurement  
   
 The first step is to create a list of simple words.  
   
@@ -81,7 +84,7 @@ Be careful with the accents, here, I removed them.
   
 ```{r word_file only, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-# creation of the word list and associated graphic
+# creation of the word list
 texte <- curriculum %>% 
   mutate(texte = texte %>% 
            str_remove_all("\\d") %>%
@@ -122,6 +125,7 @@ texte <- curriculum %>%
     ) %>% 
   count(mot, sort = TRUE) 
 
+#  and associated graphic
 texte %>%
   filter(n > 2) %>% 
   ggplot() +
@@ -139,9 +143,11 @@ texte %>%
 
 ```
   
-If you look carefully at the code you will see that I have made compensation, that is, I have sought to exploit the meaning of the words and not the word as such.  
+If you look carefully at the code you will see that I have made lemmatisation, that is, I have sought to exploit the meaning of the words and not the word as such.  
   
 For example, `analyst`, `analyze` or `analysis` have the same meaning for me of `analysis` so I have grouped them under the same word.  
+  
+There may be an official list for lemmatisation, but I don't know it, sorry!  
   
 ## Bigram measurement  
   
@@ -149,7 +155,7 @@ A single word does not always mean something, hence the need to use n-grammms as
   
 ```{r creation_du_fichier_bigram, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-# Creation of the bigram file for expressions and graphic representation
+# Creation of the bigram file for expressions
 bigram <- curriculum %>% 
   mutate(texte = texte %>% 
            str_remove_all("\\d") %>%
@@ -182,6 +188,7 @@ bigram <- curriculum %>%
   unite(bigramme, mot1, mot2, sep = " ") %>% 
   count(bigramme, sort = TRUE) 
 
+#  and graphic representation
 bigram %>%
   filter(n > 1) %>% 
   ggplot() +
@@ -260,10 +267,12 @@ wordcloud2::wordcloud2(
 
 ```
    
+   
+   
 # Conclusion   
   
 There you go!  
-So what do you think?  
+So what do you think about it?  
 I'm quite happy to see the result. ^ ^  
   
   

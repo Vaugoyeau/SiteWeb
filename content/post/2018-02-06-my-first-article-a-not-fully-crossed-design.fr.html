@@ -123,7 +123,8 @@ m1&lt;-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=
 ## data:  residuals(m1)
 ## W = 0.98678, p-value = 0.5759</code></pre>
 <pre class="r"><code>qqnorm(residuals(m1));qqline(residuals(m1))</code></pre>
-<p><img src="/post/2018-02-06-my-first-article-a-not-fully-crossed-design.fr_files/figure-html/unnamed-chunk-2-1.png" width="672" /> Si les résidus ne suivaient pas une loi normale, la variable était log-transformée puis un modèle linéaire mixte était refait.</p>
+<p><img src="/post/2018-02-06-my-first-article-a-not-fully-crossed-design.fr_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+Si les résidus ne suivaient pas une loi normale, la variable était log-transformée puis un modèle linéaire mixte était refait.</p>
 </div>
 <div id="selection-de-modele-avec-elimination" class="section level2">
 <h2>Sélection de modèle avec élimination</h2>

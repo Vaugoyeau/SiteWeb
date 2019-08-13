@@ -122,7 +122,8 @@ m1&lt;-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=
 ## data:  residuals(m1)
 ## W = 0.98678, p-value = 0.5759</code></pre>
 <pre class="r"><code>qqnorm(residuals(m1));qqline(residuals(m1))</code></pre>
-<p><img src="/post/2018-02-06-my-first-article-a-not-fully-crossed-design_files/figure-html/unnamed-chunk-2-1.png" width="672" /> If residuals did not follow normal distribution, variable was log-transformed.</p>
+<p><img src="/post/2018-02-06-my-first-article-a-not-fully-crossed-design_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+If residuals did not follow normal distribution, variable was log-transformed.</p>
 </div>
 <div id="model-selection-with-backward-elimination" class="section level2">
 <h2>Model selection with backward elimination</h2>
@@ -284,7 +285,8 @@ Anova(mf, type=&quot;III&quot;)</code></pre>
 </div>
 <div id="random-effect" class="section level2">
 <h2>Random effect</h2>
-<p>For all final model, random factors (aviaries and individual identity) were unsignificant. I tested it by the follow way:</p>
+<p>For all final model, random factors (aviaries and individual identity) were unsignificant.
+I tested it by the follow way:</p>
 <pre class="r"><code>mfR&lt;-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method=&quot;REML&quot;, data = Y, na.action=na.exclude)
 mfNR&lt;-gls(Oxy ~ Sex+Exp*Plucking, method=&quot;REML&quot;, data = Y, na.action=na.exclude)
 anova(mfR,mfNR)</code></pre>

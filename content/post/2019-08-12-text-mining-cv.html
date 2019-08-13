@@ -15,7 +15,7 @@ featuredalt: "Text-mining, word cloud and information retrieval on the internet"
 linktitle: "analyse-le-cv"
 images: 
   - /img/featured/PetitAnjou.png  
-description: "Text-mining with the package {tidytext}, word cloud with the package {wordcloud} and retrieving a list of words on the internet with the package {rvest}" 
+description: "Text-mining with the package {tidytext}, word cloud with the package {wordcloud} and retrieving a list of words on the internet with the package {rvest}. All this in an article!" 
 output:
   blogdown::html_page:
     toc: true
@@ -32,9 +32,9 @@ output:
 <li><a href="#purpose-to-check-that-my-cv-is-adapted-to-the-image-i-want-to-send-back">Purpose: To check that my CV is adapted to the image I want to send back</a></li>
 <li><a href="#import-of-used-packages">Import of used packages</a></li>
 <li><a href="#creation-of-the-wordexpression-files">Creation of the word/expression files</a><ul>
-<li><a href="#retrieving-my-cv">Retrieving my CV</a></li>
-<li><a href="#retrieving-a-list-of-words-in-french">Retrieving a list of words in French</a></li>
-<li><a href="#measurement-of-word-repetitions-alone">Measurement of word repetitions alone</a></li>
+<li><a href="#importing-my-cv">Importing my CV</a></li>
+<li><a href="#harvesting-a-list-of-words-in-french">Harvesting a list of words in French</a></li>
+<li><a href="#word-frequency-measurement">Word frequency measurement</a></li>
 <li><a href="#bigram-measurement">Bigram measurement</a></li>
 </ul></li>
 <li><a href="#creation-of-the-word-cloud">Creation of the word cloud</a></li>
@@ -45,7 +45,7 @@ output:
 <div id="purpose-to-check-that-my-cv-is-adapted-to-the-image-i-want-to-send-back" class="section level1">
 <h1>Purpose: To check that my CV is adapted to the image I want to send back</h1>
 <p>When updating my CV, I wondered if the keywords used were representative of my skills.<br />
-And I admit, especially, I wanted to use the packages {rvest}, {tidytext} and {wordcloud} so I killed two birds with one stone!</p>
+And I admit, especially, I wanted to use the packages {rvest}, {tidytext} and {wordcloud} so GO!</p>
 </div>
 <div id="import-of-used-packages" class="section level1">
 <h1>Import of used packages</h1>
@@ -56,8 +56,8 @@ library(magrittr)</code></pre>
 </div>
 <div id="creation-of-the-wordexpression-files" class="section level1">
 <h1>Creation of the word/expression files</h1>
-<div id="retrieving-my-cv" class="section level2">
-<h2>Retrieving my CV</h2>
+<div id="importing-my-cv" class="section level2">
+<h2>Importing my CV</h2>
 <p>To do things properly and to make it reproducible for you, I will start from my <a href="/post/MVaugoyeauCV.pdf">CV</a> in <code>PDF</code> version.</p>
 <pre class="r"><code># Downloading the CV with {pdftools}
 curriculum &lt;- pdftools::pdf_text(&quot;MVaugoyeauCV.pdf&quot;) %&gt;% 
@@ -67,9 +67,11 @@ curriculum &lt;- pdftools::pdf_text(&quot;MVaugoyeauCV.pdf&quot;) %&gt;%
   as_tibble() %&gt;% 
   gather(&quot;page&quot;, &quot;texte&quot;)</code></pre>
 </div>
-<div id="retrieving-a-list-of-words-in-french" class="section level2">
-<h2>Retrieving a list of words in French</h2>
-<p>To be able to work on the word list, you need a list of words to remove. For the English language, this list is directly available in the {tidytext} package but there is none (to my knowledge) in French so I went to get it from the <a href="https://countwordsfree.com/stopwords/french">count words site</a>. This site has the advantage of offering a lot of languages!</p>
+<div id="harvesting-a-list-of-words-in-french" class="section level2">
+<h2>Harvesting a list of words in French</h2>
+<p>Not all words are interesting, so you should remove unnecessary words like <code>and,</code>le,`<code>to</code>….<br />
+For the English language, this list is directly available in the {tidytext} package but there are none (to my knowledge) in French.</p>
+<p>So I got it from the <a href="https://countwordsfree.com/stopwords/french">count words site</a>. This site has the advantage of offering a lot of languages!</p>
 <pre class="r"><code># Creation of the sotp word list in French / use of {rvest} and {xml2}
 stop_words_fr &lt;-
   xml2::read_html(&quot;https://countwordsfree.com/stopwords/french&quot;) %&gt;%
@@ -81,11 +83,11 @@ stop_words_fr &lt;-
   rename(mot = a) %&gt;% 
   add_row(mot = c(&quot;vaugoyeau&quot;, &quot;jeunes&quot;, &quot;al&quot;, &quot;impact&quot;, &quot;factor&quot;, &quot;été&quot;, &quot;issus&quot;, &quot;marie&quot;, &quot;annee&quot;, &quot;création&quot;, &quot;influence&quot;, &quot;paris&quot;))</code></pre>
 </div>
-<div id="measurement-of-word-repetitions-alone" class="section level2">
-<h2>Measurement of word repetitions alone</h2>
+<div id="word-frequency-measurement" class="section level2">
+<h2>Word frequency measurement</h2>
 <p>The first step is to create a list of simple words.</p>
 <p>Be careful with the accents, here, I removed them.</p>
-<pre class="r"><code># creation of the word list and associated graphic
+<pre class="r"><code># creation of the word list
 texte &lt;- curriculum %&gt;% 
   mutate(texte = texte %&gt;% 
            str_remove_all(&quot;\\d&quot;) %&gt;%
@@ -126,6 +128,7 @@ texte &lt;- curriculum %&gt;%
     ) %&gt;% 
   count(mot, sort = TRUE) 
 
+#  and associated graphic
 texte %&gt;%
   filter(n &gt; 2) %&gt;% 
   ggplot() +
@@ -141,13 +144,14 @@ texte %&gt;%
   labs(title = &quot;Mots les plus récurrents&quot;) +
   theme_classic()</code></pre>
 <p><img src="/post/2019-08-12-text-mining-cv_files/figure-html/word_file%20only-1.png" width="672" /></p>
-<p>If you look carefully at the code you will see that I have made compensation, that is, I have sought to exploit the meaning of the words and not the word as such.</p>
+<p>If you look carefully at the code you will see that I have made lemmatisation, that is, I have sought to exploit the meaning of the words and not the word as such.</p>
 <p>For example, <code>analyst</code>, <code>analyze</code> or <code>analysis</code> have the same meaning for me of <code>analysis</code> so I have grouped them under the same word.</p>
+<p>There may be an official list for lemmatisation, but I don’t know it, sorry!</p>
 </div>
 <div id="bigram-measurement" class="section level2">
 <h2>Bigram measurement</h2>
 <p>A single word does not always mean something, hence the need to use n-grammms as well (here I would stop at the bigram, but it is of course possible to search for the number of words you want!).</p>
-<pre class="r"><code># Creation of the bigram file for expressions and graphic representation
+<pre class="r"><code># Creation of the bigram file for expressions
 bigram &lt;- curriculum %&gt;% 
   mutate(texte = texte %&gt;% 
            str_remove_all(&quot;\\d&quot;) %&gt;%
@@ -180,6 +184,7 @@ bigram &lt;- curriculum %&gt;%
   unite(bigramme, mot1, mot2, sep = &quot; &quot;) %&gt;% 
   count(bigramme, sort = TRUE) 
 
+#  and graphic representation
 bigram %&gt;%
   filter(n &gt; 1) %&gt;% 
   ggplot() +
@@ -258,6 +263,6 @@ wordcloud::wordcloud(words = liste_nuage_de_mots$mot_expression,
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
 <p>There you go!<br />
-So what do you think?<br />
+So what do you think about it?<br />
 I’m quite happy to see the result. ^ ^</p>
 </div>

@@ -40,12 +40,13 @@ D&lt;-airquality
 D_tidy&lt;-D %&gt;% tidyr::gather(VAR, value, -Month, -Day) %&gt;% mutate(Time = Month*30.5+Day)
 
 ggplot(D_tidy) + geom_line(aes(x=Time, y=value, color=Month)) + scale_color_distiller(&quot;Month&quot;, palette = &quot;Spectral&quot;) + facet_wrap(~VAR, scales = &quot;free_y&quot;) + theme_minimal() + ylab(&quot;&quot;)</code></pre>
-<p><img src="/post/2018-04-11-how-i-check-the-data-2_files/figure-html/plot-1.png" width="672" /> We can see there are missing value in Ozone but it is not an issue.</p>
+<p><img src="/post/2018-04-11-how-i-check-the-data-2_files/figure-html/plot-1.png" width="672" />
+We can see there are missing value in Ozone but it is not an issue.</p>
 </div>
 <div id="the-multi-test-of-correlations" class="section level1">
 <h1>The multi-test of correlations</h1>
 <p>To see which variable varies with another, I analysed correlation with cor.test.<br />
-I used the following code lines with R modified from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
+I used the following code lines with R modified from <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
 <pre class="r"><code>D&lt;-airquality
 
 par(bty=&quot;n&quot;) # I prefer when box was delete from plots but it is not a necessary

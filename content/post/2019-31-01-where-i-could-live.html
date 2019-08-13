@@ -46,7 +46,7 @@ output:
 <strong>Utility</strong>: Visualize an area that meets one or more location criteria to find a house, school or other…</p>
 <p>For information, it is possible to ask R to give you the GPS coordinates of a point but for this purpose you must use the <code>geocode()</code> function of the <code>ggmap</code> package.<br />
 Unfortunately since July 2018, to use it you need to create a Google Cloud account by entering your credit card number (sic). So I decided to do without it here.<br />
-For the code, you just have to put the place between quotation marks like this <code>geocode(&quot;gare du Mans&quot;)</code>.<br />
+For the code, you just have to put the place between quotation marks like this <code>geocode("gare du Mans")</code>.<br />
 However, if you want to use <code>ggmap</code> and you have a problem loading the map, I will detail in the last part how to fix the problem.</p>
 </div>
 <div id="import-a-base-map-with-leaflet" class="section level1">
@@ -108,15 +108,15 @@ As mentioned at the beginning of the article, I will explain below how to create
 <h1>Trick: Google Cloud Account and API use</h1>
 <p>If you haven’t used <code>ggmap</code> since July 2018, you may not have realized the problem.</p>
 <p>While writing this article, I had the unpleasant surprise of seeing the following error.<br />
-*Error in download.file(url, destfile = tmp, quiet = !messaging, mode = “wb”) : impossible to open the URL at <a href="http://maps.googleapis.com/maps/api/staticmap?center=gare+du+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false&#39;*" class="uri">http://maps.googleapis.com/maps/api/staticmap?center=gare+du+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false'*</a></p>
+<em>Error in download.file(url, destfile = tmp, quiet = !messaging, mode = “wb”) : impossible to open the URL at <a href="http://maps.googleapis.com/maps/api/staticmap?center=gare+du+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false" class="uri">http://maps.googleapis.com/maps/api/staticmap?center=gare+du+du+Mans&amp;zoom=13&amp;size=640x640&amp;scale=2&amp;maptype=terrain&amp;language=en-EN&amp;sensor=false</a>’</em></p>
 <p>Google has decided to “close” the use of APIs, so now you need a code / key to do it. To be able to obtain this key, you must first create an account by entering your credit card number…</p>
 <p>To create the account, go to <a href="https://console.developers.google.com/projectselector/apis/api/static_maps_backend?supportedpurview=project">Google Cloud Platform</a>.<br />
 Once this is done, you need to reinstall ggmap using the <span class="citation">@dkahle</span> code available <a href="https://github.com/dkahle/ggmap">here</a>.<br />
-<code>devtools::install_github(&quot;dkahle/ggmap&quot;, ref = &quot;tidyup&quot;)</code><br />
+<code>devtools::install_github("dkahle/ggmap", ref = "tidyup")</code><br />
 Restart R<br />
 And then<br />
 <code>library(ggmap)</code><br />
-<code>register_google(key = &quot;copy-paste-here-your-API-key&quot;)</code><br />
+<code>register_google(key = "copy-paste-here-your-API-key")</code><br />
 And that’s it, it took me a while to do much so I put it here!</p>
 </div>
 <div id="small-bonus-how-to-use-the-package-opencage-to-find-gps-coordinates" class="section level1">
@@ -125,18 +125,19 @@ And that’s it, it took me a while to do much so I put it here!</p>
 <p>Indeed, Maëlle pointed out to me that <em>Open Cage Data</em> was a very good alternative to no longer using <code>geocode()</code>, so I take this opportunity to pass on the information here!</p>
 <p>First step, as for <em>Google Cloud</em> you need to create an account <a href="https://opencagedata.com/">here</a> to get a key but no need to enter your credit card number!</p>
 <p>Then it is necessary to register the key in the environment of R by doing <code>usethis::edit_r_environ()</code> which opens a file .Renviron.<br />
-In this file you must add <code>OPENCAGE_KEY=&quot;copy-paste-your-key&quot;</code>.<br />
+In this file you must add <code>OPENCAGE_KEY="copy-paste-your-key"</code>.<br />
 <strong>Caution</strong> the file must always end with a blank line! So if your file is blank, first line you put the key in and tap on enter to have a second blank line.</p>
 <p>Now it is necessary to restart R to be able to use the database.</p>
 <p>I’m not going to detail all the features here, just tell you how to get the coordinates. For the rest, I refer you to the <a href="https://github.com/ropensci/opencage">GitHub page of <em>Open Cage Data</em> which is much more accurate</a>.</p>
 <p>To obtain coordinates<br />
 Install the package<br />
-<code>library(&quot;devtools&quot;)</code><br />
-<code>install_github(&quot;ropensci/opencage&quot;)</code></p>
-<p>Load the package <code>library(&quot;opencage&quot;)</code></p>
+<code>library("devtools")</code><br />
+<code>install_github("ropensci/opencage")</code></p>
+<p>Load the package
+<code>library("opencage")</code></p>
 <p>Then search for your place with the function <code>opencage_forward()</code></p>
 <p><strong>Caution</strong> Unlike the <code>geocode()</code> function, the <code>opencage_forward()</code> function gives much more information so associated it with a name.<br />
-<code>geographical_data &lt;- opencage_forward(placename = &quot;Gare du Mans&quot;)</code></p>
+<code>geographical_data &lt;- opencage_forward(placename = "Gare du Mans")</code></p>
 <p>Here we have a results file with 3 entries, so you have to choose the right one.<br />
 What interests us is Le Mans station only and not the other stations nearby so we choose the third line and keep the GPS coordinates that interest us.<br />
 <code>coordinates &lt;- geographical_data$results[3, c(55,56)]</code></p>

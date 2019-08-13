@@ -1,5 +1,5 @@
 ---
-title: Text-mining pour créer un nuage de mots représentatif à partir d'un PDF
+title: Text-mining pour créer un nuage de mots à partir d'un PDF
 author: "Marie Vaugoyeau"
 date: '2019-08-12'
 slug: analyse-cv
@@ -15,7 +15,7 @@ featuredalt: "Text-mining, nuage de mots et récupération d'informations sur in
 linktitle: "analyser-le-cv"
 images: 
   - /img/featured/PetitAnjou.png  
-description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}" 
+description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}. Tout ça en un article !" 
 output:
   blogdown::html_page:
     toc: true
@@ -34,7 +34,7 @@ output:
 <li><a href="#creation-du-fichiers-des-motsexpressions">Création du fichiers des mots/expressions</a><ul>
 <li><a href="#recuperation-de-mon-cv">Récupération de mon CV</a></li>
 <li><a href="#recuperation-dune-liste-de-mots-en-francais">Récupération d’une liste de mots en français</a></li>
-<li><a href="#mesure-des-repetitions-des-mots-seuls">Mesure des répétitions des mots seuls</a></li>
+<li><a href="#mesure-des-frequences-des-mots">Mesure des fréquences des mots</a></li>
 <li><a href="#mesure-des-bigrammes">Mesure des bigrammes</a></li>
 </ul></li>
 <li><a href="#creation-du-nuage-de-mots">Création du nuage de mots</a></li>
@@ -69,7 +69,9 @@ curriculum &lt;- pdftools::pdf_text(&quot;MVaugoyeauCV.pdf&quot;) %&gt;%
 </div>
 <div id="recuperation-dune-liste-de-mots-en-francais" class="section level2">
 <h2>Récupération d’une liste de mots en français</h2>
-<p>Pour pouvoir travailler sur la liste de mots, il faut une liste des mots à retirer. Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n’y en a pas (à ma connaissance) en français donc j’ai été la récupérer sur le <a href="https://countwordsfree.com/stopwords/french">site count words</a>. Ce site a l’avantage de proposer pleins de langues !</p>
+<p>Tous les mots ne sont pas intéressant, il faut donc retirer les mots inutiles comme <code>et</code>, <code>le</code>, <code>à</code>…<br />
+Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n’y en a pas (à ma connaissance) en français.</p>
+<p>J’ai donc été la récupérer sur le <a href="https://countwordsfree.com/stopwords/french">site count words</a>. Ce site a l’avantage de proposer pleins de langues !</p>
 <pre class="r"><code># Création de la liste de mot sotp en français  / utilisation de {rvest} et {xml2}
 stop_words_fr &lt;-
   xml2::read_html(&quot;https://countwordsfree.com/stopwords/french&quot;) %&gt;%
@@ -81,11 +83,11 @@ stop_words_fr &lt;-
   rename(mot = a) %&gt;% 
   add_row(mot = c(&quot;vaugoyeau&quot;, &quot;jeunes&quot;, &quot;al&quot;, &quot;impact&quot;, &quot;factor&quot;, &quot;été&quot;, &quot;issus&quot;, &quot;marie&quot;, &quot;annee&quot;, &quot;création&quot;, &quot;influence&quot;, &quot;paris&quot;))</code></pre>
 </div>
-<div id="mesure-des-repetitions-des-mots-seuls" class="section level2">
-<h2>Mesure des répétitions des mots seuls</h2>
+<div id="mesure-des-frequences-des-mots" class="section level2">
+<h2>Mesure des fréquences des mots</h2>
 <p>La première étape est créer une liste de mots simples.</p>
 <p>Attention aux accents, ici, je les ai ici retirés.</p>
-<pre class="r"><code># création de la liste de mots et graphique associé
+<pre class="r"><code># création de la liste de mots
 texte &lt;- curriculum %&gt;% 
   mutate(texte = texte %&gt;% 
            str_remove_all(&quot;\\d&quot;) %&gt;%
@@ -126,6 +128,7 @@ texte &lt;- curriculum %&gt;%
     ) %&gt;% 
   count(mot, sort = TRUE) 
 
+#  et graphique associé
 texte %&gt;%
   filter(n &gt; 2) %&gt;% 
   ggplot() +
@@ -141,13 +144,14 @@ texte %&gt;%
   labs(title = &quot;Mots les plus récurrents&quot;) +
   theme_classic()</code></pre>
 <p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/fichier_mot_seul-1.png" width="672" /></p>
-<p>Si vous regardez attentitivement le code vous verrez que j’ai fait de la lemnisation, c’est-à-dire que j’ai chercher à exploiter la signification des mots et non le mot en tant que telle.</p>
+<p>Si vous regardez attentivement le code vous verrez que j’ai fait de la lemmatisation, c’est-à-dire que j’ai cherché à exploiter la signification des mots et non le mot en tant que telle.</p>
 <p>Par exemple, <code>analyste</code>, <code>analyser</code>, <code>analyses</code> ou <code>analyse</code> ont pour moi le même sens d’<code>analyse</code> donc je les ai rassembler sous le même mot.</p>
+<p>Il existe peut-être une liste officiel pour faire de la lemmatisation mais je ne la connais pas, désolée !</p>
 </div>
 <div id="mesure-des-bigrammes" class="section level2">
 <h2>Mesure des bigrammes</h2>
-<p>Un mot seul ne signifie pas toujours quelque chose, d’où a necessité d’exploiter aussi les n-grammmes (ici je m’arreterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l’on veut !).</p>
-<pre class="r"><code># Creation du fichier bigram pour les expressions et représentation graphique
+<p>Un mot seul ne signifie pas toujours quelque chose, d’où la nécessité d’exploiter aussi les n-grammmes (ici je m’arrêterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l’on veut !).</p>
+<pre class="r"><code># Création du fichier bigramme pour les expressions 
 bigram &lt;- curriculum %&gt;% 
   mutate(texte = texte %&gt;% 
            str_remove_all(&quot;\\d&quot;) %&gt;%
@@ -180,6 +184,7 @@ bigram &lt;- curriculum %&gt;%
   unite(bigramme, mot1, mot2, sep = &quot; &quot;) %&gt;% 
   count(bigramme, sort = TRUE) 
 
+# et représentation graphique
 bigram %&gt;%
   filter(n &gt; 1) %&gt;% 
   ggplot() +
@@ -194,7 +199,7 @@ bigram %&gt;%
   ylab(&quot;nombre de répétition&quot;) + 
   labs(title = &quot;Expressions les plus utilisées&quot;) +
   theme_classic()</code></pre>
-<p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/creation_du_fichier_bigram-1.png" width="672" /></p>
+<p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/creation_du_fichier_bigramme-1.png" width="672" /></p>
 </div>
 </div>
 <div id="creation-du-nuage-de-mots" class="section level1">
@@ -221,7 +226,7 @@ liste_nuage_de_mots &lt;- tibble(
     )
   )
 
-# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigram
+# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigramme
 
 liste_nuage_de_mots %&lt;&gt;% 
   bind_rows(
@@ -257,6 +262,7 @@ wordcloud::wordcloud(words = liste_nuage_de_mots$mot_expression,
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<p>Et voilà ! Alors qu’en pensez-vous ?<br />
+<p>Et voilà !
+Alors qu’en pensez-vous ?<br />
 Je suis plutôt contente de voir le résultat. ^ ^</p>
 </div>
