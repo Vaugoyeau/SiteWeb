@@ -1,0 +1,269 @@
+---
+title: Text-mining pour créer un nuage de mots représentatif à partir d'un PDF
+author: "Marie Vaugoyeau"
+date: '2019-08-12'
+slug: analyse-cv
+categories:
+- graphique
+- text-mining
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "PetitAnjou.png"
+featuredalt: "Text-mining, nuage de mots et récupération d'informations sur internet"
+linktitle: "analyser-le-cv"
+images: 
+  - /img/featured/PetitAnjou.png  
+description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+# But : Vérifier que mon CV soit adapté à l'image que je veux renvoyer  
+En mettant à jour mon CV, je me suis demandé si les mots-clés utilisés étaient bien représentatif de mes compétences.  
+Bon et j'avoue, surtout, j'avais envie d'utiliser les packages {rvest}, {tidytext} et {wordcloud} donc j'ai fait d'une pierre deux coups !   
+  
+# Importation des packages utilisés  
+  
+```{r packages_utilises, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+library(tidytext)
+library(tidyverse)
+library(stringr)
+library(magrittr)
+
+```
+  
+# Création du fichiers des mots/expressions  
+  
+## Récupération de mon CV  
+  
+Pour faire les choses proprement et que cela soit reproductible pour vous, je vais partir de mon [CV](/post/MVaugoyeauCV.pdf) en version `PDF`.  
+  
+```{r importation_fichier, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+# Téléchargement du CV avec {pdftools}
+curriculum <- pdftools::pdf_text("MVaugoyeauCV.pdf") %>% 
+  str_split("\n", simplify = TRUE) %>% 
+  t() %>% 
+  set_colnames(c("page1", "page2")) %>% 
+  as_tibble() %>% 
+  gather("page", "texte")
+
+```
+  
+## Récupération d'une liste de mots en français  
+  
+Pour pouvoir travailler sur la liste de mots, il faut une liste des mots à retirer. Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n'y en a pas (à ma connaissance) en français donc j'ai été la récupérer sur le [site count words](https://countwordsfree.com/stopwords/french). Ce site a l'avantage de proposer pleins de langues !    
+  
+```{r creation_liste_mot, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+# Création de la liste de mot sotp en français  / utilisation de {rvest} et {xml2}
+stop_words_fr <-
+  xml2::read_html("https://countwordsfree.com/stopwords/french") %>%
+  rvest::html_table() %>%
+  purrr::pluck(1) %>%
+  dplyr::select(a) %>%
+  as_tibble() %>%
+  tibble::add_row(a = "a", .before = 1) %>%
+  rename(mot = a) %>% 
+  add_row(mot = c("vaugoyeau", "jeunes", "al", "impact", "factor", "été", "issus", "marie", "annee", "création", "influence", "paris"))
+
+```
+  
+## Mesure des répétitions des mots seuls  
+  
+La première étape est créer une liste de mots simples.  
+  
+Attention aux accents, ici, je les ai ici retirés.  
+  
+```{r fichier_mot_seul, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+# création de la liste de mots et graphique associé
+texte <- curriculum %>% 
+  mutate(texte = texte %>% 
+           str_remove_all("\\d") %>%
+           str_replace_all("[:punct:]", " ") %>% 
+           chartr(old = "àâäçéèêëîïôöùûüÿ", 
+                  new = "aaaceeeeiioouuuy")
+         ) %>% 
+  unnest_tokens(mot, texte) %>%
+  anti_join(
+    stop_words_fr %>% 
+      mutate(
+        mot = mot %>% 
+          chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy")
+        )
+    ) %>%
+  anti_join(
+    stop_words %>% 
+      mutate(
+        mot = word %>% 
+          chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy")
+        )
+    ) %>% 
+  mutate(
+    mot = mot %>% 
+      str_remove_all("s$") %>% 
+      str_replace_all(
+        c(
+          "analys\\w+" = "analyse",
+          "biostatistique" = "statistiques",
+          "automatiser" = "automatisation",
+          "experi\\w+" = "experimentation",
+          "evolutive" = "evolution",
+          "urba\\w+" = "urbanisation",
+          "universit\\w+" = "universite",
+          "permi" = "permis",
+          "paru" = "parus",
+          "ox[iy]d\\w+" = "oxydatif"))
+    ) %>% 
+  count(mot, sort = TRUE) 
+
+texte %>%
+  filter(n > 2) %>% 
+  ggplot() +
+  aes(reorder(mot, n), n) +
+  geom_bar(stat = "identity", fill = "orange") +
+  geom_text(
+    aes(label= as.character(n)), 
+    check_overlap = TRUE, 
+    size = 4) + 
+  coord_flip() + 
+  xlab(" ") + 
+  ylab("nombre de répétition") + 
+  labs(title = "Mots les plus récurrents") +
+  theme_classic()
+
+```
+  
+Si vous regardez attentitivement le code vous verrez que j'ai fait de la lemnisation, c'est-à-dire que j'ai chercher à exploiter la signification des mots et non le mot en tant que telle.  
+  
+Par exemple, `analyste`, `analyser`, `analyses` ou `analyse` ont pour moi le même sens d'`analyse` donc je les ai rassembler sous le même mot.  
+  
+## Mesure des bigrammes  
+  
+Un mot seul ne signifie pas toujours quelque chose, d'où a necessité d'exploiter aussi les n-grammmes (ici je m'arreterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l'on veut !).  
+  
+```{r creation_du_fichier_bigram, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+# Creation du fichier bigram pour les expressions et représentation graphique
+bigram <- curriculum %>% 
+  mutate(texte = texte %>% 
+           str_remove_all("\\d") %>%
+           str_replace_all("[:punct:]", " ") %>% 
+           chartr(old = "àâäçéèêëîïôöùûüÿ", 
+                  new = "aaaceeeeiioouuuy")
+         ) %>% 
+  unnest_tokens(bigramme, texte, token = "ngrams", n = 2) %>%
+  separate(bigramme, c("mot1", "mot2"), sep = " ") %>% 
+  filter(!mot1 %in% (stop_words_fr$mot %>% chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy"))) %>% 
+  filter(!mot2 %in% (stop_words_fr$mot %>% chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy"))) %>% 
+  filter(!mot1 %in% (stop_words$word %>% chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy"))) %>% 
+  filter(!mot2 %in% (stop_words$word %>% chartr(old = "àâäçéèêëîïôöùûüÿ", new = "aaaceeeeiioouuuy"))) %>% 
+  select(- page) %>% 
+  mutate_all(
+    ~ str_remove_all(., "s$") %>% 
+      str_replace_all(
+        c(
+          "analys\\w+" = "analyse",
+          "biostatistique" = "statistiques",
+          "automatiser" = "automatisation",
+          "experi\\w+" = "experimentation",
+          "evolutive" = "evolution",
+          "urba\\w+" = "urbanisation",
+          "universit\\w+" = "universite",
+          "permi" = "permis",
+          "paru" = "parus",
+          "ox[iy]d\\w+" = "oxydatif"))
+    ) %>% 
+  unite(bigramme, mot1, mot2, sep = " ") %>% 
+  count(bigramme, sort = TRUE) 
+
+bigram %>%
+  filter(n > 1) %>% 
+  ggplot() +
+  aes(reorder(bigramme, n), n) +
+  geom_bar(stat = "identity", fill = "cyan") +
+  geom_text(
+    aes(label= as.character(n)), 
+    check_overlap = TRUE, 
+    size = 4) + 
+  coord_flip() + 
+  xlab(" ") + 
+  ylab("nombre de répétition") + 
+  labs(title = "Expressions les plus utilisées") +
+  theme_classic()
+
+```
+  
+# Création du nuage de mots  
+  
+J'ai choisi de retirer certains bigrammes car ils ne signifient rien.   
+  
+```{r nuage_de_point, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+# Création de la liste de mots/expression a représenter
+
+liste_nuage_de_mots <- tibble(
+  mot_expression = (bigram %>% filter(n >1))$bigramme,
+  frequence = (bigram %>% filter(n >1))$n) %>% 
+  add_row(
+    mot_expression = "test post hoc",
+    frequence = 2) %>% 
+  filter(
+    ! mot_expression %in% c(
+      "traitement froid",
+      "tit parus",
+      "post hoc",
+      "test post",
+      "mieux comprendre",
+      "major journal",
+      "intensite locale",
+      "evolution universite"
+    )
+  )
+
+# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigram
+
+liste_nuage_de_mots %<>% 
+  bind_rows(
+    texte %>% 
+      filter(n > 2) %>% 
+      anti_join(
+        liste_nuage_de_mots %>% 
+          separate(
+            mot_expression, 
+            c("mot1", "mot2"), 
+            sep = " ") %>% 
+          select(- frequence) %>% 
+          gather("position", "mot") %>% 
+          select(mot)
+      ) %>%
+      rename("mot_expression" = "mot",
+             "frequence" = "n")
+  )
+
+set.seed(1111)
+wordcloud::wordcloud(words = liste_nuage_de_mots$mot_expression, 
+          freq = liste_nuage_de_mots$frequence,
+          min.freq = 1,
+          random.order = FALSE, 
+          colors = c( "#FF7F24", "#00F5FF", "#9400D3", "#FFD700", "#00CD00"))
+
+wordcloud2::wordcloud2(
+  liste_nuage_de_mots,
+  fontWeight = 'normal',
+  color = 'random-light')
+
+```
+  
+# Conclusion  
+  
+Et voilà !
+Alors qu'en pensez-vous ?  
+Je suis plutôt contente de voir le résultat. ^ ^   
+  
+  

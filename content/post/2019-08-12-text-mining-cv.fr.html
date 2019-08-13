@@ -1,0 +1,262 @@
+---
+title: Text-mining pour créer un nuage de mots représentatif à partir d'un PDF
+author: "Marie Vaugoyeau"
+date: '2019-08-12'
+slug: analyse-cv
+categories:
+- graphique
+- text-mining
+tags:
+- graph
+- image
+featuredpath: "/images/featured/"
+featured: "PetitAnjou.png"
+featuredalt: "Text-mining, nuage de mots et récupération d'informations sur internet"
+linktitle: "analyser-le-cv"
+images: 
+  - /img/featured/PetitAnjou.png  
+description : "Text-mining avec le package {tidytext}, nuage de mots avec le package {wordcloud} et récupération d'une liste de mots sur internet avec le package {rvest}" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="/rmarkdown-libs/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/wordcloud2/wordcloud2-all.js"></script>
+<script src="/rmarkdown-libs/wordcloud2/hover.js"></script>
+<script src="/rmarkdown-libs/wordcloud2-binding/wordcloud2.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#but-verifier-que-mon-cv-soit-adapte-a-limage-que-je-veux-renvoyer">But : Vérifier que mon CV soit adapté à l’image que je veux renvoyer</a></li>
+<li><a href="#importation-des-packages-utilises">Importation des packages utilisés</a></li>
+<li><a href="#creation-du-fichiers-des-motsexpressions">Création du fichiers des mots/expressions</a><ul>
+<li><a href="#recuperation-de-mon-cv">Récupération de mon CV</a></li>
+<li><a href="#recuperation-dune-liste-de-mots-en-francais">Récupération d’une liste de mots en français</a></li>
+<li><a href="#mesure-des-repetitions-des-mots-seuls">Mesure des répétitions des mots seuls</a></li>
+<li><a href="#mesure-des-bigrammes">Mesure des bigrammes</a></li>
+</ul></li>
+<li><a href="#creation-du-nuage-de-mots">Création du nuage de mots</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</div>
+
+<div id="but-verifier-que-mon-cv-soit-adapte-a-limage-que-je-veux-renvoyer" class="section level1">
+<h1>But : Vérifier que mon CV soit adapté à l’image que je veux renvoyer</h1>
+<p>En mettant à jour mon CV, je me suis demandé si les mots-clés utilisés étaient bien représentatif de mes compétences.<br />
+Bon et j’avoue, surtout, j’avais envie d’utiliser les packages {rvest}, {tidytext} et {wordcloud} donc j’ai fait d’une pierre deux coups !</p>
+</div>
+<div id="importation-des-packages-utilises" class="section level1">
+<h1>Importation des packages utilisés</h1>
+<pre class="r"><code>library(tidytext)
+library(tidyverse)
+library(stringr)
+library(magrittr)</code></pre>
+</div>
+<div id="creation-du-fichiers-des-motsexpressions" class="section level1">
+<h1>Création du fichiers des mots/expressions</h1>
+<div id="recuperation-de-mon-cv" class="section level2">
+<h2>Récupération de mon CV</h2>
+<p>Pour faire les choses proprement et que cela soit reproductible pour vous, je vais partir de mon <a href="/post/MVaugoyeauCV.pdf">CV</a> en version <code>PDF</code>.</p>
+<pre class="r"><code># Téléchargement du CV avec {pdftools}
+curriculum &lt;- pdftools::pdf_text(&quot;MVaugoyeauCV.pdf&quot;) %&gt;% 
+  str_split(&quot;\n&quot;, simplify = TRUE) %&gt;% 
+  t() %&gt;% 
+  set_colnames(c(&quot;page1&quot;, &quot;page2&quot;)) %&gt;% 
+  as_tibble() %&gt;% 
+  gather(&quot;page&quot;, &quot;texte&quot;)</code></pre>
+</div>
+<div id="recuperation-dune-liste-de-mots-en-francais" class="section level2">
+<h2>Récupération d’une liste de mots en français</h2>
+<p>Pour pouvoir travailler sur la liste de mots, il faut une liste des mots à retirer. Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n’y en a pas (à ma connaissance) en français donc j’ai été la récupérer sur le <a href="https://countwordsfree.com/stopwords/french">site count words</a>. Ce site a l’avantage de proposer pleins de langues !</p>
+<pre class="r"><code># Création de la liste de mot sotp en français  / utilisation de {rvest} et {xml2}
+stop_words_fr &lt;-
+  xml2::read_html(&quot;https://countwordsfree.com/stopwords/french&quot;) %&gt;%
+  rvest::html_table() %&gt;%
+  purrr::pluck(1) %&gt;%
+  dplyr::select(a) %&gt;%
+  as_tibble() %&gt;%
+  tibble::add_row(a = &quot;a&quot;, .before = 1) %&gt;%
+  rename(mot = a) %&gt;% 
+  add_row(mot = c(&quot;vaugoyeau&quot;, &quot;jeunes&quot;, &quot;al&quot;, &quot;impact&quot;, &quot;factor&quot;, &quot;été&quot;, &quot;issus&quot;, &quot;marie&quot;, &quot;annee&quot;, &quot;création&quot;, &quot;influence&quot;, &quot;paris&quot;))</code></pre>
+</div>
+<div id="mesure-des-repetitions-des-mots-seuls" class="section level2">
+<h2>Mesure des répétitions des mots seuls</h2>
+<p>La première étape est créer une liste de mots simples.</p>
+<p>Attention aux accents, ici, je les ai ici retirés.</p>
+<pre class="r"><code># création de la liste de mots et graphique associé
+texte &lt;- curriculum %&gt;% 
+  mutate(texte = texte %&gt;% 
+           str_remove_all(&quot;\\d&quot;) %&gt;%
+           str_replace_all(&quot;[:punct:]&quot;, &quot; &quot;) %&gt;% 
+           chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, 
+                  new = &quot;aaaceeeeiioouuuy&quot;)
+         ) %&gt;% 
+  unnest_tokens(mot, texte) %&gt;%
+  anti_join(
+    stop_words_fr %&gt;% 
+      mutate(
+        mot = mot %&gt;% 
+          chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;)
+        )
+    ) %&gt;%
+  anti_join(
+    stop_words %&gt;% 
+      mutate(
+        mot = word %&gt;% 
+          chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;)
+        )
+    ) %&gt;% 
+  mutate(
+    mot = mot %&gt;% 
+      str_remove_all(&quot;s$&quot;) %&gt;% 
+      str_replace_all(
+        c(
+          &quot;analys\\w+&quot; = &quot;analyse&quot;,
+          &quot;biostatistique&quot; = &quot;statistiques&quot;,
+          &quot;automatiser&quot; = &quot;automatisation&quot;,
+          &quot;experi\\w+&quot; = &quot;experimentation&quot;,
+          &quot;evolutive&quot; = &quot;evolution&quot;,
+          &quot;urba\\w+&quot; = &quot;urbanisation&quot;,
+          &quot;universit\\w+&quot; = &quot;universite&quot;,
+          &quot;permi&quot; = &quot;permis&quot;,
+          &quot;paru&quot; = &quot;parus&quot;,
+          &quot;ox[iy]d\\w+&quot; = &quot;oxydatif&quot;))
+    ) %&gt;% 
+  count(mot, sort = TRUE) 
+
+texte %&gt;%
+  filter(n &gt; 2) %&gt;% 
+  ggplot() +
+  aes(reorder(mot, n), n) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;orange&quot;) +
+  geom_text(
+    aes(label= as.character(n)), 
+    check_overlap = TRUE, 
+    size = 4) + 
+  coord_flip() + 
+  xlab(&quot; &quot;) + 
+  ylab(&quot;nombre de répétition&quot;) + 
+  labs(title = &quot;Mots les plus récurrents&quot;) +
+  theme_classic()</code></pre>
+<p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/fichier_mot_seul-1.png" width="672" /></p>
+<p>Si vous regardez attentitivement le code vous verrez que j’ai fait de la lemnisation, c’est-à-dire que j’ai chercher à exploiter la signification des mots et non le mot en tant que telle.</p>
+<p>Par exemple, <code>analyste</code>, <code>analyser</code>, <code>analyses</code> ou <code>analyse</code> ont pour moi le même sens d’<code>analyse</code> donc je les ai rassembler sous le même mot.</p>
+</div>
+<div id="mesure-des-bigrammes" class="section level2">
+<h2>Mesure des bigrammes</h2>
+<p>Un mot seul ne signifie pas toujours quelque chose, d’où a necessité d’exploiter aussi les n-grammmes (ici je m’arreterais au bigramme, mais il est bien sûr possible de chercher le nombre de mots que l’on veut !).</p>
+<pre class="r"><code># Creation du fichier bigram pour les expressions et représentation graphique
+bigram &lt;- curriculum %&gt;% 
+  mutate(texte = texte %&gt;% 
+           str_remove_all(&quot;\\d&quot;) %&gt;%
+           str_replace_all(&quot;[:punct:]&quot;, &quot; &quot;) %&gt;% 
+           chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, 
+                  new = &quot;aaaceeeeiioouuuy&quot;)
+         ) %&gt;% 
+  unnest_tokens(bigramme, texte, token = &quot;ngrams&quot;, n = 2) %&gt;%
+  separate(bigramme, c(&quot;mot1&quot;, &quot;mot2&quot;), sep = &quot; &quot;) %&gt;% 
+  filter(!mot1 %in% (stop_words_fr$mot %&gt;% chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;))) %&gt;% 
+  filter(!mot2 %in% (stop_words_fr$mot %&gt;% chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;))) %&gt;% 
+  filter(!mot1 %in% (stop_words$word %&gt;% chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;))) %&gt;% 
+  filter(!mot2 %in% (stop_words$word %&gt;% chartr(old = &quot;àâäçéèêëîïôöùûüÿ&quot;, new = &quot;aaaceeeeiioouuuy&quot;))) %&gt;% 
+  select(- page) %&gt;% 
+  mutate_all(
+    ~ str_remove_all(., &quot;s$&quot;) %&gt;% 
+      str_replace_all(
+        c(
+          &quot;analys\\w+&quot; = &quot;analyse&quot;,
+          &quot;biostatistique&quot; = &quot;statistiques&quot;,
+          &quot;automatiser&quot; = &quot;automatisation&quot;,
+          &quot;experi\\w+&quot; = &quot;experimentation&quot;,
+          &quot;evolutive&quot; = &quot;evolution&quot;,
+          &quot;urba\\w+&quot; = &quot;urbanisation&quot;,
+          &quot;universit\\w+&quot; = &quot;universite&quot;,
+          &quot;permi&quot; = &quot;permis&quot;,
+          &quot;paru&quot; = &quot;parus&quot;,
+          &quot;ox[iy]d\\w+&quot; = &quot;oxydatif&quot;))
+    ) %&gt;% 
+  unite(bigramme, mot1, mot2, sep = &quot; &quot;) %&gt;% 
+  count(bigramme, sort = TRUE) 
+
+bigram %&gt;%
+  filter(n &gt; 1) %&gt;% 
+  ggplot() +
+  aes(reorder(bigramme, n), n) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;cyan&quot;) +
+  geom_text(
+    aes(label= as.character(n)), 
+    check_overlap = TRUE, 
+    size = 4) + 
+  coord_flip() + 
+  xlab(&quot; &quot;) + 
+  ylab(&quot;nombre de répétition&quot;) + 
+  labs(title = &quot;Expressions les plus utilisées&quot;) +
+  theme_classic()</code></pre>
+<p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/creation_du_fichier_bigram-1.png" width="672" /></p>
+</div>
+</div>
+<div id="creation-du-nuage-de-mots" class="section level1">
+<h1>Création du nuage de mots</h1>
+<p>J’ai choisi de retirer certains bigrammes car ils ne signifient rien.</p>
+<pre class="r"><code># Création de la liste de mots/expression a représenter
+
+liste_nuage_de_mots &lt;- tibble(
+  mot_expression = (bigram %&gt;% filter(n &gt;1))$bigramme,
+  frequence = (bigram %&gt;% filter(n &gt;1))$n) %&gt;% 
+  add_row(
+    mot_expression = &quot;test post hoc&quot;,
+    frequence = 2) %&gt;% 
+  filter(
+    ! mot_expression %in% c(
+      &quot;traitement froid&quot;,
+      &quot;tit parus&quot;,
+      &quot;post hoc&quot;,
+      &quot;test post&quot;,
+      &quot;mieux comprendre&quot;,
+      &quot;major journal&quot;,
+      &quot;intensite locale&quot;,
+      &quot;evolution universite&quot;
+    )
+  )
+
+# Attention, il faut retirer des mots uniques les mots déjà présents dans le bigram
+
+liste_nuage_de_mots %&lt;&gt;% 
+  bind_rows(
+    texte %&gt;% 
+      filter(n &gt; 2) %&gt;% 
+      anti_join(
+        liste_nuage_de_mots %&gt;% 
+          separate(
+            mot_expression, 
+            c(&quot;mot1&quot;, &quot;mot2&quot;), 
+            sep = &quot; &quot;) %&gt;% 
+          select(- frequence) %&gt;% 
+          gather(&quot;position&quot;, &quot;mot&quot;) %&gt;% 
+          select(mot)
+      ) %&gt;%
+      rename(&quot;mot_expression&quot; = &quot;mot&quot;,
+             &quot;frequence&quot; = &quot;n&quot;)
+  )
+
+set.seed(1111)
+wordcloud::wordcloud(words = liste_nuage_de_mots$mot_expression, 
+          freq = liste_nuage_de_mots$frequence,
+          min.freq = 1,
+          random.order = FALSE, 
+          colors = c( &quot;#FF7F24&quot;, &quot;#00F5FF&quot;, &quot;#9400D3&quot;, &quot;#FFD700&quot;, &quot;#00CD00&quot;))</code></pre>
+<p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/nuage_de_point-1.png" width="672" /></p>
+<pre class="r"><code>wordcloud2::wordcloud2(
+  liste_nuage_de_mots,
+  fontWeight = &#39;normal&#39;,
+  color = &#39;random-light&#39;)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"word":["handicap physique","mesange bleue","parus major","application shiny","gobemouche noir","ingenieure agronome","machine learning","mesange charbonniere","statut oxydatif","test post hoc","urbanisation","ecologie","analyse","experimentation","evolution","universite","donnee","traitement","date","difference","nichoir","ponte","supplementation","developpement","doctorat","enseignement","licence","masse","master","mesure","oiseaux","permis","population","reproduction","science","statistique","taille","temperature","tit"],"freq":[3,3,3,2,2,2,2,2,2,2,11,9,8,8,7,6,5,5,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],"fontFamily":"Segoe UI","fontWeight":"normal","color":"random-light","minSize":0,"weightFactor":16.3636363636364,"backgroundColor":"white","gridSize":0,"minRotation":-0.785398163397448,"maxRotation":0.785398163397448,"shuffle":true,"rotateRatio":0.4,"shape":"circle","ellipticity":0.65,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>Et voilà ! Alors qu’en pensez-vous ?<br />
+Je suis plutôt contente de voir le résultat. ^ ^</p>
+</div>
