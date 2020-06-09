@@ -25,15 +25,15 @@ output:
 
 <div id="TOC">
 <ul>
-<li><a href="#premiere-etape-verifier-la-repetabilite-des-donnees">Première étape : Vérifier la répétabilité des données</a></li>
-<li><a href="#deuxieme-etape-modeles-lineaires-mixtes-avec-backward-elimination">Deuxième étape : Modèles linéaires mixtes avec backward élimination</a><ul>
-<li><a href="#modele-lineaire-mixte">Modèle linéaire mixte</a></li>
-<li><a href="#distribution-des-residus-du-modele">Distribution des résidus du modèle</a></li>
-<li><a href="#selection-de-modele-avec-elimination">Sélection de modèle avec élimination</a></li>
-<li><a href="#modele-final">Modèle final</a></li>
-<li><a href="#effets-aleatoires">Effets aléatoires</a></li>
+<li><a href="#première-étape-vérifier-la-répétabilité-des-données">Première étape : Vérifier la répétabilité des données</a></li>
+<li><a href="#deuxième-étape-modèles-linéaires-mixtes-avec-backward-élimination">Deuxième étape : Modèles linéaires mixtes avec backward élimination</a><ul>
+<li><a href="#modèle-linéaire-mixte">Modèle linéaire mixte</a></li>
+<li><a href="#distribution-des-résidus-du-modèle">Distribution des résidus du modèle</a></li>
+<li><a href="#sélection-de-modèle-avec-élimination">Sélection de modèle avec élimination</a></li>
+<li><a href="#modèle-final">Modèle final</a></li>
+<li><a href="#effets-aléatoires">Effets aléatoires</a></li>
 </ul></li>
-<li><a href="#troisieme-et-derniere-etape-expliquer-les-resultats-trouves">Troisième et dernière étape : Expliquer les résultats trouvés</a></li>
+<li><a href="#troisième-et-dernière-étape-expliquer-les-résultats-trouvés">Troisième et dernière étape : Expliquer les résultats trouvés</a></li>
 </ul>
 </div>
 
@@ -87,7 +87,7 @@ Initialement, nous avions prévu de faire une expérience avec un design croisé
 </tbody>
 </table>
 <p>Ci-dessous, je détaille les analyses statistiques menées à l’époque.</p>
-<div id="premiere-etape-verifier-la-repetabilite-des-donnees" class="section level1">
+<div id="première-étape-vérifier-la-répétabilité-des-données" class="section level1">
 <h1>Première étape : Vérifier la répétabilité des données</h1>
 <p>Pour certaines variables (comptage d’hétérophiles sur lymphocytes, couleur des plumes…), j’ai fais deux ou trois mesures. Afin de quantifier la répétabilité, j’ai utilisé un modèle linéaire qui m’a donnée la statistique de test <em>F</em> avec le degré de liberté et la <em>p</em>-value.</p>
 <pre class="r"><code>mod&lt;-lm(Area~Identity, data=X)
@@ -103,17 +103,17 @@ anova(mod)</code></pre>
 <p>Dans cet article j’ai aussi calculé manuellement le facteur de corrélation intraclass selon la méthode de Lessells and Boag <a href="http://www.jstor.org/stable/4087240?seq=1#page_scan_tab_contents">1987</a>: r = (MS<sub>A</sub> - MS<sub>w</sub>)/(MS<sub>A</sub> + MS<sub>W</sub>(n-1)).</p>
 <p>Une fois la répétabilité calculée, j’ai calculé et utilisé les moyennes pour le reste des analyses.</p>
 </div>
-<div id="deuxieme-etape-modeles-lineaires-mixtes-avec-backward-elimination" class="section level1">
+<div id="deuxième-étape-modèles-linéaires-mixtes-avec-backward-élimination" class="section level1">
 <h1>Deuxième étape : Modèles linéaires mixtes avec backward élimination</h1>
 <p>Pour tester les effets de l’activité physique et de la supplémentation en caroténoïdes sur le système antioxydant, la réponse au stress et la coloration du plumage, tous les modèles ont comme facteurs fixes la longueur du tarse, la masse et deux triples interactions entre la supplémentation en caroténoïdes ou l’activité physique avec le sexe et la période (au début ou à la fin de l’expérience).</p>
-<div id="modele-lineaire-mixte" class="section level2">
+<div id="modèle-linéaire-mixte" class="section level2">
 <h2>Modèle linéaire mixte</h2>
 <p>Pour chaque variable, j’ai écrit une modèle linéaire mixte comme celui-ci :</p>
 <pre class="r"><code>library(nlme)
 m1&lt;-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=~1, Identity=~1), method=&quot;ML&quot;, data = Y, na.action=na.exclude)</code></pre>
 <p>Pour prendre en compte la variance biologique, l’identité de la volière et de l’individu étaient mis en facteurs aléatoires.</p>
 </div>
-<div id="distribution-des-residus-du-modele" class="section level2">
+<div id="distribution-des-résidus-du-modèle" class="section level2">
 <h2>Distribution des résidus du modèle</h2>
 <p>Pour valider <em>à posteriori</em> l’utilisation d’un modèle <strong>linéaire</strong>, j’ai testé la distribution des résidus avec un test de Shapiro et un Q-Q plot.</p>
 <pre class="r"><code>shapiro.test(residuals(m1))</code></pre>
@@ -126,7 +126,7 @@ m1&lt;-lme(Oxy ~ Tarsus+Mass+Exp*Sex*Carot+Exp*Sex*Plucking, random=list(Aviary=
 <p><img src="/post/2018-02-06-my-first-article-a-not-fully-crossed-design.fr_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 Si les résidus ne suivaient pas une loi normale, la variable était log-transformée puis un modèle linéaire mixte était refait.</p>
 </div>
-<div id="selection-de-modele-avec-elimination" class="section level2">
+<div id="sélection-de-modèle-avec-élimination" class="section level2">
 <h2>Sélection de modèle avec élimination</h2>
 <p>Après le premier modèle, j’en ai réalisé un autre en retirant le facteur fixe le moins significatif, puis j’ai utilisé le critère d’information d’Akaike pour choisir le meilleur modèle.</p>
 <pre class="r"><code>anova(m1)</code></pre>
@@ -221,7 +221,7 @@ anova(m1,m2)</code></pre>
 ## m2     2 16 770.4925 808.8036 -369.2462 1 vs 2 0.03665401  0.8482</code></pre>
 <p>Je garde le modèle avec l’AIC le plus faible ou si la différence entre les AIC est plus petite que 2, le plus parcimonieux.</p>
 </div>
-<div id="modele-final" class="section level2">
+<div id="modèle-final" class="section level2">
 <h2>Modèle final</h2>
 <p>Les modèles finaux sont des modèles mixtes linéaire REML réalisés avec la même fonction lme et la fonction Anova du package car pour avoir les erreur de type 3.</p>
 <pre class="r"><code>mf&lt;-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method=&quot;REML&quot;, data = Y, na.action=na.exclude)
@@ -284,7 +284,7 @@ Anova(mf, type=&quot;III&quot;)</code></pre>
 ##               Aviary Identity %in% Aviary 
 ##                   12                   41</code></pre>
 </div>
-<div id="effets-aleatoires" class="section level2">
+<div id="effets-aléatoires" class="section level2">
 <h2>Effets aléatoires</h2>
 <p>Pour les modèles finaux, les facteurs aléatoires ne sont pas significatifs. Je l’ai testé comme ça :</p>
 <pre class="r"><code>mfR&lt;-lme(Oxy ~ Sex+Exp*Plucking, random=list(Aviary=~1, Identity=~1), method=&quot;REML&quot;, data = Y, na.action=na.exclude)
@@ -295,7 +295,7 @@ anova(mfR,mfNR)</code></pre>
 ## mfNR     2  6 739.2564 753.3192 -363.6282 1 vs 2 2.39415  0.3021</code></pre>
 </div>
 </div>
-<div id="troisieme-et-derniere-etape-expliquer-les-resultats-trouves" class="section level1">
+<div id="troisième-et-dernière-étape-expliquer-les-résultats-trouvés" class="section level1">
 <h1>Troisième et dernière étape : Expliquer les résultats trouvés</h1>
 <p>La dernière étape et pas des moindre est d’analyser et expliquer les résultats pour écrire un article !</p>
 <p>Si vous avez lu jusqu’ici, merci !<br />

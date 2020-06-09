@@ -2927,7 +2927,7 @@
 	.share-btn.stumbleupon { background: #EB4823; }
 	.share-btn.pinterest	 { background: #BD081C; }
 	.share-btn.reddit      { background: #ff5700; }
-	.share-btn.email       { background: #444444; }
+	.share-btn.email       { background: #04d15d; }
 
 	  .share-btn.twitter:hover     { background: #4c9ad6; }
 	  .share-btn.google-plus:hover { background: #c64333; }
@@ -2936,7 +2936,7 @@
 	  .share-btn.stumbleupon:hover { background: #d3401f; }
 		.share-btn.pinterest:hover   { background: #AD0000; }
 	  .share-btn.reddit:hover      { background: #e54e00; }
-	  .share-btn.email:hover       { background: #363636; }
+	  .share-btn.email:hover       { background: #039e46; }
 
 /* Share Menu */
 

@@ -1,6 +1,9 @@
 body {
-  background: #f8fcfd;
+  background: #ffffcf;
 }
 h1, h2, h3, h4, h5, h6 {
-  color: #036169;
+  color: #ffbb00;
+}
+p {
+  color: #210800;
 }

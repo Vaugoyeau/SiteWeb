@@ -68,10 +68,9 @@ stop_words_fr <-
   xml2::read_html("https://countwordsfree.com/stopwords/french") %>%
   rvest::html_table() %>%
   purrr::pluck(1) %>%
-  dplyr::select(a) %>%
+  dplyr::select(X2) %>%
   as_tibble() %>%
-  tibble::add_row(a = "a", .before = 1) %>%
-  rename(mot = a) %>% 
+  rename(mot = X2) %>%
   add_row(mot = c("vaugoyeau", "jeunes", "al", "impact", "factor", "été", "issus", "marie", "annee", "création", "influence", "paris"))
 
 ```

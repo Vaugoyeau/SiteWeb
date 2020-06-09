@@ -77,10 +77,9 @@ stop_words_fr &lt;-
   xml2::read_html(&quot;https://countwordsfree.com/stopwords/french&quot;) %&gt;%
   rvest::html_table() %&gt;%
   purrr::pluck(1) %&gt;%
-  dplyr::select(a) %&gt;%
+  dplyr::select(X2) %&gt;%
   as_tibble() %&gt;%
-  tibble::add_row(a = &quot;a&quot;, .before = 1) %&gt;%
-  rename(mot = a) %&gt;% 
+  rename(mot = X2) %&gt;%
   add_row(mot = c(&quot;vaugoyeau&quot;, &quot;jeunes&quot;, &quot;al&quot;, &quot;impact&quot;, &quot;factor&quot;, &quot;été&quot;, &quot;issus&quot;, &quot;marie&quot;, &quot;annee&quot;, &quot;création&quot;, &quot;influence&quot;, &quot;paris&quot;))</code></pre>
 </div>
 <div id="word-frequency-measurement" class="section level2">

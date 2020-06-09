@@ -29,34 +29,34 @@ output:
 
 <div id="TOC">
 <ul>
-<li><a href="#but-verifier-que-mon-cv-soit-adapte-a-limage-que-je-veux-renvoyer">But : Vérifier que mon CV soit adapté à l’image que je veux renvoyer</a></li>
-<li><a href="#importation-des-packages-utilises">Importation des packages utilisés</a></li>
-<li><a href="#creation-du-fichiers-des-motsexpressions">Création du fichiers des mots/expressions</a><ul>
-<li><a href="#recuperation-de-mon-cv">Récupération de mon CV</a></li>
-<li><a href="#recuperation-dune-liste-de-mots-en-francais">Récupération d’une liste de mots en français</a></li>
-<li><a href="#mesure-des-frequences-des-mots">Mesure des fréquences des mots</a></li>
+<li><a href="#but-vérifier-que-mon-cv-soit-adapté-à-limage-que-je-veux-renvoyer">But : Vérifier que mon CV soit adapté à l’image que je veux renvoyer</a></li>
+<li><a href="#importation-des-packages-utilisés">Importation des packages utilisés</a></li>
+<li><a href="#création-du-fichiers-des-motsexpressions">Création du fichiers des mots/expressions</a><ul>
+<li><a href="#récupération-de-mon-cv">Récupération de mon CV</a></li>
+<li><a href="#récupération-dune-liste-de-mots-en-français">Récupération d’une liste de mots en français</a></li>
+<li><a href="#mesure-des-fréquences-des-mots">Mesure des fréquences des mots</a></li>
 <li><a href="#mesure-des-bigrammes">Mesure des bigrammes</a></li>
 </ul></li>
-<li><a href="#creation-du-nuage-de-mots">Création du nuage de mots</a></li>
+<li><a href="#création-du-nuage-de-mots">Création du nuage de mots</a></li>
 <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 </div>
 
-<div id="but-verifier-que-mon-cv-soit-adapte-a-limage-que-je-veux-renvoyer" class="section level1">
+<div id="but-vérifier-que-mon-cv-soit-adapté-à-limage-que-je-veux-renvoyer" class="section level1">
 <h1>But : Vérifier que mon CV soit adapté à l’image que je veux renvoyer</h1>
 <p>En mettant à jour mon CV, je me suis demandé si les mots-clés utilisés étaient bien représentatif de mes compétences.<br />
 Bon et j’avoue, surtout, j’avais envie d’utiliser les packages {rvest}, {tidytext} et {wordcloud} donc j’ai fait d’une pierre deux coups !</p>
 </div>
-<div id="importation-des-packages-utilises" class="section level1">
+<div id="importation-des-packages-utilisés" class="section level1">
 <h1>Importation des packages utilisés</h1>
 <pre class="r"><code>library(tidytext)
 library(tidyverse)
 library(stringr)
 library(magrittr)</code></pre>
 </div>
-<div id="creation-du-fichiers-des-motsexpressions" class="section level1">
+<div id="création-du-fichiers-des-motsexpressions" class="section level1">
 <h1>Création du fichiers des mots/expressions</h1>
-<div id="recuperation-de-mon-cv" class="section level2">
+<div id="récupération-de-mon-cv" class="section level2">
 <h2>Récupération de mon CV</h2>
 <p>Pour faire les choses proprement et que cela soit reproductible pour vous, je vais partir de mon <a href="/post/MVaugoyeauCV.pdf">CV</a> en version <code>PDF</code>.</p>
 <pre class="r"><code># Téléchargement du CV avec {pdftools}
@@ -67,7 +67,7 @@ curriculum &lt;- pdftools::pdf_text(&quot;MVaugoyeauCV.pdf&quot;) %&gt;%
   as_tibble() %&gt;% 
   gather(&quot;page&quot;, &quot;texte&quot;)</code></pre>
 </div>
-<div id="recuperation-dune-liste-de-mots-en-francais" class="section level2">
+<div id="récupération-dune-liste-de-mots-en-français" class="section level2">
 <h2>Récupération d’une liste de mots en français</h2>
 <p>Tous les mots ne sont pas intéressant, il faut donc retirer les mots inutiles comme <code>et</code>, <code>le</code>, <code>à</code>…<br />
 Pour la langue anglaise, cette liste est directement disponible dans le package {tidytext} mais il n’y en a pas (à ma connaissance) en français.</p>
@@ -77,13 +77,12 @@ stop_words_fr &lt;-
   xml2::read_html(&quot;https://countwordsfree.com/stopwords/french&quot;) %&gt;%
   rvest::html_table() %&gt;%
   purrr::pluck(1) %&gt;%
-  dplyr::select(a) %&gt;%
+  dplyr::select(X2) %&gt;%
   as_tibble() %&gt;%
-  tibble::add_row(a = &quot;a&quot;, .before = 1) %&gt;%
-  rename(mot = a) %&gt;% 
+  rename(mot = X2) %&gt;%
   add_row(mot = c(&quot;vaugoyeau&quot;, &quot;jeunes&quot;, &quot;al&quot;, &quot;impact&quot;, &quot;factor&quot;, &quot;été&quot;, &quot;issus&quot;, &quot;marie&quot;, &quot;annee&quot;, &quot;création&quot;, &quot;influence&quot;, &quot;paris&quot;))</code></pre>
 </div>
-<div id="mesure-des-frequences-des-mots" class="section level2">
+<div id="mesure-des-fréquences-des-mots" class="section level2">
 <h2>Mesure des fréquences des mots</h2>
 <p>La première étape est créer une liste de mots simples.</p>
 <p>Attention aux accents, ici, je les ai ici retirés.</p>
@@ -202,7 +201,7 @@ bigram %&gt;%
 <p><img src="/post/2019-08-12-text-mining-cv.fr_files/figure-html/creation_du_fichier_bigramme-1.png" width="672" /></p>
 </div>
 </div>
-<div id="creation-du-nuage-de-mots" class="section level1">
+<div id="création-du-nuage-de-mots" class="section level1">
 <h1>Création du nuage de mots</h1>
 <p>J’ai choisi de retirer certains bigrammes car ils ne signifient rien.</p>
 <pre class="r"><code># Création de la liste de mots/expression a représenter

@@ -23,10 +23,10 @@ description : "Vérification des données pour trouver les erreurs de typographi
 <div id="TOC">
 <ul>
 <li><a href="#recherche-doutliers">Recherche d’outliers ?</a><ul>
-<li><a href="#premiere-etape-les-outliers-et-les-boxplots-boites-a-moustaches">Première étape : Les outliers et les boxplots (boîtes à moustaches)</a></li>
-<li><a href="#deuxieme-etape-outlier-moyenne-et-ecart-type">Deuxième étape : Outlier, moyenne et écart-type</a></li>
+<li><a href="#première-étape-les-outliers-et-les-boxplots-boîtes-à-moustaches">Première étape : Les outliers et les boxplots (boîtes à moustaches)</a></li>
+<li><a href="#deuxième-étape-outlier-moyenne-et-écart-type">Deuxième étape : Outlier, moyenne et écart-type</a></li>
 </ul></li>
-<li><a href="#verification-de-la-repetabilite-des-donnees">Vérification de la répétabilité des données</a></li>
+<li><a href="#vérification-de-la-répétabilité-des-données">Vérification de la répétabilité des données</a></li>
 </ul>
 </div>
 
@@ -34,7 +34,7 @@ description : "Vérification des données pour trouver les erreurs de typographi
 Je pense que c’est la bonne occasion pour expliquer comment je vérifie les données quand je les reçois.</p>
 <div id="recherche-doutliers" class="section level1">
 <h1>Recherche d’outliers ?</h1>
-<div id="premiere-etape-les-outliers-et-les-boxplots-boites-a-moustaches" class="section level2">
+<div id="première-étape-les-outliers-et-les-boxplots-boîtes-à-moustaches" class="section level2">
 <h2>Première étape : Les outliers et les boxplots (boîtes à moustaches)</h2>
 <p>Avant de commencer à analyser les données, je les vérifie pour voir s’il n’y a pas d’outlier (c-à-d une observation qui a une valeur largement plus faible ou plus grande que la majorité des observations <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00001.x/abstract">Zuur et al. (2010)</a>).</p>
 <p>Je commence par dessiner des boxplots selon la date de prélèvement (une par variable).</p>
@@ -47,7 +47,7 @@ print(bp)
 <p><img src="/post/2018-02-20-how-i-check-the-data.fr_files/figure-html/boxplot-1.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data.fr_files/figure-html/boxplot-2.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data.fr_files/figure-html/boxplot-3.png" width="672" /><img src="/post/2018-02-20-how-i-check-the-data.fr_files/figure-html/boxplot-4.png" width="672" />
 A part pour NO<sub>3</sub><sup>-</sup> au 128<sup>ème</sup> jour après le début de l’année, il ne semble pas avoir de valeurs extrêmes.</p>
 </div>
-<div id="deuxieme-etape-outlier-moyenne-et-ecart-type" class="section level2">
+<div id="deuxième-étape-outlier-moyenne-et-écart-type" class="section level2">
 <h2>Deuxième étape : Outlier, moyenne et écart-type</h2>
 <p>Dans les données que j’utilise, les mesures ont été réalisées en triplicata à chaque fois. Avec la library <strong>plotrix</strong> je vais calculer la moyenne et l’écart-type par site et par jour de prélèvement.</p>
 <pre class="r"><code>library(plotrix)
@@ -89,7 +89,7 @@ Maintenant, il est visible que certaines erreurs sont bien plus grandes que les 
 Cette méthode m’a permis de trouver et de corriger cinq fautes de frappe dans ces données. Pour les valeurs extrêmes qui ne sont pas associées à des erreurs au moment de rentrer les données, je les garde dans un coin de ma tête pour vérifier leurs influences sur les futures analyses.</p>
 </div>
 </div>
-<div id="verification-de-la-repetabilite-des-donnees" class="section level1">
+<div id="vérification-de-la-répétabilité-des-données" class="section level1">
 <h1>Vérification de la répétabilité des données</h1>
 <p>Comme dans mon article de <a href="https://mvaugoyeau.netlify.com/fr/post/mon-premier-article/">blog précédent</a>, je vérifie la répétabilité des données avec un simple modèle linéaire.</p>
 <pre class="r"><code>Y$rep&lt;-paste(as.factor(Y$Site), as.factor(Y$Date))
