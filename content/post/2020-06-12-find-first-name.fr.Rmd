@@ -40,6 +40,7 @@ Ici, nous allons chercher un prénom :
 ```{r appel_packages}
 
 library(tidyverse)
+library(rvest)
 
 ```
 
@@ -57,7 +58,8 @@ liste_prenom_insee <- read.csv2(
   filter(
     annais != "XXXX", # on retire les lignes sans années
     preusuel != "_PRENOMS_RARES" # on retire les prénoms non communiquées, c'est-à-dire ceux dont le nombre est inférieur à 3 pour une année
-  )
+  ) %>% 
+  mutate(annais = annais %>% as.integer())
   
 
 ```
@@ -93,7 +95,7 @@ liste_prenom_simple <- liste_prenom_m %>%
   
 ```{r retire_prenom_commencant_par_s}
 
-liste_prenom_s <- liste_prenom_simple %>% 
+liste_prenom_sans_s <- liste_prenom_simple %>% 
   mutate(
     initiale = 
       preusuel %>% 
@@ -148,13 +150,16 @@ prenom_dans_la_famille <- tibble(
     "Florian",
     "Mael",
     "Maël",
-    "",
     "Gabriel",
     "Edouard",
-    "",
+    "Tom",
     "Mathias"
   )
-)
+) %>% 
+  mutate(
+    prenom = prenom %>% str_to_upper()
+  )
+
 
 prenom_dans_les_amis <- tibble(
   prenom = c(
@@ -172,11 +177,127 @@ prenom_dans_les_amis <- tibble(
     "Jerome",
     "Jérome",
     "Laurent",
-    "Joan"
+    "Joan",
+    "Romain",
+    "Armand"
     )
-)
+) %>% 
+  mutate(
+    prenom = prenom %>% str_to_upper()
+  )
+
+liste_prenom_sans_proche <- 
+  liste_prenom_sans_s %>% 
+  anti_join(
+    prenom_dans_la_famille,
+    by = c("preusuel" = "prenom")
+  ) %>% 
+  anti_join(
+    prenom_dans_les_amis,
+    by = c("preusuel" = "prenom")
+  )
+
+```
+  
+  
+## Prénoms courants mais pas trop donnés ces dernières années  
+  
+Avec mon mari nous avons deux prénoms très courant qui nous ont valu à l'école de n'être quasiment jamais la seule personne à le porter ce qui conduit à des ajout d'adjectif ou de numéros pour nous différencier et ce n'est pas super plaisant...  
+  
+Même aujourd'hui, nos connaissances connaissent d'autres couples qui portent les mêmes prénoms ce qui peut conduire à des quiproquo plus ou moins drôles...  
+  
+Bref, nous voulons éviter cela donc nous avons choisi de retirer les 20 prénoms les plus données pour ces cinq dernières années.  
+  
+A l'inverse on ne veut pas d'un prénom que les gens ne connaissent pas, donc on pose la limite que sur les cinquantes dernières années, au moins 20 personnes par an ont eu ce prénom.  
+  
+*Attention* : les données de l'INSEE s'arrête en 2018, donc pour avoir l'année 2019, on va la récupérer sur le site du magazine [Parents](https://www.parents.fr/prenoms/top-100-des-prenoms-de-garcons-100988).  
+  
+```{r prenom_courant_mais_pas_star}
+
+liste_prenom_rare <- liste_prenom_m %>% 
+  filter(
+    annais >= 1970,
+    nombre < 20
+  ) %>% 
+  distinct(preusuel)
+
+liste_prenom_tendance_2015_2018 <- liste_prenom_m %>% 
+  filter(
+    annais >= 2015
+  ) %>% 
+  group_by(annais) %>% 
+  arrange(desc(nombre)) %>% 
+  slice(1:20) %>% 
+  ungroup() %>% 
+  distinct(preusuel)
+
+liste_prenom_tendance_2019 <-
+  tibble(
+    preusuel = read_html("https://www.parents.fr/prenoms/top-100-des-prenoms-de-garcons-100988") %>% # adresse url de la page
+      html_node(xpath = '//*[@id="main"]/article/div/div/div[1]/ol') %>% # sélection du tableau, xpath récupéré en "inspectant" la page internet
+      html_text() %>% 
+      str_split("\n\t\t", simplify = TRUE) %>% 
+      str_remove_all("[:blank:]")
+  ) %>% 
+  filter(preusuel != "") %>% 
+  slice(1:20) %>% 
+  mutate(
+    preusuel = preusuel %>% str_to_upper()
+  )
+  
+liste_prenom_tendance <- 
+  bind_rows(
+    liste_prenom_tendance_2015_2018,
+    liste_prenom_tendance_2019
+  ) %>% 
+  distinct()
+# bon étonnament l'intégralité de la liste de 2019 est déjà dans celle de 2015 et 2018 donc ces informations ne semblent pas correct.... Pour avoir fait le tour de plusieurs sites, la liste ne bouge pas entre 2018, 2019 et 2020 donc je suppose que les personnes ayant rédigé les différents articles n'ont pas relévés que les données de l'INSEE s'arrête en 2018.... Bon tant pis...
+
+# maintenant on retire les prénoms rares et courant de notre liste déjà réduite
+liste_prenom_courant <- liste_prenom_sans_proche %>% 
+  filter(annais >= 1970) %>% 
+  anti_join(liste_prenom_rare) %>% 
+  anti_join(liste_prenom_tendance)
+
+```
+  
+  
+## Prénom qui ne soit qu'un prénom    
+  
+Pour faire cette partie j'ai utilisée la liste des mots français de [FREELANG](https://www.freelang.com/dictionnaire/dic-francais.php), le soucis c'est que cette liste contient des prénoms mais à chaque fois ils ont une majuscule, je vais donc retirer de cette liste tous les mots commençants par une majuscule et là merci les expressions régulières !  
+  
+```{r retire_les_objets_lieu_et_autre}
+
+liste_mots_francais <- read.table(
+  "liste_francais.txt"
+) %>% 
+  filter(
+    V1 %>% 
+      str_detect("^[:upper:]") == TRUE
+  )
+
+```
+  
+Bon mon idée n'est pas la bonne car cela supprime aussi les noms de lieux et je ne veux pas...  
+Après avoir regardé rapidement la liste, je me suis apperçu que seul "Ange" serait concerné donc je vais laisser de côté cette partie.  
+En même temps, il est vrai que cela touche plus les prénoms donnés aux filles plutôt qu'au garçons...    
+  
+# Conclusion  
+  
+Je me retrouve avec une liste de `liste_prenom_courant %>% distinct(preusuel) %>% nrow()` prénoms soit beaucoup moins que tous les prénoms possibles ^^  
+Est-ce que cela va nous aider à décider, pas sûre mais bon au moins j'aurais tenté !  
+  
+Une dernière idée, choisir l'initiale que l'on souhaite ?  
+  
+```{r choix_initiale}
+
+liste_prenom_courant %>% 
+  filter(initiale == "B") %>% 
+  ggplot() +
+  aes(x = annais, y = nombre, colour = preusuel) +
+  geom_point() +
+  theme_classic()
 
 ```
 
-  
   
