@@ -35,21 +35,13 @@ Ici, nous allons chercher un prénom :
 - qui ne soit pas un mot de la langue française, par exemple, pas de `Pierre`, `Colin`, `Iris`,...  
   
   
-# Appel des packages utilisés  
-  
-```{r appel_packages}
-
-library(tidyverse)
-library(rvest)
-
-```
-
-  
 # Récupération des données en open source de l'INSEE  
   
 L'INSEE a sortie un fichier des prénoms de 1900 à 2018, disponible sur [le site de l'open data du gouvernement français](https://www.data.gouv.fr/fr/datasets/ficher-des-prenoms-de-1900-a-2018/).  
   
 ```{r recuperation_fichier_prenom_insee}
+
+library(tidyverse)
 
 liste_prenom_insee <- read.csv2(
   "nat2018.csv",
@@ -231,6 +223,8 @@ liste_prenom_tendance_2015_2018 <- liste_prenom_m %>%
   ungroup() %>% 
   distinct(preusuel)
 
+library(rvest)
+
 liste_prenom_tendance_2019 <-
   tibble(
     preusuel = read_html("https://www.parents.fr/prenoms/top-100-des-prenoms-de-garcons-100988") %>% # adresse url de la page
@@ -295,7 +289,7 @@ liste_prenom_courant %>%
   filter(initiale == "B") %>% 
   ggplot() +
   aes(x = annais, y = nombre, colour = preusuel) +
-  geom_point() +
+  geom_line() +
   theme_classic()
 
 ```
