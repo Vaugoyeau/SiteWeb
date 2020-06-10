@@ -1,0 +1,182 @@
+---
+title: Recherche d'un prénom pour un-e enfant  
+author: "Marie Vaugoyeau"
+date: '2020-06-12'
+slug: recherche-prenom
+categories:
+- open data
+- stat
+tags:
+- open data
+- stat
+featuredpath: "/images/featured/"
+featured: "PetitAnjou.png"
+featuredalt: "Fouille de données en open data pour trouver un prénom correspondant aux critères choisis"
+linktitle: "recherche-prenom"
+images: 
+  - /img/featured/PetitAnjou.png  
+description : "Utilisation de l'open data de l'INSEE pour trouver un prénom correspondant aux critères choisis" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+# Objectif  
+  
+Le but de cet article est de voir comment on peut trouver une information correspondant à un certain nombre de critères dans un fichier d'open data créé par l'INSEE.  
+  
+Ici, nous allons chercher un prénom :  
+
+- pour un garçon  
+- pas de prénom composé  
+- ne commençant pas par `S` car quand ton nom de famille commence par `M`, il y a mieux ^^  
+- qui ne soit pas déjà présent dans la famille, ce qui en retire une petite quarantaine  
+- courant mais sans être dans parmis les plus donnés non plus  
+- qui ne soit pas un mot de la langue française, par exemple, pas de `Pierre`, `Colin`, `Iris`,...  
+  
+  
+# Appel des packages utilisés  
+  
+```{r appel_packages}
+
+library(tidyverse)
+
+```
+
+  
+# Récupération des données en open source de l'INSEE  
+  
+L'INSEE a sortie un fichier des prénoms de 1900 à 2018, disponible sur [le site de l'open data du gouvernement français](https://www.data.gouv.fr/fr/datasets/ficher-des-prenoms-de-1900-a-2018/).  
+  
+```{r recuperation_fichier_prenom_insee}
+
+liste_prenom_insee <- read.csv2(
+  "nat2018.csv",
+  encoding = "UTF-8"
+) %>% 
+  filter(
+    annais != "XXXX", # on retire les lignes sans années
+    preusuel != "_PRENOMS_RARES" # on retire les prénoms non communiquées, c'est-à-dire ceux dont le nombre est inférieur à 3 pour une année
+  )
+  
+
+```
+  
+  
+# Application des filtres choisis  
+  
+## Sélection des prénoms masculins uniquement  
+  
+```{r prenom_masculin}
+
+liste_prenom_m <- liste_prenom_insee %>% 
+  filter(X.U.FEFF.sexe == 1) %>% 
+  select(- X.U.FEFF.sexe)
+
+```
+  
+  
+## Sélection des prénoms simples  
+  
+```{r retire_prenoms_composes}
+
+liste_prenom_simple <- liste_prenom_m %>% 
+  filter(
+    preusuel %>% 
+      str_detect("-") == FALSE
+  )
+
+```
+  
+  
+## Ne commençant pas par `S`  
+  
+```{r retire_prenom_commencant_par_s}
+
+liste_prenom_s <- liste_prenom_simple %>% 
+  mutate(
+    initiale = 
+      preusuel %>% 
+      str_sub(
+        start = 1,
+        end = 1
+      )
+  ) %>% 
+  filter(
+    initiale != "S"
+  )
+
+```
+  
+  
+## N'étant pas présent dans la famille et ami-s  
+  
+```{r liste_prenom_famille}
+
+prenom_dans_la_famille <- tibble(
+  prenom = c(
+    "Pierre",
+    "Pierre-Yves",
+    "Alain",
+    "Philippe",
+    "Christophe",
+    "Éric",
+    "Stéphane",
+    "David",
+    "Étienne",
+    "Antoine",
+    "Clovis",
+    "François",
+    "Quentin",
+    "Jean-Baptiste",
+    "Rafael",
+    "Zacharrie",
+    "Anatole",
+    "Auguste",
+    "Françis",
+    "Christian",
+    "Jean-Luc",
+    "Thierry",
+    "Eric",
+    "Jérôme",
+    "Sylvain",
+    "Grégoire",
+    "Greg",
+    "Benoît",
+    "Alexis",
+    "Julien",
+    "Florian",
+    "Mael",
+    "Maël",
+    "",
+    "Gabriel",
+    "Edouard",
+    "",
+    "Mathias"
+  )
+)
+
+prenom_dans_les_amis <- tibble(
+  prenom = c(
+    "Thomas",
+    "Benoit",
+    "Joao",
+    "Florian",
+    "Bertrand",
+    "Aubin",
+    "Sébastien",
+    "Arthur",
+    "Clément",
+    "Goulven",
+    "Brieuc",
+    "Jerome",
+    "Jérome",
+    "Laurent",
+    "Joan"
+    )
+)
+
+```
+
+  
+  
