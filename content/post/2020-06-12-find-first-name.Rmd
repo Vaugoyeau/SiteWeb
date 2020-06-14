@@ -1,0 +1,476 @@
+---
+title: Searching a first name for a child   
+author: "Marie Vaugoyeau"
+date: '2020-06-15'
+slug: first-name-search
+categories:
+- open data
+- stat
+tags:
+- open data
+- stat
+featuredpath: "/images/featured/"
+featured: "pied.jpg"
+featuredalt: "Open data search to find a first name that matches with selected criteria"
+linktitle: "first-name-search"
+images: 
+  - /img/featured/pied.jpg  
+description : "Use of INSEE open data to find a first name corresponding to the chosen criteria"
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+  
+# Aim  
+  
+The purpose of this article is to see how information corresponding to a certain number of criteria can be found in an open data file created by INSEE, the French National Institute of Statistics and Economic Studies.  
+  
+Here, we will look for a first name :  
+
+- for a boy  
+- that is not a hyphenated name  
+- not starting with `S` because when your last name starts with `M`, there's better ^^  
+- that is not already present in the family or close friends, which takes about sixty of them out    
+- common but not among the most given either  
+- that is not a word in the French language, for example, no `Pierre` (Stone in French), `Colin` (Coley), `Iris`,...  
+  
+  
+# Open source data retrieval from INSEE  
+  
+INSEE has published a file of first names from 1900 to 2018, available on [the French government's open data site](https://www.data.gouv.fr/fr/datasets/ficher-des-prenoms-de-1900-a-2018/).  
+  
+The first column gives the sex of the children born, 1 for boys and 2 for girls. Quickly I select only the first names given to the boys so this column does not appear anymore in the worked data set.  
+`preusual` is the usual first name given to the children.  
+`annais`, the year of birth concerned.  
+`nombre` is the number of births for a given sex, first name and year, unless it is less than 3. In this case, the counts are cumulated over all the years and the year is replaced by "XXXX" or under the name `_PRENOMS_RARES` (uncommon first name) per year. In view of our limitations, these lines have been removed from the dataset.  
+  
+```{r recovery_first_name_file}
+
+library(tidyverse)
+
+list_first_name_insee <- read.csv2(
+  "nat2018.csv",
+  encoding = "UTF-8"
+) %>% 
+  filter(
+    annais != "XXXX", # we remove the lines without the year
+    preusuel != "_PRENOMS_RARES" # we remove the first names not communicated, i.e. those whose number is less than 3 for one year
+  ) %>% 
+  mutate(annais = annais %>% as.integer()) # the year of birth is transformed into a numerical variable in order to be able to graphically represent the evolution of first names  
+
+# dataset format  
+list_first_name_insee %>% 
+  glimpse()
+
+# number of different first names
+list_first_name_insee %>% 
+  distinct(preusuel) %>% 
+  nrow()
+
+```
+  
+  
+# Selected filters use    
+  
+## Selection of male first names only  
+  
+```{r male_first_name}
+
+list_first_name_m <- list_first_name_insee %>% 
+  filter(X.U.FEFF.sexe == 1) %>% 
+  select(- X.U.FEFF.sexe)
+
+list_first_name_m %>% 
+  glimpse()
+
+list_first_name_m %>% 
+  distinct(preusuel) %>% 
+  nrow()
+# we logically divide the number of first names by about two
+
+```
+  
+  
+## Remove hyphenated first name   
+  
+Compound first names must have a "-" so detection of this one allows to exclude them.    
+  
+```{r remove_hyphenated_first_name}
+
+list_first_name_simple <- list_first_name_m %>% 
+  filter(
+    preusuel %>% 
+      str_detect("-") == FALSE
+  )
+
+list_first_name_simple %>% 
+  glimpse()
+
+list_first_name_simple %>% 
+  distinct(preusuel) %>% 
+  nrow()
+# 1,000 down
+
+```
+  
+  
+## Do not start with `S`  
+  
+```{r remove_first_name_start_with_s}
+
+list_first_name_without_s <- list_first_name_simple %>% 
+  mutate(
+    initiale = 
+      preusuel %>% 
+      str_sub(
+        start = 1,
+        end = 1
+      )
+  ) %>% 
+  filter(
+    initiale != "S"
+  )
+
+list_first_name_without_s %>% 
+  glimpse()
+
+list_first_name_without_s %>% 
+  distinct(preusuel) %>% 
+  nrow()
+# another 1,000 down
+
+# check that the first names beginning with S have been removed
+list_first_name_without_s %>% 
+  distinct(preusuel, initiale) %>%
+  count(initiale)
+
+```
+  
+  
+## Not being in family and friends  
+  
+```{r list_first_name_exclude}
+
+first_name_in_family <- tibble(
+  prenom = c(
+    "Pierre",
+    "Pierre-Yves",
+    "Alain",
+    "Philippe",
+    "Christophe",
+    "Éric",
+    "Stéphane",
+    "David",
+    "Étienne",
+    "Antoine",
+    "Clovis",
+    "François",
+    "Quentin",
+    "Jean-Baptiste",
+    "Rafael",
+    "Zacharrie",
+    "Anatole",
+    "Auguste",
+    "Françis",
+    "Christian",
+    "Jean-Luc",
+    "Thierry",
+    "Eric",
+    "Jérôme",
+    "Sylvain",
+    "Grégoire",
+    "Greg",
+    "Benoît",
+    "Alexis",
+    "Julien",
+    "Florian",
+    "Mael",
+    "Maël",
+    "Gabriel",
+    "Edouard",
+    "Tom",
+    "Amaury",
+    "Mathias",
+    "Yves",
+    "Pierre-Yves",
+    "Jean-François",
+    "Sebastien",
+    "Quentin",
+    "Stephane",
+    "Thierry",
+    "Christian",
+    "Charles",
+    "Thomas",
+    "Alexis",
+    "Robin",
+    "Arthur",
+    "Mathis",
+    "Marius",
+    "Robin",
+    "Sacha",
+    "Clément",
+    "Medhi",
+    "Mehdi",
+    "Pierre",
+    "Jean-Marie",
+    "Jeannot",
+    "Julien",
+    "Louis"
+  )
+) %>% 
+  distinct() %>% 
+  mutate(
+    prenom = prenom %>% str_to_upper()
+  )
+
+
+friends_first_name <- tibble(
+  prenom = c(
+    "Thomas",
+    "Benoit",
+    "Joao",
+    "Florian",
+    "Bertrand",
+    "Aubin",
+    "Sébastien",
+    "Arthur",
+    "Clément",
+    "Goulven",
+    "Brieuc",
+    "Jerome",
+    "Jérome",
+    "Laurent",
+    "Joan",
+    "Romain",
+    "Armand",
+    "Olivier",
+    "Christophe",
+    "Adrien",
+    "Alexis",
+    "Grégoire",
+    "Eiffel",
+    "Gabriel"
+    )
+) %>% 
+  mutate(
+    prenom = prenom %>% str_to_upper()
+  )
+
+list_first_name_without_close <- 
+  list_first_name_without_s %>% 
+  anti_join(
+    first_name_in_family,
+    by = c("preusuel" = "prenom")
+  ) %>% 
+  anti_join(
+    friends_first_name,
+    by = c("preusuel" = "prenom")
+  )
+
+list_first_name_without_close %>% 
+  glimpse()
+
+list_first_name_without_close %>% 
+  distinct(preusuel) %>% 
+  nrow()
+# Fifty or so with redundancies and hyphenated first names
+
+```
+  
+  
+## First names common but not trendy either  
+  
+With my husband we have two very common first names that have earned us at school to be almost never the only person to wear it which leads to the addition of adjectives or numbers to differentiate us from each other and it is not very pleasant...  
+  
+Even today, our acquaintances know other couples who have the same first names which can lead to misunderstandings more or less funny...  
+  
+In short, we want to avoid this so we have chosen to remove the 20 most given names per year for the last 5 years.  
+  
+On the other hand, we don't want a name that people don't know, so we set the limit that over the last 50 years, at least 20 people a year have had this name.  
+  
+*Warning*: the INSEE data stops in 2018, so to have the year 2019, we'll get it from the [Parents magazine's website](https://www.parents.fr/prenoms/top-100-des-prenoms-de-garcons-100988).  
+  
+```{r current_first_name_but_no_trendy}
+
+# Rare first name
+list_rare_first_name <- list_first_name_m %>% 
+  filter(
+    annais >= 1970,
+    nombre < 20
+  ) %>% 
+  distinct(preusuel)
+
+list_rare_first_name %>% 
+  glimpse()
+# Impressive the number of first names involved!
+
+# Trendy first name
+list_trendy_firs_name_2015_2018 <- list_first_name_m %>% 
+  filter(
+    annais >= 2015
+  ) %>% 
+  group_by(annais) %>% 
+  arrange(desc(nombre)) %>% 
+  slice(1:20) %>% 
+  ungroup() %>% 
+  distinct(preusuel)
+
+list_trendy_firs_name_2015_2018 %>% 
+  glimpse()
+
+library(rvest)
+
+list_trendy_firs_name_2019 <-
+  tibble(
+    preusuel = read_html("https://www.parents.fr/prenoms/top-100-des-prenoms-de-garcons-100988") %>% # website url
+      html_node(xpath = '//*[@id="main"]/article/div/div/div[1]/ol') %>% # table selected, xpath copy and paste by "inspecting" the webpage
+      html_text() %>% 
+      str_split("\n\t\t", simplify = TRUE) %>% 
+      str_remove_all("[:blank:]")
+  ) %>% 
+  filter(preusuel != "") %>% 
+  slice(1:20) %>% 
+  mutate(
+    preusuel = preusuel %>% str_to_upper()
+  )
+
+list_trendy_firs_name_2019 %>% 
+  glimpse()
+  
+list_trendy_first_name <- 
+  bind_rows(
+    list_trendy_firs_name_2015_2018,
+    list_trendy_firs_name_2019
+  ) %>% 
+  distinct()
+# well surprisingly the whole 2019 list is already in the 2015 and 2018 list so this information doesn't seem correct... For having made the tour of several sites, the list does not move between 2018, 2019 and 2020 so I guess the people who wrote the different articles did not notice that the INSEE data stops in 2018 .... 
+
+# Now we remove the rare and trendy names from our already reduced list
+list_common_first_name <- list_first_name_without_close %>% 
+  filter(annais >= 1970) %>% 
+  anti_join(list_rare_first_name) %>% 
+  anti_join(list_trendy_first_name)
+
+list_common_first_name %>% 
+  glimpse()
+
+list_common_first_name %>% 
+  distinct(preusuel) %>% 
+  nrow()
+# Phew, we've gone under 200 possible names! 
+
+```
+  
+  
+## First name only    
+  
+To do this part I used the list of French words from [FREELANG](https://www.freelang.com/dictionnaire/dic-francais.php), the problem is that this list contains first names but each time they have a capital letter, so I will remove from this list all the words beginning with a capital letter and there thank you the regular expressions!   
+  
+```{r removes_the_place_objects_and_other}
+
+list_french_words <- read.table(
+  "liste_francais.txt"
+) %>% 
+  filter(
+    V1 %>% 
+      str_detect("^[:upper:]") == TRUE
+  )
+
+list_french_words %>% 
+  glimpse()
+
+```
+  
+My idea is not the right one because it also removes the place names and I don't want to...  
+After a quick look at the list, I realized that only `Ange` (Angel) and `Martial` (Martial) would be concerned so I will leave this part out, removing only those two.  
+At the same time, it's true that it affects more the names given to the girls than to the boys...    
+  
+```{r remove_ange_martial}
+
+list_final_first_name <- list_common_first_name %>% 
+  anti_join(
+    tibble(
+      preusuel = c("ANGE", "MARTIAL")
+    )
+  )
+
+list_final_first_name %>% 
+  glimpse()
+
+list_final_first_name %>% 
+  distinct(preusuel) %>% 
+  nrow()
+
+```
+  
+  
+# Conclusion  
+  
+I end up with a list of `r list_final_first_name %>% distinct(preusuel) %>% nrow()` first names which is much less than the `r list_first_name_m %>% distinct(preusuel) %>% nrow()` first names given to boys since 1900 ^^  
+Will it help us decide, not sure but at least I would have tried!  
+  
+One last idea, choose the initial you want?  
+  
+For that a little function and the use of `Plotly` that I love and hop, we just have to choose!  
+  
+```{r initial_letter_choice}
+
+library(plotly)
+
+# function to visualize the evolution of the first names concerned since the 70s
+graph_first_name_by_initial_letter <- function(initial_letters){
+  return(
+    list_final_first_name %>% 
+      filter(initiale %in% initial_letters) %>% 
+      ggplot() +
+      aes(x = annais, y = nombre, colour = preusuel) +
+      geom_line() +
+      theme_classic() +
+      ggtitle(
+        paste(initial_letters, collapse = ", ")
+        )
+  )
+} 
+  
+# sum-up by initial letters
+list_final_first_name %>% 
+  distinct(preusuel, initiale) %>% 
+  count(initiale)
+
+graph <- list(
+  "A",
+  "B",
+  "C",
+  "D",
+  c("E", "É"),
+  "G",
+  c("H", "I"),
+  "J",
+  "K",
+  "L",
+  "M",
+  c("N", "O"),
+  c("P", "R"),
+  "T",
+  c("V", "W", "X"),
+  "Y"
+) %>% 
+  map(graph_first_name_by_initial_letter)
+
+
+graph[[1]] %>% 
+  ggplotly()
+
+graph[[2]] %>% 
+  ggplotly()
+
+graph[[11]] %>% 
+  ggplotly()
+
+graph[[12]] %>% 
+  ggplotly()
+
+```
+
+  

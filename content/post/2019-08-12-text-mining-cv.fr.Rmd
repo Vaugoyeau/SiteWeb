@@ -7,7 +7,7 @@ categories:
 - graphique
 - text-mining
 tags:
-- graph
+- graphique
 - image
 featuredpath: "/images/featured/"
 featured: "PetitAnjou.png"
