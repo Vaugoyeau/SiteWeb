@@ -295,9 +295,16 @@ On the other hand, we don't want a name that people don't know, so we set the li
 
 # Rare first name
 list_rare_first_name <- list_first_name_m %>% 
+  right_join(
+    list_first_name_m %>% 
+      filter(annais >= 1970) %>% 
+      distinct(preusuel) %>% 
+      merge(
+        tibble(annais = c(1970:2018))
+      )
+  ) %>% 
   filter(
-    annais >= 1970,
-    nombre < 20
+    nombre < 20 | is.na(nombre)
   ) %>% 
   distinct(preusuel)
 

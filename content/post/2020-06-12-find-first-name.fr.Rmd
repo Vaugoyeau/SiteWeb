@@ -294,9 +294,16 @@ A l'inverse on ne veut pas d'un prénom que les gens ne connaissent pas, donc on
 
 # Prénoms rares
 liste_prenom_rare <- liste_prenom_m %>% 
+  right_join(
+    liste_prenom_m %>% 
+      filter(annais >= 1970) %>% 
+      distinct(preusuel) %>% 
+      merge(
+        tibble(annais = c(1970:2018))
+      )
+  ) %>% 
   filter(
-    annais >= 1970,
-    nombre < 20
+    nombre < 20 | is.na(nombre)
   ) %>% 
   distinct(preusuel)
 

@@ -8,7 +8,7 @@ categories:
 - graphique
 tags:
 - stat
-- graphique
+- graph
 featuredpath: "/images/featured/"
 featured: "Fleur.jpg"
 featuredalt: "Principal Component Analysis"
@@ -39,6 +39,7 @@ pca$eig
 The question is how much dimensions do we need to keep?  
   
 The wonderful package **psycho** of  [Dominique Makowski](https://neuropsychology.github.io/psycho.R/2018/05/24/n_factors.html) has the response. Thank him!  
+Updated, the `n_factors()` function now belongs to the `parameters` package.  
   
 # Number of factor retained by psycho::n_factors()  
   
@@ -46,7 +47,7 @@ The wonderful package **psycho** of  [Dominique Makowski](https://neuropsycholog
 library(magrittr)
 library(psycho)
 
-choice <- D %>% psycho::n_factors()
+choice <- D %>% parameters::n_factors()
 choice
 summary(choice)
 plot(choice)

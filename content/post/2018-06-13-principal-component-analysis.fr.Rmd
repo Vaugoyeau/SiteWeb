@@ -4,10 +4,10 @@ author: "Marie Vaugoyeau"
 date: '2018-06-13'
 slug: analyse-en-composantes-principales
 categories:
-- stats
-- graph
+- stat
+- graphique
 tags:
-- stats
+- stat
 - graph
 featuredpath: "/images/featured/"
 featured: "Fleur.jpg"
@@ -39,6 +39,7 @@ acp$eig
 Maintenant la question est de savoir combien de dimension on doit conserver, 2 ? 3 ?  
   
 Le super package **psycho** de  [Dominique Makowski](https://neuropsychology.github.io/psycho.R/2018/05/24/n_factors.html) permet de comparer plusieurs méthodes et de choisir le nombre adéquat de facteurs.  Merci à lui !  
+Mise-à-jour, la fonction `n_factors()` appartient maintenant au package `parameters`.  
   
 # Nombre de facteurs conservés avec psycho::n_factors()  
   
@@ -46,7 +47,7 @@ Le super package **psycho** de  [Dominique Makowski](https://neuropsychology.git
 library(magrittr)
 library(psycho)
 
-choix <- D %>% psycho::n_factors()
+choix <- D %>% parameters::n_factors()
 choix
 summary(choix)
 plot(choix)
