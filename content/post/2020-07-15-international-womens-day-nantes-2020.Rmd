@@ -1,0 +1,78 @@
+---
+title:  Génération et envoi automatique de supports à destination des clients, points de blocages et solutions pour avancer  
+author: "Marie Vaugoyeau"
+date: '2020-07-15'
+slug: presentation-off-printemps-des-fameuses
+categories:
+- graphique
+- stat
+- trucs et astuces
+tags:
+- graphique
+- stat
+- trucs et astuces
+featuredpath: "/images/featured/"
+featured: "immeuble_ny.png"
+featuredalt: "Création de supports personnalisé Power Point avec {officeR} et envoi automatique par mail avec {sendmailR} à destination des clients"
+linktitle: "presentation-off-printemps-des-fameuses"
+images: 
+  - /img/featured/immeuble_ny.png  
+description : "Article de la présentation qui aurait dû se faire pour l'International Women's Day à Nantes le 19 mars et qui a été annulée suite à l'épidémie de COVID-19" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+  
+# Objectif  
+  
+Le but est de réaliser un support de communication à destination des clients pour voir l'évolution de leurs résultats par rapport aux données des autres magasins de même catégorie (`Benchmark`).  
+Ce support doit se générer et être envoyé automatiquement aux clients.  
+  
+Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de Stephen OSWALD et les exemples de supports éditées sont à la fin de l'article.  
+  
+Déroulé du travail :  
+
+_ [Réalisation d'un template sous Power Point](/post/template_rstudio_article_off.pptx)   
+_ Création des graphiques et résultats à insérer  
+_ Création du support `Power Point` en utilisant le package `officer` de [David Gohel](davidgohel.github.io/officer/)  
+_ Envoi du support avec `sendmailR` d'[Olaf Mersmann](www.rdocumentation.org/packages/sendmailR)  
+  
+  
+# Création d'un graphique sur les données  
+  
+Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année.  
+  
+```{r realisation_d_un_graphique}
+
+library(tidyverse)
+library(FlexParamCurve) # pour avoir les données sur les pingouins
+
+creation_du_graphique_pour_comparer_un_pingouin_aux_autres <- function(num_identifiant_pingouin){
+  
+  benchmarck <- penguin.data %>% 
+    filter(
+      bandid != num_identifiant_pingouin,
+      year == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$year,
+      ck == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$ck
+    )
+  
+}
+
+penguin.data %>% 
+  
+
+library(scales) # 
+library(ggrepel)
+
+mise_en_forme_fr <- label_number(accurancy = 1)
+
+1332859475.645878 %>% mise_en_forme_fr()
+
+
+
+
+```
+
+  
+  
+  
