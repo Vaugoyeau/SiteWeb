@@ -177,9 +177,109 @@ graphique_LCS
   
 # Création du support PowerPoint avec `officer`  
   
+De base je ne suis pas trop pour la création de support `pptx` avec R, je préfère rapports `html` mais cela reste un support très attendu pour la communication à destination des clients.  
   
+Grâce au package [`officer`]{davidgohel.github.io/officer/}, je vais créer un support simple mais dynamique avec des liens entre les diapos.  
   
+```{r creation_du_support}
+
+library(officer)
+
+# pour voir les types de diapos qui existent et les éléments qui les constituent
+read_pptx("template_rstudio_article_off.pptx") %>%
+  layout_properties()
+
+
+
+support <- read_pptx("content/post/template_rstudio_article_off.pptx") %>% 
+  # 1. Création de la diapo de titre
+  add_slide(
+    layout = "Diapositive de titre", 
+    master = "Intégral"
+    ) %>% 
+  ph_with(
+    value = num_identifiant_pingouin, 
+    location = ph_location_label("Title 1")
+    ) %>% 
+  ph_with(
+    value = penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1) %>% as_tibble() %>% select(year, ck),
+    location = ph_location_label("Subtitle 2")
+  ) %>% 
   
+  # 2. Ajout du sommaire cliquable
+  add_slide(
+    layout = "Resume",
+    master = "Intégral"
+  ) %>% 
+  ph_with(
+    value = num_identifiant_pingouin,
+    location = ph_location_label("Espace réservé du texte 5")
+  ) 
+
+support %>% 
+  print("presentation_test.pptx")
+
+
+#### STOP 
+Section : Présentation de Comerso
+  add_slide(
+    layout = "Titre de section",
+    master = "Conception personnalisée"
+  ) %>% 
+  ph_with(
+    value = "Présentation de Comerso",
+    location = ph_location_label("Espace réservé du texte 8")
+  ) %>% 
+  
+  # 3. Ajout de la diapo Process
+  add_slide(
+    layout = "Process comerso",
+    master = "Conception personnalisée"
+  ) %>% 
+  
+  # 4. Ajout de la diapo de qui est comerso
+  add_slide(
+    layout = "Qui est comerso",
+    master = "Conception personnalisée"
+  ) %>% 
+  
+  # 5. Section : Création du support
+  add_slide(
+    layout = "Titre de section",
+    master = "Conception personnalisée"
+  ) %>% 
+  ph_with(
+    value = "Le graph",
+    location = ph_location_label("Espace réservé du texte 8")
+  ) %>% 
+  
+  # 6. Ajout d'un graphique
+  add_slide(
+    layout = "Titre, image et legende",
+    master = "Conception personnalisée"
+  ) %>% 
+  ph_with(
+    value = "Ajout d'un graphique",
+    location = ph_location_label("Titre 1")
+  ) %>% 
+  ph_with(
+    value = graph(),
+    location = ph_location_label("Espace réservé du contenu 2")
+  ) %>% 
+  ph_with(
+    value = "Graphique réalisée",
+    location = ph_location_label("Espace réservé du texte 4")
+  ) %>% 
+  
+  # 7. Ajout d'une signature
+  add_slide(
+    layout = "Signature",
+    master = "Conception personnalisée"
+  )
+
+
+```
+
   
   
   
