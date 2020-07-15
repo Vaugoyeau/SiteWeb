@@ -1,7 +1,7 @@
 ---
 title:  Génération et envoi automatique de supports à destination des clients, points de blocages et solutions pour avancer  
 author: "Marie Vaugoyeau"
-date: '2020-07-15'
+date: '2020-07-21'
 slug: presentation-off-printemps-des-fameuses
 categories:
 - graphique
@@ -28,19 +28,23 @@ output:
 Le but est de réaliser un support de communication à destination des clients pour voir l'évolution de leurs résultats par rapport aux données des autres magasins de même catégorie (`Benchmark`).  
 Ce support doit se générer et être envoyé automatiquement aux clients.  
   
-Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de Stephen OSWALD et les exemples de supports éditées sont à la fin de l'article.  
+Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de Stephen OSWALD et LifeCycleSavings du package `datasets`. Les exemples de supports éditées sont à la fin de l'article.  
   
 Déroulé du travail :  
 
 _ [Réalisation d'un template sous Power Point](/post/template_rstudio_article_off.pptx)   
-_ Création des graphiques et résultats à insérer  
+_ Création des graphiques à insérer  
 _ Création du support `Power Point` en utilisant le package `officer` de [David Gohel](davidgohel.github.io/officer/)  
 _ Envoi du support avec `sendmailR` d'[Olaf Mersmann](www.rdocumentation.org/packages/sendmailR)  
   
   
 # Création d'un graphique sur les données  
   
-Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année.  
+Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck puis les données internationnales du revenu réel disponible par habitant.  
+  
+## Comparaison d'un pingouin par rapport aux autres  
+  
+Comparer un pingouin par rapport aux autres de la même année et du même ordre de naissance est facile grâce à `ggplot()`.  
   
 ```{r realisation_d_un_graphique}
 
@@ -54,25 +58,129 @@ creation_du_graphique_pour_comparer_un_pingouin_aux_autres <- function(num_ident
       bandid != num_identifiant_pingouin,
       year == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$year,
       ck == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$ck
-    )
+    ) # le benchmarck se fait aves les données des autres pingouins nées la même année et même ordre
   
-}
-
-penguin.data %>% 
+  penguin.data %>% 
+    filter(
+      bandid == num_identifiant_pingouin
+    ) %>% 
+    ggplot() +
+    aes(
+      x = ckage,
+      y = weight
+    ) +
+    geom_smooth(data = benchmarck, color = "red", fill = "orange", alpha = 0.4, formula = y ~ x^2) + 
+    geom_point(color = "black") + 
+    geom_smooth(se = FALSE, formula = y ~ x^2, color = "black") +
+    theme_classic() +
+    ggtitle(glue::glue("Pingouin '{num_identifiant_pingouin}' comparer à ses semblables"))
   
+ }
 
-library(scales) # 
-library(ggrepel)
+"-0.993421052631561 422" %>% 
+  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()
+
+"-0.993421052631561 308" %>% 
+  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()
+
+```
+  
+  
+  
+## Création d'une fonction pour voir les données sous format "français"  
+  
+De base, R présente les données numérique sans espace ni arrondi mais de temps en temps dans des graphiques, il peut-être intéressant de pouvoir afficher les chiffres sous le format "français" c'est-à-dire `123 456 789` comme Excel peut le faire nativement.  
+  
+Pour cet exemple, je vais utiliser les données de LifeCycleSavings.  
+  
+```{r mise_en_forme_française}
+
+# library(tidyverse) # pas utile si déjà appelé précédement
+library(scales) # pour utiliser la fonction label_number de mise en forme des nombres
+library(ggrepel) # pour ajouter des valeurs non chevauchantes sur le graphique
+
+mise_en_forme_fr <- label_number(accurancy = 1)
+# je demande à ce qu'il n'y ai pas de décimale
+
+1332859475.645878 %>% mise_en_forme_fr()
+# ça fonctionne sans soucis
+
+LifeCycleSavings %>% 
+  rownames_to_column("country") %>% 
+  mutate(label = dpi %>% mise_en_forme_fr()) %>% 
+  ggplot() +
+  aes(x = country, y = dpi) +
+  geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
+  geom_label_repel(aes(label = label), segment.color = NA, direction="y", size = 3) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 90)
+  )
+# aïe l'arrondi ne se fait pas
+
+```
+  
+Vous pouvez voir que malgré mon test préliminaire, cela ne fonctionne pas bien... En effet, si la mise en forme globale est bonne l'arrondi ne se fait pas... Mais pourquoi ???  
+  
+Je suis restée bloquée un petit moment à me demander ce qui n'allait pas et pourquoi et j'ai fini par demander de l'aide sur la slack francophone des utilisateurs de R, [GRRR](https://lstu.fr/rgrrr).  
+**Petit point info** : Quelque soit le support sur lequel vous voulez demander de l'aide, pensez à réaliser un `repex`, un exemple reproductible ! Oui les gens sur les forums ou slacks sont vos ami-e-s et oui, la sphère R est bienveillante mais n'oubliez pas que personne (à part vous) n'est dans votre tête, donc le premier pas vers la résolution d'un problème est de le sortir de son contexte pour pouvoir l'expliquer à tous en utilisant des données accessibles !  
+Cela m'est déjà arrivé plus d'une fois qu'en réalisant mon repex pour demander de l'aide j'ai vu où étais le soucis :D  
+  
+Voici les lignes de codes que j'ai partagée sur la slack.  
+  
+```{r creation_exemple_reproductible}
+
+# library(scales)
+# library(tidyverse)
 
 mise_en_forme_fr <- label_number(accurancy = 1)
 
-1332859475.645878 %>% mise_en_forme_fr()
+c(13556.4646, 546946.65465) %>% map(mise_en_forme_fr)
 
-
-
+tibble(
+  valeur = 
+    runif(n = 50, min = 100, max = 6000)
+  ) %>% 
+  mutate(mise_en_forme = valeur %>% mise_en_forme_fr)
 
 ```
+  
+Cette fois-là c'est [Julien Barnier](https://twitter.com/lapply) qui m'a dépanné en me faisant remarquer que j'avais fait une faute à `accuracy`, il n'y a pas de 'n'...  
+Bizarrement ça a tout de suite fonctionné mieux ;)  
+  
+```{r reponse_au_probleme}
+mise_en_forme_fr <- label_number(accuracy = 1)
 
+tibble(
+  valeur = 
+    runif(n = 50, min = 100, max = 6000)
+  ) %>% 
+  mutate(mise_en_forme = valeur %>% mise_en_forme_fr)
+
+graphique_LCS <- LifeCycleSavings %>% 
+  rownames_to_column("country") %>% 
+  mutate(label = dpi %>% mise_en_forme_fr()) %>% 
+  ggplot() +
+  aes(x = country, y = dpi) +
+  geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
+  geom_label_repel(aes(label = label), segment.color = NA, direction="y", size = 3) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 90)
+  )
+
+graphique_LCS
+
+```
+  
+  
+  
+# Création du support PowerPoint avec `officer`  
+  
+  
+  
+  
+  
   
   
   
