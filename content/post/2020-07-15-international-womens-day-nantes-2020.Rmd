@@ -73,7 +73,7 @@ creation_du_graphique_pour_comparer_un_pingouin_aux_autres <- function(num_ident
     geom_point(color = "black") + 
     geom_smooth(se = FALSE, formula = y ~ x^2, color = "black") +
     theme_classic() +
-    ggtitle(glue::glue("Pingouin '{num_identifiant_pingouin}' comparer à ses semblables"))
+    ggtitle(glue::glue("Pingouin '{num_identifiant_pingouin}' comparer à ses semblables (en rouge)"))
   
  }
 
@@ -184,103 +184,224 @@ Grâce au package [`officer`]{davidgohel.github.io/officer/}, je vais créer un 
 ```{r creation_du_support}
 
 library(officer)
+library(glue)
+
+emplacement_du_support <- "template_rstudio_article_off.pptx"
 
 # pour voir les types de diapos qui existent et les éléments qui les constituent
-read_pptx("template_rstudio_article_off.pptx") %>%
+read_pptx(emplacement_du_support) %>%
   layout_properties()
 
-
-
-support <- read_pptx("content/post/template_rstudio_article_off.pptx") %>% 
-  # 1. Création de la diapo de titre
-  add_slide(
-    layout = "Diapositive de titre", 
-    master = "Intégral"
+creation_du_support <- function(num_identifiant_pingouin){
+  read_pptx(emplacement_du_support) %>% 
+    # 1. Création de la diapo de titre
+    add_slide(
+      layout = "Diapositive de titre", 
+      master = "Intégral"
     ) %>% 
-  ph_with(
-    value = num_identifiant_pingouin, 
-    location = ph_location_label("Title 1")
+    ph_with(
+      value = num_identifiant_pingouin, 
+      location = ph_location_label("Title 1")
     ) %>% 
-  ph_with(
-    value = penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1) %>% as_tibble() %>% select(year, ck),
-    location = ph_location_label("Subtitle 2")
-  ) %>% 
+    ph_with(
+      value = penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1) %>% as_tibble() %>% select(year, ck),
+      location = ph_location_label("Espace réservé du tableau 4")
+    ) %>% 
+    
+    # 2. Ajout du sommaire cliquable
+    add_slide(
+      layout = "Resume",
+      master = "Intégral"
+    ) %>% 
+    ph_with(
+      value = glue("Numéro d'identification du pingouin : {num_identifiant_pingouin}"),
+      location = ph_location_label("Espace réservé du texte 5")
+    ) %>% 
+    ph_with(
+      value = "Information sur Marie Vaugoyeau",
+      location = ph_location_label("Espace réservé du texte 9")
+    ) %>% 
+    ph_with(
+      value = "Graphique Life Cycle Saving",
+      location = ph_location_label("Espace réservé du texte 11")
+    ) %>% 
+    ph_with(
+      value = glue("Graphique associé au pingouin {num_identifiant_pingouin}"),
+      location = ph_location_label("Espace réservé du texte 13")
+    ) %>% 
+    ph_with(
+      value = "Informations pour me contacter",
+      location = ph_location_label("Espace réservé du texte 15")
+    ) %>% 
+    
+    # 3. Ajout de la diapo d'information sur moi (petite page de pub)
+    add_slide(
+      layout = "PrésentationMarie",
+      master = "Intégral"
+    ) %>% 
+    ph_with(
+      value = "Clic retour menu", 
+      location = ph_location_label("Espace réservé du contenu 5")
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du contenu 5", 
+      slide_index = 2
+    ) %>% 
+    
+    # 4. Ajout du graphique LCS
+    add_slide(
+      layout = "Titre et contenu",
+      master = "Intégral"
+    ) %>% 
+    ph_with(
+      value = "Graphique LCS",
+      ph_location_label("Title 1")
+    ) %>% 
+    ph_with(
+      value = graphique_LCS,
+      ph_location_label("Content Placeholder 2")
+    ) %>% 
+    ph_with(
+      value = "Clic retour menu", 
+      location = ph_location_label("Espace réservé du contenu 5")
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du contenu 5", 
+      slide_index = 2
+    ) %>%
+    
+    # 5. Ajout du graphique personnalisé du pingouin
+    add_slide(
+      layout = "Titre, Contenu et Image",
+      master = "Intégral"
+    ) %>% 
+    ph_with(
+      value = "Graphique du pingouin",
+      ph_location_label("Title 1")
+    ) %>% 
+    ph_with(
+      value = external_img("content/post/pingouin.png"),
+      location = ph_location_label("Espace réservé du contenu 3")
+    ) %>% 
+    ph_with(
+      value = glue("{(penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$year} {(penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$ck}"),
+      ph_location_label("Espace réservé du contenu 8")
+    ) %>% 
+    ph_with(
+      value = creation_du_graphique_pour_comparer_un_pingouin_aux_autres(num_identifiant_pingouin),
+      ph_location_label("Espace réservé du contenu 6")
+    ) %>% 
+    ph_with(
+      value = "Clic retour menu", 
+      location = ph_location_label(ph_label = "Espace réservé du contenu 5")
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du contenu 5", 
+      slide_index = 2
+    ) %>%
+    
+    # 6. Ajout de la diapo de contact
+    add_slide(
+      layout = "Contact",
+      master = "Intégral"
+    ) %>% 
+    ph_with(
+      value = "Clic retour menu", 
+      location = ph_location_label(ph_label = "Espace réservé du contenu 5")
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du contenu 5", 
+      slide_index = 2
+    ) %>%
+    
+    # Création des liens sur la page du sommaire
+    on_slide(index = 2) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du texte 9", 
+      slide_index = 3
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du texte 11", 
+      slide_index = 4
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du texte 13", 
+      slide_index = 5
+    ) %>%
+    ph_slidelink(
+      ph_label = "Espace réservé du texte 15", 
+      slide_index = 6
+    )
+}
+
+```
   
-  # 2. Ajout du sommaire cliquable
-  add_slide(
-    layout = "Resume",
-    master = "Intégral"
-  ) %>% 
-  ph_with(
-    value = num_identifiant_pingouin,
-    location = ph_location_label("Espace réservé du texte 5")
-  ) 
+  
+# Envoi du support avec le package `sendmailR`  
+  
+Une fois que le squelette du support est prêt, il ne reste plus qu'à envoyer à chaque pingouin (ou chaque client ;) ) son support personnalisé.  
+  
+```{r envoi_du_support}
+
+library(sendmailR)
+
+num_identifiant_pingouin <- "-0.993421052631561 422"
+
+message_support <- mime_part(
+  creation_du_support(num_identifiant_pingouin), 
+  "support.pptx"
+  )
+
+message_support$`Content-Type` <- "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+
+adresse_d_envoi <- "marie.vaugoyeau@gmail.com"
+adresse_du_pingouin <- "marie.vaugoyeau@gmail.com"
+
+# Envoi des mails
+map2(
+  .x = adresse_d_envoi, # on peut même associé une adresse d'envoi différente par pingouin/client
+  .y = adresse_du_pingouin,
+  .f = ~ sendmail(
+    from = glue("<{.x}>"),
+    to = glue("<{.y}>"),
+    subject = glue("Synthèse mensuelle du pingouin {num_identifiant_pingouin}"),
+    msg = list(
+      glue("Bonjour,\nVeuillez trouver ci-joint la synthèse pour le pingouin {num_identifiant_pingouin}.\nBonne journée, \nMarie Vaugoyeau"),
+      message_support
+    ),
+    control = list(smtpServer = "ASPMX.L.GOOGLE.COM")
+  )
+)
+
+
+sendmail(
+  "<mao.vaug@free.fr>",
+  "<marie.vaugoyeau@gmail.com>",
+  "test",
+  "envoi test",
+  control = list(host = "aspmx.l.google.com", port = 465, user.name = "marie.vaugoyeau@gmail.com", passwd = "06m07V12!")
+)
+
+from <- "<nousdeux0515@gmail.com>"
+to <- "<marie.vaugoyeau@gmail.com>"
+subject <- "Hello from R"
+body <- list("It works!", mime_part(iris))
+sendmail(from, to, subject, body,
+         control=list(smtpServer="ASPMX.L.GOOGLE.COM"))
+
+# GRRRRR
+
+support <- "-0.993421052631561 422" %>% 
+  creation_du_support()
+  
+
+support <- "-0.993421052631561 308" %>% 
+  creation_du_support()
 
 support %>% 
   print("presentation_test.pptx")
 
-
-#### STOP 
-Section : Présentation de Comerso
-  add_slide(
-    layout = "Titre de section",
-    master = "Conception personnalisée"
-  ) %>% 
-  ph_with(
-    value = "Présentation de Comerso",
-    location = ph_location_label("Espace réservé du texte 8")
-  ) %>% 
-  
-  # 3. Ajout de la diapo Process
-  add_slide(
-    layout = "Process comerso",
-    master = "Conception personnalisée"
-  ) %>% 
-  
-  # 4. Ajout de la diapo de qui est comerso
-  add_slide(
-    layout = "Qui est comerso",
-    master = "Conception personnalisée"
-  ) %>% 
-  
-  # 5. Section : Création du support
-  add_slide(
-    layout = "Titre de section",
-    master = "Conception personnalisée"
-  ) %>% 
-  ph_with(
-    value = "Le graph",
-    location = ph_location_label("Espace réservé du texte 8")
-  ) %>% 
-  
-  # 6. Ajout d'un graphique
-  add_slide(
-    layout = "Titre, image et legende",
-    master = "Conception personnalisée"
-  ) %>% 
-  ph_with(
-    value = "Ajout d'un graphique",
-    location = ph_location_label("Titre 1")
-  ) %>% 
-  ph_with(
-    value = graph(),
-    location = ph_location_label("Espace réservé du contenu 2")
-  ) %>% 
-  ph_with(
-    value = "Graphique réalisée",
-    location = ph_location_label("Espace réservé du texte 4")
-  ) %>% 
-  
-  # 7. Ajout d'une signature
-  add_slide(
-    layout = "Signature",
-    master = "Conception personnalisée"
-  )
-
-
 ```
 
-  
-  
   
   
