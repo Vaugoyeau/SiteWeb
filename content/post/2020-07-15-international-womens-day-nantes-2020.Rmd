@@ -23,6 +23,13 @@ output:
     toc: true
 ---
   
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+```
+
+  
 # Objectif  
   
 Le but est de réaliser un support de communication à destination des clients pour voir l'évolution de leurs résultats par rapport aux données des autres magasins de même catégorie (`Benchmark`).  
@@ -280,7 +287,7 @@ creation_du_support <- function(num_identifiant_pingouin){
       ph_location_label("Title 1")
     ) %>% 
     ph_with(
-      value = external_img("content/post/pingouin.png"),
+      value = external_img("pingouin.png"), # image extraite de l'article à l'origine des données
       location = ph_location_label("Espace réservé du contenu 3")
     ) %>% 
     ph_with(
@@ -341,21 +348,27 @@ creation_du_support <- function(num_identifiant_pingouin){
   
 Une fois que le squelette du support est prêt, il ne reste plus qu'à envoyer à chaque pingouin (ou chaque client ;) ) son support personnalisé.  
   
-```{r envoi_du_support}
+```{r envoi_du_support, eval = FALSE}
 
 library(sendmailR)
 
-num_identifiant_pingouin <- "-0.993421052631561 422"
+num_identifiant_pingouin <- c("-0.993421052631561 422", "-0.993421052631561 308")
 
-message_support <- mime_part(
-  creation_du_support(num_identifiant_pingouin), 
-  "support.pptx"
+message_support <- map(
+  .x = num_identifiant_pingouin,
+  .f = ~ mime_part(
+    creation_du_support(.x), 
+    "support.pptx"
   )
+)
 
-message_support$`Content-Type` <- "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+message_support[[1]]$`Content-Type` <- "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
-adresse_d_envoi <- "marie.vaugoyeau@gmail.com"
-adresse_du_pingouin <- "marie.vaugoyeau@gmail.com"
+message_support[[2]]$`Content-Type` <- "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+
+adresse_d_envoi <- c("experimentatateur1@truc.com", "experimentateur2@truc.com") # adresse de la personne qui a suivi le pingouin/client
+
+adresse_du_pingouin <- c("pingouin1@pole_nord.fr", "pingouin2@pole_nord.fr") # adresse mail du pingouin/client
 
 # Envoi des mails
 map2(
@@ -373,35 +386,32 @@ map2(
   )
 )
 
-
-sendmail(
-  "<mao.vaug@free.fr>",
-  "<marie.vaugoyeau@gmail.com>",
-  "test",
-  "envoi test",
-  control = list(host = "aspmx.l.google.com", port = 465, user.name = "marie.vaugoyeau@gmail.com", passwd = "06m07V12!")
-)
-
-from <- "<nousdeux0515@gmail.com>"
-to <- "<marie.vaugoyeau@gmail.com>"
-subject <- "Hello from R"
-body <- list("It works!", mime_part(iris))
-sendmail(from, to, subject, body,
-         control=list(smtpServer="ASPMX.L.GOOGLE.COM"))
-
-# GRRRRR
-
-support <- "-0.993421052631561 422" %>% 
-  creation_du_support()
+```
   
+Ouppsss, soucis cela ne fonctionne pas....  
+Mais pourquoi ??? ;-(  
+En fait, un petit coup de fil rapide à [David Gohel](https://twitter.com/davidgohel), 1 minute de conversation et hop la solution apparaît comme une évidence, ce que je traite comme un pptx est en fait un rpptx... Il faut donc éditer le support pptx avant de l'envoyer et là ça passe sans soucis !  
+  
+Deux solutions, soit on enregistre tous les supports pptx que l'on envoie pour en archive (solution prise ici), soit on créé un support temporaire qui sera écrasé.  
+   
+```{r edition_du_support}
 
-support <- "-0.993421052631561 308" %>% 
-  creation_du_support()
+enregistrement_du_support_pptx <- function(num_identifiant_pingouin){
+  num_identifiant_pingouin %>% 
+    creation_du_support() %>% 
+    print(glue('presentation_{num_identifiant_pingouin %>% str_replace_all(".", ",")}.pptx'))
+}
 
-support %>% 
-  print("presentation_test.pptx")
+num_identifiant_pingouin <- c("-0.993421052631561 422", "-0.993421052631561 308")
+
+num_identifiant_pingouin %>% 
+  map(enregistrement_du_support_pptx)
 
 ```
-
+  
+  
+Et voilà !  
+  
+J'espère que cet article vous permettra de mieux chercher de l'aide et de réaliser plus facilement vos travaux.  
   
   
