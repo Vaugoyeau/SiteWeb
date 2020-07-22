@@ -1,23 +1,23 @@
 ---
-title:  Génération et envoi automatique de supports à destination des clients, points de blocages et solutions pour avancer  
+title:  Automatic generation and dispatch of media to customers, blocking points and forwarding solutions  
 author: "Marie Vaugoyeau"
-date: '2020-07-21'
-slug: presentation-off-printemps-des-fameuses
+date: '2020-07-22'
+slug: presentation-off-women-international-day
 categories:
 - graphique
 - stat
-- trucs et astuces
+- tips and tricks
 tags:
 - graphique
 - stat
-- trucs et astuces
+- tips and tricks
 featuredpath: "/images/featured/"
 featured: "immeuble_ny.png"
-featuredalt: "Création de supports personnalisé Power Point avec {officeR} et envoi automatique par mail avec {sendmailR} à destination des clients"
-linktitle: "presentation-off-printemps-des-fameuses"
+featuredalt: "Creating custom Power Point media with {officeR} and automatic emailing to clients with {sendmailR}"
+linktitle: "presentation-off-women-international-day"
 images: 
   - /img/featured/immeuble_ny.png  
-description : "Article de la présentation qui aurait dû se faire pour l'International Women's Day à Nantes le 19 mars et qui a été annulée suite à l'épidémie de COVID-19" 
+description : "Article from the presentation that should have been made for the International Women's Day in Nantes on March 19 and which was cancelled due to the COVID-19 outbreak" 
 output:
   blogdown::html_page:
     toc: true
@@ -30,46 +30,46 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
   
-# Objectif  
+# Aim  
   
-Le but est de réaliser un support de communication à destination des clients pour voir l'évolution de leurs résultats par rapport aux données des autres magasins de même catégorie (`Benchmark`).  
-Ce support doit se générer et être envoyé automatiquement aux clients.  
+The aim is to create a communication support for clients to see the evolution of their results compared to the data of other clients in the same category (`Benchmark`).  
+This support had to be generated and sent automatically to the customers.  
   
-Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de Stephen OSWALD et LifeCycleSavings du package `datasets`. Les exemples de supports éditées sont à la fin de l'article.  
+So that people who wish to reuse these lines of code, the template used is [here](/post/template_rstudio_article_off_eng.pptx), the data are those of the Penguins of the package `FlexParamCurve` by Stephen OSWALD and LifeCycleSavings of the package `datasets`. Examples of the published media at the end of the article are available [here](/post/presentation_0993421052631561 308_eng.pptx) and [here](/post/presentation_0993421052631561 422_eng.pptx).  
   
-Déroulé du travail :  
+Work sequence:  
 
-_ [Réalisation d'un template sous Power Point](/post/template_rstudio_article_off.pptx)   
-_ Création des graphiques à insérer  
-_ Création du support `Power Point` en utilisant le package `officer` de [David Gohel](davidgohel.github.io/officer/)  
-_ Envoi du support avec `sendmailR` d'[Olaf Mersmann](www.rdocumentation.org/packages/sendmailR)  
+_ [Creation of a template under Power Point](/post/template_rstudio_article_off_eng.pptx)   
+_ Creation of the graphics to be inserted  
+_ Creation `Power Point` support using the `officer` package from [David Gohel](davidgohel.github.io/officer/)  
+_ Sending support with `sendmailR` from [Olaf Mersmann](www.rdocumentation.org/packages/sendmailR)  
   
   
-# Création d'un graphique sur les données  
+# Creating graphs on the data  
   
-Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck puis les données internationnales du revenu réel disponible par habitant.  
+When I carried out this work it was on customer data and therefore confidential. For this blog post I'm going to use the mass data of penguins according to their ages and compare it to the average data of other penguins born in the same order and the same year to show how to make a graph with a benchmark. I'm also going to do another graph on the international data of real disposable income per capita.  
   
-## Comparaison d'un pingouin par rapport aux autres  
+## Comparison of one penguin to another  
   
-Comparer un pingouin par rapport aux autres de la même année et du même ordre de naissance est facile grâce à `ggplot()`.  
+Comparing a penguin to others of the same year and birth order is easy with `ggplot`.  
   
 ```{r realisation_d_un_graphique}
 
 library(tidyverse)
-library(FlexParamCurve) # pour avoir les données sur les pingouins
+library(FlexParamCurve) # to get the data on the penguins
 
-creation_du_graphique_pour_comparer_un_pingouin_aux_autres <- function(num_identifiant_pingouin){
+creation_of_the_graph_for_comparing_a_penguin_to_others <- function(num_penguin){
   
   benchmarck <- penguin.data %>% 
     filter(
-      bandid != num_identifiant_pingouin,
-      year == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$year,
-      ck == (penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$ck
-    ) # le benchmarck se fait aves les données des autres pingouins nées la même année et même ordre
+      bandid != num_penguin,
+      year == (penguin.data %>% filter(bandid == num_penguin) %>% slice(1))$year,
+      ck == (penguin.data %>% filter(bandid == num_penguin) %>% slice(1))$ck
+    ) # Benchmarking is done with data from other penguins born in the same year and in the same hatching order
   
   penguin.data %>% 
     filter(
-      bandid == num_identifiant_pingouin
+      bandid == num_penguin
     ) %>% 
     ggplot() +
     aes(
@@ -80,41 +80,41 @@ creation_du_graphique_pour_comparer_un_pingouin_aux_autres <- function(num_ident
     geom_point(color = "black") + 
     geom_smooth(se = FALSE, formula = y ~ x^2, color = "black") +
     theme_classic() +
-    ggtitle(glue::glue("Pingouin '{num_identifiant_pingouin}' comparer à ses semblables (en rouge)"))
+    ggtitle(glue::glue("Penguin '{num_penguin}' compare to his peers (in red)"))
   
  }
 
 "-0.993421052631561 422" %>% 
-  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()
+  creation_of_the_graph_for_comparing_a_penguin_to_others()
 
 "-0.993421052631561 308" %>% 
-  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()
+  creation_of_the_graph_for_comparing_a_penguin_to_others()
 
 ```
   
   
   
-## Création d'une fonction pour voir les données sous format "français"  
+## Creating a function to view data in "French" format  
   
-De base, R présente les données numérique sans espace ni arrondi mais de temps en temps dans des graphiques, il peut-être intéressant de pouvoir afficher les chiffres sous le format "français" c'est-à-dire `123 456 789` comme Excel peut le faire nativement.  
+Basically, R presents numerical data without spaces or rounding but from time to time in graphs, it may be interesting to be able to display the figures in "French" format i.e. `123 456 789` as Excel can do natively.  
   
-Pour cet exemple, je vais utiliser les données de LifeCycleSavings.  
+For this example, I will use the data from LifeCycleSavings.  
   
 ```{r mise_en_forme_française}
 
-# library(tidyverse) # pas utile si déjà appelé précédement
-library(scales) # pour utiliser la fonction label_number de mise en forme des nombres
-library(ggrepel) # pour ajouter des valeurs non chevauchantes sur le graphique
+# library(tidyverse) # not useful if already called previously
+library(scales) # to use the label_number function for number formatting
+library(ggrepel) # to add non-overlapping values to the chart
 
-mise_en_forme_fr <- label_number(accurancy = 1)
-# je demande à ce qu'il n'y ai pas de décimale
+fr_formatting <- label_number(accurancy = 1)
+# I ask that there be no decimal point
 
-1332859475.645878 %>% mise_en_forme_fr()
-# ça fonctionne sans soucis
+# it works 
+1332859475.645878 %>% fr_formatting()
 
 LifeCycleSavings %>% 
   rownames_to_column("country") %>% 
-  mutate(label = dpi %>% mise_en_forme_fr()) %>% 
+  mutate(label = dpi %>% fr_formatting()) %>% 
   ggplot() +
   aes(x = country, y = dpi) +
   geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
@@ -123,50 +123,52 @@ LifeCycleSavings %>%
   theme(
     axis.text.x = element_text(angle = 90)
   )
-# aïe l'arrondi ne se fait pas
+# ouch the rounding is not done
 
 ```
   
-Vous pouvez voir que malgré mon test préliminaire, cela ne fonctionne pas bien... En effet, si la mise en forme globale est bonne l'arrondi ne se fait pas... Mais pourquoi ???  
+You can see that despite my preliminary test, it doesn't work well...  
+Indeed, if the global formatting is good, the rounding is not done... But why????  
   
-Je suis restée bloquée un petit moment à me demander ce qui n'allait pas et pourquoi et j'ai fini par demander de l'aide sur la slack francophone des utilisateurs de R, [GRRR](https://lstu.fr/rgrrr).  
-**Petit point info** : Quelque soit le support sur lequel vous voulez demander de l'aide, pensez à réaliser un `repex`, un exemple reproductible ! Oui les gens sur les forums ou slacks sont vos ami-e-s et oui, la sphère R est bienveillante mais n'oubliez pas que personne (à part vous) n'est dans votre tête, donc le premier pas vers la résolution d'un problème est de le sortir de son contexte pour pouvoir l'expliquer à tous en utilisant des données accessibles !  
-Cela m'est déjà arrivé plus d'une fois qu'en réalisant mon repex pour demander de l'aide j'ai vu où étais le soucis :D  
+I was stuck for a while wondering what was wrong and why and ended up asking for help on the French slack of R users, [GRRR](https://lstu.fr/rgrrr).  
+**Little info point**: Whatever media you want to ask for help on, think about making a `repex`, a reproducible example!  
+Yes, people on the forums or slacks are your friends and yes, the R sphere is benevolent but don't forget that nobody is in your head (except you, at least normally), so the first step towards solving a problem is to take it out of context so that you can explain it to everyone using accessible data!  
+This has already happened to me more than once that when I did my repex to ask for help I saw where the problem was.   
   
-Voici les lignes de codes que j'ai partagée sur la slack.  
+Here are the lines of code I shared on the slack.  
   
 ```{r creation_exemple_reproductible}
 
 # library(scales)
 # library(tidyverse)
 
-mise_en_forme_fr <- label_number(accurancy = 1)
+fr_formatting <- label_number(accurancy = 1)
 
-c(13556.4646, 546946.65465) %>% map(mise_en_forme_fr)
+c(13556.4646, 546946.65465) %>% map(fr_formatting)
 
 tibble(
   valeur = 
     runif(n = 50, min = 100, max = 6000)
   ) %>% 
-  mutate(mise_en_forme = valeur %>% mise_en_forme_fr)
+  mutate(mise_en_forme = valeur %>% fr_formatting)
 
 ```
   
-Cette fois-là c'est [Julien Barnier](https://twitter.com/lapply) qui m'a dépanné en me faisant remarquer que j'avais fait une faute à `accuracy`, il n'y a pas de 'n'...  
-Bizarrement ça a tout de suite fonctionné mieux ;)  
+This time it was [Julien Barnier](https://twitter.com/lapply) who helped me out by pointing out that I had made a mistake at `accuracy`, there is no 'n'....   
+Strangely enough, it worked better right away.     
   
 ```{r reponse_au_probleme}
-mise_en_forme_fr <- label_number(accuracy = 1)
+fr_formatting <- label_number(accuracy = 1)
 
 tibble(
   valeur = 
     runif(n = 50, min = 100, max = 6000)
   ) %>% 
-  mutate(mise_en_forme = valeur %>% mise_en_forme_fr)
+  mutate(mise_en_forme = valeur %>% fr_formatting)
 
 graphique_LCS <- LifeCycleSavings %>% 
   rownames_to_column("country") %>% 
-  mutate(label = dpi %>% mise_en_forme_fr()) %>% 
+  mutate(label = dpi %>% fr_formatting()) %>% 
   ggplot() +
   aes(x = country, y = dpi) +
   geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
@@ -182,36 +184,38 @@ graphique_LCS
   
   
   
-# Création du support PowerPoint avec `officer`  
+# Creating PowerPoint support with `officer`  
   
-De base je ne suis pas trop pour la création de support `pptx` avec R, je préfère rapports `html` mais cela reste un support très attendu pour la communication à destination des clients.  
+Basically I'm not too much for creating `pptx` support with R, I prefer `html` reports but it is still a much awaited support for communication to customers.  
   
-Grâce au package [`officer`]{davidgohel.github.io/officer/}, je vais créer un support simple mais dynamique avec des liens entre les diapos.  
+With the [`officer`](davidgohel.github.io/officer/) package, I will create simple but dynamic support with links between slides.  
+  
   
 ```{r creation_du_support}
 
 library(officer)
 library(glue)
 
-emplacement_du_support <- "template_rstudio_article_off.pptx"
+location_of_support <- "template_rstudio_article_off_eng.pptx"
 
 # pour voir les types de diapos qui existent et les éléments qui les constituent
-read_pptx(emplacement_du_support) %>%
-  layout_properties()
+read_pptx(location_of_support) %>%
+  layout_properties() %>% 
+  select(master_name, name, type, id, ph_label)
 
-creation_du_support <- function(num_identifiant_pingouin){
-  read_pptx(emplacement_du_support) %>% 
-    # 1. Création de la diapo de titre
+creating_support <- function(num_penguin){
+  read_pptx(location_of_support) %>% 
+    # 1. Creating the title slide
     add_slide(
       layout = "Diapositive de titre", 
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = num_identifiant_pingouin, 
+      value = num_penguin, 
       location = ph_location_label("Title 1")
     ) %>% 
     ph_with(
-      value = penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1) %>% as_tibble() %>% select(year, ck),
+      value = penguin.data %>% filter(bandid == num_penguin) %>% slice(1) %>% as_tibble() %>% select(year, ck),
       location = ph_location_label("Espace réservé du tableau 4")
     ) %>% 
     
@@ -221,11 +225,11 @@ creation_du_support <- function(num_identifiant_pingouin){
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = glue("Numéro d'identification du pingouin : {num_identifiant_pingouin}"),
+      value = glue("Penguin identification number : {num_penguin}"),
       location = ph_location_label("Espace réservé du texte 5")
     ) %>% 
     ph_with(
-      value = "Information sur Marie Vaugoyeau",
+      value = "Information about Marie Vaugoyeau",
       location = ph_location_label("Espace réservé du texte 9")
     ) %>% 
     ph_with(
@@ -233,21 +237,21 @@ creation_du_support <- function(num_identifiant_pingouin){
       location = ph_location_label("Espace réservé du texte 11")
     ) %>% 
     ph_with(
-      value = glue("Graphique associé au pingouin {num_identifiant_pingouin}"),
+      value = glue("Graph associated with the penguin {num_penguin}"),
       location = ph_location_label("Espace réservé du texte 13")
     ) %>% 
     ph_with(
-      value = "Informations pour me contacter",
+      value = "Contact information",
       location = ph_location_label("Espace réservé du texte 15")
     ) %>% 
     
-    # 3. Ajout de la diapo d'information sur moi (petite page de pub)
+    # 3. Addition of the information slide about me (small ad page)
     add_slide(
       layout = "PrésentationMarie",
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = "Clic retour menu", 
+      value = "Click back to the menu", 
       location = ph_location_label("Espace réservé du contenu 5")
     ) %>%
     ph_slidelink(
@@ -255,13 +259,13 @@ creation_du_support <- function(num_identifiant_pingouin){
       slide_index = 2
     ) %>% 
     
-    # 4. Ajout du graphique LCS
+    # 4. Adding LCS graph
     add_slide(
       layout = "Titre et contenu",
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = "Graphique LCS",
+      value = "Graph LCS",
       ph_location_label("Title 1")
     ) %>% 
     ph_with(
@@ -269,7 +273,7 @@ creation_du_support <- function(num_identifiant_pingouin){
       ph_location_label("Content Placeholder 2")
     ) %>% 
     ph_with(
-      value = "Clic retour menu", 
+      value = "Click back to the menu", 
       location = ph_location_label("Espace réservé du contenu 5")
     ) %>%
     ph_slidelink(
@@ -277,13 +281,13 @@ creation_du_support <- function(num_identifiant_pingouin){
       slide_index = 2
     ) %>%
     
-    # 5. Ajout du graphique personnalisé du pingouin
+    # 5. Adding custom penguin graphic
     add_slide(
       layout = "Titre, Contenu et Image",
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = "Graphique du pingouin",
+      value = "Penguin graph",
       ph_location_label("Title 1")
     ) %>% 
     ph_with(
@@ -291,15 +295,15 @@ creation_du_support <- function(num_identifiant_pingouin){
       location = ph_location_label("Espace réservé du contenu 3")
     ) %>% 
     ph_with(
-      value = glue("{(penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$year} {(penguin.data %>% filter(bandid == num_identifiant_pingouin) %>% slice(1))$ck}"),
+      value = glue("{(penguin.data %>% filter(bandid == num_penguin) %>% slice(1))$year} {(penguin.data %>% filter(bandid == num_penguin) %>% slice(1))$ck}"),
       ph_location_label("Espace réservé du contenu 8")
     ) %>% 
     ph_with(
-      value = creation_du_graphique_pour_comparer_un_pingouin_aux_autres(num_identifiant_pingouin),
+      value = creation_of_the_graph_for_comparing_a_penguin_to_others(num_penguin),
       ph_location_label("Espace réservé du contenu 6")
     ) %>% 
     ph_with(
-      value = "Clic retour menu", 
+      value = "Click back to the menu", 
       location = ph_location_label(ph_label = "Espace réservé du contenu 5")
     ) %>%
     ph_slidelink(
@@ -307,13 +311,13 @@ creation_du_support <- function(num_identifiant_pingouin){
       slide_index = 2
     ) %>%
     
-    # 6. Ajout de la diapo de contact
+    # 6. Adding the contact slide
     add_slide(
       layout = "Contact",
       master = "Intégral"
     ) %>% 
     ph_with(
-      value = "Clic retour menu", 
+      value = "Click back to the menu", 
       location = ph_location_label(ph_label = "Espace réservé du contenu 5")
     ) %>%
     ph_slidelink(
@@ -321,7 +325,7 @@ creation_du_support <- function(num_identifiant_pingouin){
       slide_index = 2
     ) %>%
     
-    # Création des liens sur la page du sommaire
+    # Creating links on the contents page
     on_slide(index = 2) %>%
     ph_slidelink(
       ph_label = "Espace réservé du texte 9", 
@@ -344,20 +348,20 @@ creation_du_support <- function(num_identifiant_pingouin){
 ```
   
   
-# Envoi du support avec le package `sendmailR`  
+# Sending the support with the package `sendmailR`  
   
-Une fois que le squelette du support est prêt, il ne reste plus qu'à envoyer à chaque pingouin (ou chaque client ;) ) son support personnalisé.  
+Once the skeleton of the support is ready, all that's left to do is to send each penguin (or each client) his personalized support.  
   
 ```{r envoi_du_support, eval = FALSE}
 
 library(sendmailR)
 
-num_identifiant_pingouin <- c("-0.993421052631561 422", "-0.993421052631561 308")
+num_penguin <- c("-0.993421052631561 422", "-0.993421052631561 308")
 
 message_support <- map(
-  .x = num_identifiant_pingouin,
+  .x = num_penguin,
   .f = ~ mime_part(
-    creation_du_support(.x), 
+    creating_support(.x), 
     "support.pptx"
   )
 )
@@ -366,20 +370,20 @@ message_support[[1]]$`Content-Type` <- "application/vnd.openxmlformats-officedoc
 
 message_support[[2]]$`Content-Type` <- "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
-adresse_d_envoi <- c("experimentatateur1@truc.com", "experimentateur2@truc.com") # adresse de la personne qui a suivi le pingouin/client
+shipping_address <- c("experimentatateur1@truc.com", "experimentateur2@truc.com") # address of the person who followed the penguin/customer
 
-adresse_du_pingouin <- c("pingouin1@pole_nord.fr", "pingouin2@pole_nord.fr") # adresse mail du pingouin/client
+penguin_address <- c("pingouin1@pole_nord.fr", "pingouin2@pole_nord.fr") # email address of the penguin/customer
 
-# Envoi des mails
+# Sending emails
 map2(
-  .x = adresse_d_envoi, # on peut même associé une adresse d'envoi différente par pingouin/client
-  .y = adresse_du_pingouin,
+  .x = shipping_address,
+  .y = penguin_address,
   .f = ~ sendmail(
     from = glue("<{.x}>"),
     to = glue("<{.y}>"),
-    subject = glue("Synthèse mensuelle du pingouin {num_identifiant_pingouin}"),
+    subject = glue("Synthesis of penguin weight gain {num_penguin}"),
     msg = list(
-      glue("Bonjour,\nVeuillez trouver ci-joint la synthèse pour le pingouin {num_identifiant_pingouin}.\nBonne journée, \nMarie Vaugoyeau"),
+      glue("Hello,\nPlease find attached the synthesis for the penguin {num_penguin}.\nHave a nice day, \nMarie Vaugoyeau"),
       message_support
     ),
     control = list(smtpServer = "ASPMX.L.GOOGLE.COM")
@@ -388,30 +392,32 @@ map2(
 
 ```
   
-Ouppsss, soucis cela ne fonctionne pas....  
-Mais pourquoi ??? ;-(  
-En fait, un petit coup de fil rapide à [David Gohel](https://twitter.com/davidgohel), 1 minute de conversation et hop la solution apparaît comme une évidence, ce que je traite comme un pptx est en fait un rpptx... Il faut donc éditer le support pptx avant de l'envoyer et là ça passe sans soucis !  
+Oops, it doesn't work...  
+But why??   
   
-Deux solutions, soit on enregistre tous les supports pptx que l'on envoie pour en archive (solution prise ici), soit on créé un support temporaire qui sera écrasé.  
+In fact, a quick phone call to [David Gohel](https://twitter.com/davidgohel), 1 minute of conversation and hop the solution is obvious, what I treat as a pptx is in fact an rpptx....  
+So you have to edit the pptx support before sending it and then it's ok !  
+  
+Two solutions, either we save all the pptx supports we send for archive (solution taken [here](/post/presentation_0993421052631561 308_eng.pptx) and [here](/post/presentation_0993421052631561 422_eng.pptx)), or we create a temporary support which will be overwritten.    
    
-```{r edition_du_support}
+```{r edition_du_support, results = FALSE}
 
-enregistrement_du_support_pptx <- function(num_identifiant_pingouin){
-  num_identifiant_pingouin %>% 
-    creation_du_support() %>% 
-    print(glue('presentation_{num_identifiant_pingouin %>% str_replace_all(".", ",")}.pptx'))
+pptx_support_recording <- function(num_penguin){
+  num_penguin %>% 
+    creating_support() %>% 
+    print(glue('presentation_{num_penguin %>% str_remove_all("[:punct:]")}_eng.pptx'))
 }
 
-num_identifiant_pingouin <- c("-0.993421052631561 422", "-0.993421052631561 308")
+num_penguin <- c("-0.993421052631561 422", "-0.993421052631561 308")
 
-num_identifiant_pingouin %>% 
-  map(enregistrement_du_support_pptx)
+num_penguin %>% 
+  map(pptx_support_recording)
 
 ```
   
   
-Et voilà !  
+There you go!  
   
-J'espère que cet article vous permettra de mieux chercher de l'aide et de réaliser plus facilement vos travaux.  
+I hope that this article will help you better seek help and make your work with R easier.   
   
   

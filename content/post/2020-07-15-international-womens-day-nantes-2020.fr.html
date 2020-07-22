@@ -1,0 +1,470 @@
+---
+title:  Génération et envoi automatique de supports à destination des clients, points de blocages et solutions pour avancer  
+author: "Marie Vaugoyeau"
+date: '2020-07-22'
+slug: presentation-off-printemps-des-fameuses
+categories:
+- graphique
+- stat
+- trucs et astuces
+tags:
+- graphique
+- stat
+- trucs et astuces
+featuredpath: "/images/featured/"
+featured: "immeuble_ny.png"
+featuredalt: "Création de supports personnalisé Power Point avec {officeR} et envoi automatique par mail avec {sendmailR} à destination des clients"
+linktitle: "presentation-off-printemps-des-fameuses"
+images: 
+  - /img/featured/immeuble_ny.png  
+description : "Article de la présentation qui aurait dû se faire pour l'International Women's Day à Nantes le 19 mars et qui a été annulée suite à l'épidémie de COVID-19" 
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#objectif">Objectif</a></li>
+<li><a href="#création-de-graphiques-sur-les-données">Création de graphiques sur les données</a><ul>
+<li><a href="#comparaison-dun-pingouin-par-rapport-aux-autres">Comparaison d’un pingouin par rapport aux autres</a></li>
+<li><a href="#création-dune-fonction-pour-voir-les-données-sous-format-français">Création d’une fonction pour voir les données sous format “français”</a></li>
+</ul></li>
+<li><a href="#création-du-support-powerpoint-avec-officer">Création du support PowerPoint avec <code>officer</code></a></li>
+<li><a href="#envoi-du-support-avec-le-package-sendmailr">Envoi du support avec le package <code>sendmailR</code></a></li>
+</ul>
+</div>
+
+<div id="objectif" class="section level1">
+<h1>Objectif</h1>
+<p>Le but est de réaliser un support de communication à destination des clients pour voir l’évolution de leurs résultats par rapport aux données des autres clients de même catégorie (<code>Benchmark</code>).<br />
+Ce support devait être généré et être envoyé automatiquement aux clients.</p>
+<p>Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est <a href="/post/template_rstudio_article_off.pptx">ici</a>, les données sont celles des Pingouins du package <code>FlexParamCurve</code> de Stephen OSWALD et LifeCycleSavings du package <code>datasets</code>. Les exemples de supports éditées à la fin de l’article sont disponibles <a href="/post/presentation_0993421052631561%20308.pptx">ici</a> et <a href="/post/presentation_0993421052631561%20422.pptx">là</a>.</p>
+<p>Déroulé du travail :</p>
+<p>_ <a href="/post/template_rstudio_article_off.pptx">Réalisation d’un template sous Power Point</a><br />
+_ Création des graphiques à insérer<br />
+_ Création du support <code>Power Point</code> en utilisant le package <code>officer</code> de <a href="davidgohel.github.io/officer/">David Gohel</a><br />
+_ Envoi du support avec <code>sendmailR</code> d’<a href="www.rdocumentation.org/packages/sendmailR">Olaf Mersmann</a></p>
+</div>
+<div id="création-de-graphiques-sur-les-données" class="section level1">
+<h1>Création de graphiques sur les données</h1>
+<p>Lorsque j’ai réalisé ce travail c’était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck. Je vais aussi réaliser un autre graphique sur les données internationnales du revenu réel disponible par habitant.</p>
+<div id="comparaison-dun-pingouin-par-rapport-aux-autres" class="section level2">
+<h2>Comparaison d’un pingouin par rapport aux autres</h2>
+<p>Comparer un pingouin par rapport aux autres de la même année et du même ordre de naissance est facile grâce à <code>ggplot</code>.</p>
+<pre class="r"><code>library(tidyverse)
+library(FlexParamCurve) # pour avoir les données sur les pingouins
+
+creation_du_graphique_pour_comparer_un_pingouin_aux_autres &lt;- function(num_identifiant_pingouin){
+  
+  benchmarck &lt;- penguin.data %&gt;% 
+    filter(
+      bandid != num_identifiant_pingouin,
+      year == (penguin.data %&gt;% filter(bandid == num_identifiant_pingouin) %&gt;% slice(1))$year,
+      ck == (penguin.data %&gt;% filter(bandid == num_identifiant_pingouin) %&gt;% slice(1))$ck
+    ) # le benchmarck se fait aves les données des autres pingouins nées la même année et même ordre de ponte
+  
+  penguin.data %&gt;% 
+    filter(
+      bandid == num_identifiant_pingouin
+    ) %&gt;% 
+    ggplot() +
+    aes(
+      x = ckage,
+      y = weight
+    ) +
+    geom_smooth(data = benchmarck, color = &quot;red&quot;, fill = &quot;orange&quot;, alpha = 0.4, formula = y ~ x^2) + 
+    geom_point(color = &quot;black&quot;) + 
+    geom_smooth(se = FALSE, formula = y ~ x^2, color = &quot;black&quot;) +
+    theme_classic() +
+    ggtitle(glue::glue(&quot;Pingouin &#39;{num_identifiant_pingouin}&#39; comparer à ses semblables (en rouge)&quot;))
+  
+ }
+
+&quot;-0.993421052631561 422&quot; %&gt;% 
+  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()</code></pre>
+<p><img src="/post/2020-07-15-international-womens-day-nantes-2020.fr_files/figure-html/realisation_d_un_graphique-1.png" width="672" /></p>
+<pre class="r"><code>&quot;-0.993421052631561 308&quot; %&gt;% 
+  creation_du_graphique_pour_comparer_un_pingouin_aux_autres()</code></pre>
+<p><img src="/post/2020-07-15-international-womens-day-nantes-2020.fr_files/figure-html/realisation_d_un_graphique-2.png" width="672" /></p>
+</div>
+<div id="création-dune-fonction-pour-voir-les-données-sous-format-français" class="section level2">
+<h2>Création d’une fonction pour voir les données sous format “français”</h2>
+<p>De base, R présente les données numérique sans espace ni arrondi mais de temps en temps dans des graphiques, il peut-être intéressant de pouvoir afficher les chiffres sous le format “français” c’est-à-dire <code>123 456 789</code> comme Excel peut le faire nativement.</p>
+<p>Pour cet exemple, je vais utiliser les données de LifeCycleSavings.</p>
+<pre class="r"><code># library(tidyverse) # pas utile si déjà appelé précédement
+library(scales) # pour utiliser la fonction label_number de mise en forme des nombres
+library(ggrepel) # pour ajouter des valeurs non chevauchantes sur le graphique
+
+mise_en_forme_fr &lt;- label_number(accurancy = 1)
+# je demande à ce qu&#39;il n&#39;y ai pas de décimale
+
+# ça fonctionne sans soucis
+1332859475.645878 %&gt;% mise_en_forme_fr()</code></pre>
+<pre><code>## [1] &quot;1 332 859 476&quot;</code></pre>
+<pre class="r"><code>LifeCycleSavings %&gt;% 
+  rownames_to_column(&quot;country&quot;) %&gt;% 
+  mutate(label = dpi %&gt;% mise_en_forme_fr()) %&gt;% 
+  ggplot() +
+  aes(x = country, y = dpi) +
+  geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
+  geom_label_repel(aes(label = label), segment.color = NA, direction=&quot;y&quot;, size = 3) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 90)
+  )</code></pre>
+<p><img src="/post/2020-07-15-international-womens-day-nantes-2020.fr_files/figure-html/mise_en_forme_française-1.png" width="672" /></p>
+<pre class="r"><code># aïe l&#39;arrondi ne se fait pas</code></pre>
+<p>Vous pouvez voir que malgré mon test préliminaire, cela ne fonctionne pas bien…<br />
+En effet, si la mise en forme globale est bonne l’arrondi ne se fait pas… Mais pourquoi ???</p>
+<p>Je suis restée bloquée un petit moment à me demander ce qui n’allait pas et pourquoi et j’ai fini par demander de l’aide sur la slack francophone des utilisateurs de R, <a href="https://lstu.fr/rgrrr">GRRR</a>.<br />
+<strong>Petit point info</strong> : Quelque soit le support sur lequel vous voulez demander de l’aide, pensez à réaliser un <code>repex</code>, un exemple reproductible !<br />
+Oui les gens sur les forums ou slacks sont vos ami-e-s et oui, la sphère R est bienveillante mais n’oubliez pas que personne n’est dans votre tête (à part vous, enfin normalement), donc le premier pas vers la résolution d’un problème est de le sortir de son contexte pour pouvoir l’expliquer à tous en utilisant des données accessibles !<br />
+Cela m’est déjà arrivé plus d’une fois qu’en réalisant mon repex pour demander de l’aide j’ai vu où étais le soucis :D</p>
+<p>Voici les lignes de codes que j’ai partagée sur la slack.</p>
+<pre class="r"><code># library(scales)
+# library(tidyverse)
+
+mise_en_forme_fr &lt;- label_number(accurancy = 1)
+
+c(13556.4646, 546946.65465) %&gt;% map(mise_en_forme_fr)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;13 556&quot;
+## 
+## [[2]]
+## [1] &quot;546 947&quot;</code></pre>
+<pre class="r"><code>tibble(
+  valeur = 
+    runif(n = 50, min = 100, max = 6000)
+  ) %&gt;% 
+  mutate(mise_en_forme = valeur %&gt;% mise_en_forme_fr)</code></pre>
+<pre><code>## # A tibble: 50 x 2
+##    valeur mise_en_forme
+##     &lt;dbl&gt; &lt;chr&gt;        
+##  1  4389. 4 389.3      
+##  2  5189. 5 189.0      
+##  3  2232. 2 231.5      
+##  4  3536. 3 536.3      
+##  5  2110. 2 110.1      
+##  6  1666. 1 666.4      
+##  7  1894. 1 893.8      
+##  8  1353. 1 352.6      
+##  9  3970. 3 969.6      
+## 10   841. 841.3        
+## # ... with 40 more rows</code></pre>
+<p>Cette fois-là c’est <a href="https://twitter.com/lapply">Julien Barnier</a> qui m’a dépanné en me faisant remarquer que j’avais fait une faute à <code>accuracy</code>, il n’y a pas de ‘n’…<br />
+Bizarrement ça a tout de suite fonctionné mieux ;)</p>
+<pre class="r"><code>mise_en_forme_fr &lt;- label_number(accuracy = 1)
+
+tibble(
+  valeur = 
+    runif(n = 50, min = 100, max = 6000)
+  ) %&gt;% 
+  mutate(mise_en_forme = valeur %&gt;% mise_en_forme_fr)</code></pre>
+<pre><code>## # A tibble: 50 x 2
+##    valeur mise_en_forme
+##     &lt;dbl&gt; &lt;chr&gt;        
+##  1  1771. 1 771        
+##  2  5259. 5 259        
+##  3  2230. 2 230        
+##  4  5395. 5 395        
+##  5  2187. 2 187        
+##  6  5131. 5 131        
+##  7   594. 594          
+##  8   327. 327          
+##  9  1249. 1 249        
+## 10   465. 465          
+## # ... with 40 more rows</code></pre>
+<pre class="r"><code>graphique_LCS &lt;- LifeCycleSavings %&gt;% 
+  rownames_to_column(&quot;country&quot;) %&gt;% 
+  mutate(label = dpi %&gt;% mise_en_forme_fr()) %&gt;% 
+  ggplot() +
+  aes(x = country, y = dpi) +
+  geom_segment(aes(xend = country, y = 0, yend = dpi), size = 6) +
+  geom_label_repel(aes(label = label), segment.color = NA, direction=&quot;y&quot;, size = 3) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 90)
+  )
+
+graphique_LCS</code></pre>
+<p><img src="/post/2020-07-15-international-womens-day-nantes-2020.fr_files/figure-html/reponse_au_probleme-1.png" width="672" /></p>
+</div>
+</div>
+<div id="création-du-support-powerpoint-avec-officer" class="section level1">
+<h1>Création du support PowerPoint avec <code>officer</code></h1>
+<p>De base je ne suis pas trop pour la création de support <code>pptx</code> avec R, je préfère rapports <code>html</code> mais cela reste un support très attendu pour la communication à destination des clients.</p>
+<p>Grâce au package <a href="davidgohel.github.io/officer/"><code>officer</code></a>, je vais créer un support simple mais dynamique avec des liens entre les diapos.</p>
+<pre class="r"><code>library(officer)
+library(glue)
+
+emplacement_du_support &lt;- &quot;template_rstudio_article_off.pptx&quot;
+
+# pour voir les types de diapos qui existent et les éléments qui les constituent
+read_pptx(emplacement_du_support) %&gt;%
+  layout_properties() %&gt;% 
+  select(master_name, name, type, id, ph_label)</code></pre>
+<pre><code>##    master_name                    name     type id                    ph_label
+## 1     Intégral    Diapositive de titre     body 10                 Rectangle 9
+## 2     Intégral    Diapositive de titre     body  8        Straight Connector 7
+## 3     Intégral    Diapositive de titre     body 12                ZoneTexte 11
+## 4     Intégral    Diapositive de titre     body 11                      Oval 5
+## 5     Intégral    Contenu avec légende     body  3       Content Placeholder 2
+## 6     Intégral    Contenu avec légende     body  4          Text Placeholder 3
+## 7     Intégral                 Contact     body 26                ZoneTexte 25
+## 8     Intégral                 Contact     body 22                    Image 21
+## 9     Intégral      Image avec légende     body  4          Text Placeholder 3
+## 10    Intégral      Image avec légende     body  8        Straight Connector 7
+## 11    Intégral                  Resume     body 10   Espace réservé du texte 9
+## 12    Intégral Titre et texte vertical     body  3 Vertical Text Placeholder 2
+## 13    Intégral                  Resume     body 14  Espace réservé du texte 13
+## 14    Intégral Titre vertical et texte     body  3 Vertical Text Placeholder 2
+## 15    Intégral Titre vertical et texte     body  7        Straight Connector 6
+## 16    Intégral                 Contact     body 14                ZoneTexte 13
+## 17    Intégral                  Resume     body 22  Espace réservé du texte 21
+## 18    Intégral                 Contact     body 23                Rectangle 22
+## 19    Intégral                 Contact     body 24                Rectangle 23
+## 20    Intégral                  Resume     body  6   Espace réservé du texte 5
+## 21    Intégral                 Contact     body  3                 ZoneTexte 2
+## 22    Intégral                 Contact     body  8                 Graphique 7
+## 23    Intégral                 Contact     body  9 Espace réservé du contenu 5
+## 24    Intégral Titre, Contenu et Image     body  6 Espace réservé du contenu 5
+## 25    Intégral                  Resume     body 12  Espace réservé du texte 11
+## 26    Intégral Titre, Contenu et Image     body  9 Espace réservé du contenu 8
+## 27    Intégral                  Resume     body 16  Espace réservé du texte 15
+## 28    Intégral                  Resume     body 18  Espace réservé du texte 17
+## 29    Intégral                  Resume     body 20  Espace réservé du texte 19
+## 30    Intégral        Titre et contenu     body  5 Espace réservé du contenu 5
+## 31    Intégral                  Resume     body 24  Espace réservé du texte 23
+## 32    Intégral                  Resume     body  4                 Rectangle 3
+## 33    Intégral             Comparaison     body  5          Text Placeholder 4
+## 34    Intégral Titre, Contenu et Image     body  5                 Graphique 4
+## 35    Intégral        Titre de section     body  8        Straight Connector 7
+## 36    Intégral Titre, Contenu et Image     body  7 Espace réservé du contenu 6
+## 37    Intégral       PrésentationMarie     body  7                 ZoneTexte 6
+## 38    Intégral Titre, Contenu et Image     body  4 Espace réservé du contenu 3
+## 39    Intégral       PrésentationMarie     body  5 Espace réservé du contenu 5
+## 40    Intégral        Titre de section     body  9                 Rectangle 8
+## 41    Intégral        Titre et contenu     body  3       Content Placeholder 2
+## 42    Intégral        Titre et contenu     body  4                 Graphique 3
+## 43    Intégral        Titre de section     body  3          Text Placeholder 2
+## 44    Intégral             Comparaison     body  6       Content Placeholder 5
+## 45    Intégral        Titre de section     body 11                      Oval 5
+## 46    Intégral           Deux contenus     body  3       Content Placeholder 2
+## 47    Intégral       PrésentationMarie     body  4                 Graphique 3
+## 48    Intégral       PrésentationMarie     body  3                 ZoneTexte 2
+## 49    Intégral             Comparaison     body  4       Content Placeholder 3
+## 50    Intégral           Deux contenus     body  4       Content Placeholder 3
+## 51    Intégral             Comparaison     body  3          Text Placeholder 2
+## 52    Intégral        Titre et contenu    title  2                     Title 1
+## 53    Intégral Titre, Contenu et Image    title  2                     Title 1
+## 54    Intégral      Image avec légende    title  2                     Title 1
+## 55    Intégral    Contenu avec légende    title  8                     Title 7
+## 56    Intégral Titre vertical et texte    title  2            Vertical Title 1
+## 57    Intégral           Deux contenus    title  2                     Title 1
+## 58    Intégral Titre et texte vertical    title  2                     Title 1
+## 59    Intégral        Titre de section    title  2                     Title 1
+## 60    Intégral             Comparaison    title 10                     Title 9
+## 61    Intégral              Titre seul    title  2                     Title 1
+## 62    Intégral    Diapositive de titre ctrTitle  2                     Title 1
+## 63    Intégral    Diapositive de titre      tbl  5 Espace réservé du tableau 4
+## 64    Intégral      Image avec légende      pic  3       Picture Placeholder 2</code></pre>
+<pre class="r"><code>creation_du_support &lt;- function(num_identifiant_pingouin){
+  read_pptx(emplacement_du_support) %&gt;% 
+    # 1. Création de la diapo de titre
+    add_slide(
+      layout = &quot;Diapositive de titre&quot;, 
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = num_identifiant_pingouin, 
+      location = ph_location_label(&quot;Title 1&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = penguin.data %&gt;% filter(bandid == num_identifiant_pingouin) %&gt;% slice(1) %&gt;% as_tibble() %&gt;% select(year, ck),
+      location = ph_location_label(&quot;Espace réservé du tableau 4&quot;)
+    ) %&gt;% 
+    
+    # 2. Ajout du sommaire cliquable
+    add_slide(
+      layout = &quot;Resume&quot;,
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = glue(&quot;Numéro d&#39;identification du pingouin : {num_identifiant_pingouin}&quot;),
+      location = ph_location_label(&quot;Espace réservé du texte 5&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Informations sur Marie Vaugoyeau&quot;,
+      location = ph_location_label(&quot;Espace réservé du texte 9&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Graphique Life Cycle Saving&quot;,
+      location = ph_location_label(&quot;Espace réservé du texte 11&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = glue(&quot;Graphique associé au pingouin {num_identifiant_pingouin}&quot;),
+      location = ph_location_label(&quot;Espace réservé du texte 13&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Informations pour me contacter&quot;,
+      location = ph_location_label(&quot;Espace réservé du texte 15&quot;)
+    ) %&gt;% 
+    
+    # 3. Ajout de la diapo d&#39;information sur moi (petite page de pub)
+    add_slide(
+      layout = &quot;PrésentationMarie&quot;,
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Clic retour menu&quot;, 
+      location = ph_location_label(&quot;Espace réservé du contenu 5&quot;)
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du contenu 5&quot;, 
+      slide_index = 2
+    ) %&gt;% 
+    
+    # 4. Ajout du graphique LCS
+    add_slide(
+      layout = &quot;Titre et contenu&quot;,
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Graphique LCS&quot;,
+      ph_location_label(&quot;Title 1&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = graphique_LCS,
+      ph_location_label(&quot;Content Placeholder 2&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Clic retour menu&quot;, 
+      location = ph_location_label(&quot;Espace réservé du contenu 5&quot;)
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du contenu 5&quot;, 
+      slide_index = 2
+    ) %&gt;%
+    
+    # 5. Ajout du graphique personnalisé du pingouin
+    add_slide(
+      layout = &quot;Titre, Contenu et Image&quot;,
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Graphique du pingouin&quot;,
+      ph_location_label(&quot;Title 1&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = external_img(&quot;pingouin.png&quot;), # image extraite de l&#39;article à l&#39;origine des données
+      location = ph_location_label(&quot;Espace réservé du contenu 3&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = glue(&quot;{(penguin.data %&gt;% filter(bandid == num_identifiant_pingouin) %&gt;% slice(1))$year} {(penguin.data %&gt;% filter(bandid == num_identifiant_pingouin) %&gt;% slice(1))$ck}&quot;),
+      ph_location_label(&quot;Espace réservé du contenu 8&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = creation_du_graphique_pour_comparer_un_pingouin_aux_autres(num_identifiant_pingouin),
+      ph_location_label(&quot;Espace réservé du contenu 6&quot;)
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Clic retour menu&quot;, 
+      location = ph_location_label(ph_label = &quot;Espace réservé du contenu 5&quot;)
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du contenu 5&quot;, 
+      slide_index = 2
+    ) %&gt;%
+    
+    # 6. Ajout de la diapo de contact
+    add_slide(
+      layout = &quot;Contact&quot;,
+      master = &quot;Intégral&quot;
+    ) %&gt;% 
+    ph_with(
+      value = &quot;Clic retour menu&quot;, 
+      location = ph_location_label(ph_label = &quot;Espace réservé du contenu 5&quot;)
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du contenu 5&quot;, 
+      slide_index = 2
+    ) %&gt;%
+    
+    # Création des liens sur la page du sommaire
+    on_slide(index = 2) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du texte 9&quot;, 
+      slide_index = 3
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du texte 11&quot;, 
+      slide_index = 4
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du texte 13&quot;, 
+      slide_index = 5
+    ) %&gt;%
+    ph_slidelink(
+      ph_label = &quot;Espace réservé du texte 15&quot;, 
+      slide_index = 6
+    )
+}</code></pre>
+</div>
+<div id="envoi-du-support-avec-le-package-sendmailr" class="section level1">
+<h1>Envoi du support avec le package <code>sendmailR</code></h1>
+<p>Une fois que le squelette du support est prêt, il ne reste plus qu’à envoyer à chaque pingouin (ou chaque client) son support personnalisé.</p>
+<pre class="r"><code>library(sendmailR)
+
+num_identifiant_pingouin &lt;- c(&quot;-0.993421052631561 422&quot;, &quot;-0.993421052631561 308&quot;)
+
+message_support &lt;- map(
+  .x = num_identifiant_pingouin,
+  .f = ~ mime_part(
+    creation_du_support(.x), 
+    &quot;support.pptx&quot;
+  )
+)
+
+message_support[[1]]$`Content-Type` &lt;- &quot;application/vnd.openxmlformats-officedocument.presentationml.presentation&quot;
+
+message_support[[2]]$`Content-Type` &lt;- &quot;application/vnd.openxmlformats-officedocument.presentationml.presentation&quot;
+
+adresse_d_envoi &lt;- c(&quot;experimentatateur1@truc.com&quot;, &quot;experimentateur2@truc.com&quot;) # adresse de la personne qui a suivi le pingouin/client
+
+adresse_du_pingouin &lt;- c(&quot;pingouin1@pole_nord.fr&quot;, &quot;pingouin2@pole_nord.fr&quot;) # adresse mail du pingouin/client
+
+# Envoi des mails
+map2(
+  .x = adresse_d_envoi, # on peut même associé une adresse d&#39;envoi différente par pingouin/client
+  .y = adresse_du_pingouin,
+  .f = ~ sendmail(
+    from = glue(&quot;&lt;{.x}&gt;&quot;),
+    to = glue(&quot;&lt;{.y}&gt;&quot;),
+    subject = glue(&quot;synthèse de la prise de poids du pingouin {num_identifiant_pingouin}&quot;),
+    msg = list(
+      glue(&quot;Bonjour,\nVeuillez trouver ci-joint la synthèse pour le pingouin {num_identifiant_pingouin}.\nBonne journée, \nMarie Vaugoyeau&quot;),
+      message_support
+    ),
+    control = list(smtpServer = &quot;ASPMX.L.GOOGLE.COM&quot;)
+  )
+)</code></pre>
+<p>Ouppsss, soucis cela ne fonctionne pas….<br />
+Mais pourquoi ???<br />
+En fait, un petit coup de fil rapide à <a href="https://twitter.com/davidgohel">David Gohel</a>, 1 minute de conversation et hop la solution apparaît comme une évidence, ce que je traite comme un pptx est en fait un rpptx…<br />
+Il faut donc éditer le support pptx avant de l’envoyer et là ça passe sans soucis !</p>
+<p>Deux solutions, soit on enregistre tous les supports pptx que l’on envoie pour archive (solution prise <a href="/post/presentation_0993421052631561%20308.pptx">ici</a> et <a href="/post/presentation_0993421052631561%20422.pptx">là</a>), soit on créé un support temporaire qui sera écrasé.</p>
+<pre class="r"><code>enregistrement_du_support_pptx &lt;- function(num_identifiant_pingouin){
+  num_identifiant_pingouin %&gt;% 
+    creation_du_support() %&gt;% 
+    print(glue(&#39;presentation_{num_identifiant_pingouin %&gt;% str_remove_all(&quot;[:punct:]&quot;)}.pptx&#39;))
+}
+
+num_identifiant_pingouin &lt;- c(&quot;-0.993421052631561 422&quot;, &quot;-0.993421052631561 308&quot;)
+
+num_identifiant_pingouin %&gt;% 
+  map(enregistrement_du_support_pptx)</code></pre>
+<p>Et voilà !</p>
+<p>J’espère que cet article vous permettra de mieux chercher de l’aide et de réaliser plus facilement vos travaux avec R.</p>
+</div>
