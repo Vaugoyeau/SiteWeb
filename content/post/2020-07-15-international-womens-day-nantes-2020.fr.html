@@ -39,8 +39,8 @@ output:
 <div id="objectif" class="section level1">
 <h1>Objectif</h1>
 <p>Le but est de réaliser un support de communication à destination des clients pour voir l’évolution de leurs résultats par rapport aux données des autres clients de même catégorie (<code>Benchmark</code>).<br />
-Ce support devait être généré et être envoyé automatiquement aux clients.</p>
-<p>Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est <a href="/post/template_rstudio_article_off.pptx">ici</a>, les données sont celles des Pingouins du package <code>FlexParamCurve</code> de Stephen OSWALD et LifeCycleSavings du package <code>datasets</code>. Les exemples de supports éditées à la fin de l’article sont disponibles <a href="/post/presentation_0993421052631561%20308.pptx">ici</a> et <a href="/post/presentation_0993421052631561%20422.pptx">là</a>.</p>
+Ce support devait être généré et envoyé automatiquement aux clients.</p>
+<p>Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est <a href="/post/template_rstudio_article_off.pptx">ici</a>, les données sont celles des Pingouins du package <code>FlexParamCurve</code> de <a href="https://www.rdocumentation.org/packages/FlexParamCurve/versions/1.5-5/topics/penguin.data">Stephen OSWALD</a> et de <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/LifeCycleSavings">LifeCycleSavings</a> du package <code>datasets</code>. Les exemples de supports éditées à la fin de l’article sont disponibles <a href="/post/presentation_0993421052631561%20308.pptx">ici</a> et <a href="/post/presentation_0993421052631561%20422.pptx">là</a>.</p>
 <p>Déroulé du travail :</p>
 <p>_ <a href="/post/template_rstudio_article_off.pptx">Réalisation d’un template sous Power Point</a><br />
 _ Création des graphiques à insérer<br />
@@ -49,7 +49,7 @@ _ Envoi du support avec <code>sendmailR</code> d’<a href="www.rdocumentation.o
 </div>
 <div id="création-de-graphiques-sur-les-données" class="section level1">
 <h1>Création de graphiques sur les données</h1>
-<p>Lorsque j’ai réalisé ce travail c’était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck. Je vais aussi réaliser un autre graphique sur les données internationnales du revenu réel disponible par habitant.</p>
+<p>Lorsque j’ai réalisé ce travail c’était sur des données clients donc confidentielles. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck. Je vais aussi réaliser un autre graphique sur les données internationnales du revenu réel disponible par habitant.</p>
 <div id="comparaison-dun-pingouin-par-rapport-aux-autres" class="section level2">
 <h2>Comparaison d’un pingouin par rapport aux autres</h2>
 <p>Comparer un pingouin par rapport aux autres de la même année et du même ordre de naissance est facile grâce à <code>ggplot</code>.</p>
@@ -121,8 +121,8 @@ En effet, si la mise en forme globale est bonne l’arrondi ne se fait pas… Ma
 <p>Je suis restée bloquée un petit moment à me demander ce qui n’allait pas et pourquoi et j’ai fini par demander de l’aide sur la slack francophone des utilisateurs de R, <a href="https://lstu.fr/rgrrr">GRRR</a>.<br />
 <strong>Petit point info</strong> : Quelque soit le support sur lequel vous voulez demander de l’aide, pensez à réaliser un <code>repex</code>, un exemple reproductible !<br />
 Oui les gens sur les forums ou slacks sont vos ami-e-s et oui, la sphère R est bienveillante mais n’oubliez pas que personne n’est dans votre tête (à part vous, enfin normalement), donc le premier pas vers la résolution d’un problème est de le sortir de son contexte pour pouvoir l’expliquer à tous en utilisant des données accessibles !<br />
-Cela m’est déjà arrivé plus d’une fois qu’en réalisant mon repex pour demander de l’aide j’ai vu où étais le soucis :D</p>
-<p>Voici les lignes de codes que j’ai partagée sur la slack.</p>
+Cela m’est déjà arrivé plus d’une fois qu’en réalisant le repex pour demander de l’aide, j’ai vu et corrigé mon erreur.</p>
+<p>Cette fois_ci cela n’a pas fonctionné, donc voici les lignes de codes que j’ai partagée sur la slack.</p>
 <pre class="r"><code># library(scales)
 # library(tidyverse)
 
@@ -142,19 +142,19 @@ c(13556.4646, 546946.65465) %&gt;% map(mise_en_forme_fr)</code></pre>
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  4389. 4 389.3      
-##  2  5189. 5 189.0      
-##  3  2232. 2 231.5      
-##  4  3536. 3 536.3      
-##  5  2110. 2 110.1      
-##  6  1666. 1 666.4      
-##  7  1894. 1 893.8      
-##  8  1353. 1 352.6      
-##  9  3970. 3 969.6      
-## 10   841. 841.3        
+##  1  5728. 5 727.7      
+##  2  5358. 5 358.4      
+##  3   663. 663.2        
+##  4  5873. 5 873.3      
+##  5  2448. 2 448.2      
+##  6  3773. 3 772.7      
+##  7  5105. 5 104.9      
+##  8  5297. 5 296.8      
+##  9  3967. 3 967.0      
+## 10  4243. 4 242.9      
 ## # ... with 40 more rows</code></pre>
 <p>Cette fois-là c’est <a href="https://twitter.com/lapply">Julien Barnier</a> qui m’a dépanné en me faisant remarquer que j’avais fait une faute à <code>accuracy</code>, il n’y a pas de ‘n’…<br />
-Bizarrement ça a tout de suite fonctionné mieux ;)</p>
+Bizarrement ça a tout de suite mieux fonctionné.</p>
 <pre class="r"><code>mise_en_forme_fr &lt;- label_number(accuracy = 1)
 
 tibble(
@@ -165,16 +165,16 @@ tibble(
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  1771. 1 771        
-##  2  5259. 5 259        
-##  3  2230. 2 230        
-##  4  5395. 5 395        
-##  5  2187. 2 187        
-##  6  5131. 5 131        
-##  7   594. 594          
-##  8   327. 327          
-##  9  1249. 1 249        
-## 10   465. 465          
+##  1  5914. 5 914        
+##  2  4022. 4 022        
+##  3   240. 240          
+##  4  4708. 4 708        
+##  5  1667. 1 667        
+##  6  2662. 2 662        
+##  7  3368. 3 368        
+##  8  5587. 5 587        
+##  9  5576. 5 576        
+## 10  4936. 4 936        
 ## # ... with 40 more rows</code></pre>
 <pre class="r"><code>graphique_LCS &lt;- LifeCycleSavings %&gt;% 
   rownames_to_column(&quot;country&quot;) %&gt;% 
@@ -194,7 +194,7 @@ graphique_LCS</code></pre>
 </div>
 <div id="création-du-support-powerpoint-avec-officer" class="section level1">
 <h1>Création du support PowerPoint avec <code>officer</code></h1>
-<p>De base je ne suis pas trop pour la création de support <code>pptx</code> avec R, je préfère rapports <code>html</code> mais cela reste un support très attendu pour la communication à destination des clients.</p>
+<p>De base je ne suis pas trop pour la création de support <code>pptx</code> avec R, je préfère les rapports <code>html</code> mais cela reste un support très attendu pour la communication à destination des clients.</p>
 <p>Grâce au package <a href="davidgohel.github.io/officer/"><code>officer</code></a>, je vais créer un support simple mais dynamique avec des liens entre les diapos.</p>
 <pre class="r"><code>library(officer)
 library(glue)

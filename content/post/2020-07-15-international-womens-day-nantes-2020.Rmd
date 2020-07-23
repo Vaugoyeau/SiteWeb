@@ -35,7 +35,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 The aim is to create a communication support for clients to see the evolution of their results compared to the data of other clients in the same category (`Benchmark`).  
 This support had to be generated and sent automatically to the customers.  
   
-So that people who wish to reuse these lines of code, the template used is [here](/post/template_rstudio_article_off_eng.pptx), the data are those of the Penguins of the package `FlexParamCurve` by Stephen OSWALD and LifeCycleSavings of the package `datasets`. Examples of the published media at the end of the article are available [here](/post/presentation_0993421052631561 308_eng.pptx) and [here](/post/presentation_0993421052631561 422_eng.pptx).  
+So that people who wish to reuse these lines of code, the template used is [here](/post/template_rstudio_article_off_eng.pptx), the data are those of the Penguins of the package `FlexParamCurve` by [Stephen OSWALD](https://www.rdocumentation.org/packages/FlexParamCurve/versions/1.5-5/topics/penguin.data) and [LifeCycleSavings](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/LifeCycleSavings) of the package `datasets`. Examples of the published media at the end of the article are available [here](/post/presentation_0993421052631561 308_eng.pptx) and [here](/post/presentation_0993421052631561 422_eng.pptx).  
   
 Work sequence:  
 
@@ -219,7 +219,7 @@ creating_support <- function(num_penguin){
       location = ph_location_label("Espace réservé du tableau 4")
     ) %>% 
     
-    # 2. Ajout du sommaire cliquable
+    # 2. Adding clickable summary
     add_slide(
       layout = "Resume",
       master = "Intégral"

@@ -40,7 +40,7 @@ output:
 <h1>Aim</h1>
 <p>The aim is to create a communication support for clients to see the evolution of their results compared to the data of other clients in the same category (<code>Benchmark</code>).<br />
 This support had to be generated and sent automatically to the customers.</p>
-<p>So that people who wish to reuse these lines of code, the template used is <a href="/post/template_rstudio_article_off_eng.pptx">here</a>, the data are those of the Penguins of the package <code>FlexParamCurve</code> by Stephen OSWALD and LifeCycleSavings of the package <code>datasets</code>. Examples of the published media at the end of the article are available <a href="/post/presentation_0993421052631561%20308_eng.pptx">here</a> and <a href="/post/presentation_0993421052631561%20422_eng.pptx">here</a>.</p>
+<p>So that people who wish to reuse these lines of code, the template used is <a href="/post/template_rstudio_article_off_eng.pptx">here</a>, the data are those of the Penguins of the package <code>FlexParamCurve</code> by <a href="https://www.rdocumentation.org/packages/FlexParamCurve/versions/1.5-5/topics/penguin.data">Stephen OSWALD</a> and <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/LifeCycleSavings">LifeCycleSavings</a> of the package <code>datasets</code>. Examples of the published media at the end of the article are available <a href="/post/presentation_0993421052631561%20308_eng.pptx">here</a> and <a href="/post/presentation_0993421052631561%20422_eng.pptx">here</a>.</p>
 <p>Work sequence:</p>
 <p>_ <a href="/post/template_rstudio_article_off_eng.pptx">Creation of a template under Power Point</a><br />
 _ Creation of the graphics to be inserted<br />
@@ -142,16 +142,16 @@ c(13556.4646, 546946.65465) %&gt;% map(fr_formatting)</code></pre>
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  3036. 3 035.6      
-##  2  4374. 4 373.9      
-##  3  1313. 1 312.9      
-##  4  3626. 3 626.3      
-##  5  1439. 1 439.3      
-##  6  3824. 3 824.4      
-##  7  5657. 5 657.1      
-##  8  3409. 3 409.0      
-##  9  4678. 4 678.1      
-## 10  4000. 3 999.5      
+##  1  1321. 1 321.0      
+##  2  2905. 2 905.4      
+##  3   553. 552.5        
+##  4   344. 344.1        
+##  5  4228. 4 228.4      
+##  6  1015. 1 015.4      
+##  7  5231. 5 231.1      
+##  8  4481. 4 481.2      
+##  9  2436. 2 436.3      
+## 10   644. 644.3        
 ## # ... with 40 more rows</code></pre>
 <p>This time it was <a href="https://twitter.com/lapply">Julien Barnier</a> who helped me out by pointing out that I had made a mistake at <code>accuracy</code>, there is no ‘n’….<br />
 Strangely enough, it worked better right away.</p>
@@ -165,16 +165,16 @@ tibble(
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  3130. 3 130        
-##  2  4006. 4 006        
-##  3  3970. 3 970        
-##  4  2527. 2 527        
-##  5  1696. 1 696        
-##  6  5412. 5 412        
-##  7  3168. 3 168        
-##  8  4479. 4 479        
-##  9  2824. 2 824        
-## 10  5027. 5 027        
+##  1  3414. 3 414        
+##  2  4994. 4 994        
+##  3   707. 707          
+##  4  3715. 3 715        
+##  5  2984. 2 984        
+##  6  2009. 2 009        
+##  7  5452. 5 452        
+##  8  5124. 5 124        
+##  9  4264. 4 264        
+## 10   495. 495          
 ## # ... with 40 more rows</code></pre>
 <pre class="r"><code>graphique_LCS &lt;- LifeCycleSavings %&gt;% 
   rownames_to_column(&quot;country&quot;) %&gt;% 
@@ -228,14 +228,14 @@ read_pptx(location_of_support) %&gt;%
 ## 20    Intégral                  Resume     body  6   Espace réservé du texte 5
 ## 21    Intégral                 Contact     body  3                 ZoneTexte 2
 ## 22    Intégral                 Contact     body  8                 Graphique 7
-## 23    Intégral                 Contact     body  9 Espace réservé du contenu 5
+## 23    Intégral                 Contact     body 12 Espace réservé du contenu 5
 ## 24    Intégral Titre, Contenu et Image     body  6 Espace réservé du contenu 5
 ## 25    Intégral                  Resume     body 12  Espace réservé du texte 11
 ## 26    Intégral Titre, Contenu et Image     body  9 Espace réservé du contenu 8
 ## 27    Intégral                  Resume     body 16  Espace réservé du texte 15
 ## 28    Intégral                  Resume     body 18  Espace réservé du texte 17
 ## 29    Intégral                  Resume     body 20  Espace réservé du texte 19
-## 30    Intégral        Titre et contenu     body  5 Espace réservé du contenu 5
+## 30    Intégral        Titre et contenu     body  6 Espace réservé du contenu 5
 ## 31    Intégral                  Resume     body 24  Espace réservé du texte 23
 ## 32    Intégral                  Resume     body  4                 Rectangle 3
 ## 33    Intégral             Comparaison     body  5          Text Placeholder 4
@@ -244,7 +244,7 @@ read_pptx(location_of_support) %&gt;%
 ## 36    Intégral Titre, Contenu et Image     body  7 Espace réservé du contenu 6
 ## 37    Intégral       PrésentationMarie     body  7                 ZoneTexte 6
 ## 38    Intégral Titre, Contenu et Image     body  4 Espace réservé du contenu 3
-## 39    Intégral       PrésentationMarie     body  5 Espace réservé du contenu 5
+## 39    Intégral       PrésentationMarie     body  8 Espace réservé du contenu 5
 ## 40    Intégral        Titre de section     body  9                 Rectangle 8
 ## 41    Intégral        Titre et contenu     body  3       Content Placeholder 2
 ## 42    Intégral        Titre et contenu     body  4                 Graphique 3
@@ -286,7 +286,7 @@ read_pptx(location_of_support) %&gt;%
       location = ph_location_label(&quot;Espace réservé du tableau 4&quot;)
     ) %&gt;% 
     
-    # 2. Ajout du sommaire cliquable
+    # 2. Adding clickable summary
     add_slide(
       layout = &quot;Resume&quot;,
       master = &quot;Intégral&quot;

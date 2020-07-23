@@ -33,9 +33,9 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 # Objectif  
   
 Le but est de réaliser un support de communication à destination des clients pour voir l'évolution de leurs résultats par rapport aux données des autres clients de même catégorie (`Benchmark`).  
-Ce support devait être généré et être envoyé automatiquement aux clients.  
+Ce support devait être généré et envoyé automatiquement aux clients.  
   
-Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de Stephen OSWALD et LifeCycleSavings du package `datasets`. Les exemples de supports éditées à la fin de l'article sont disponibles [ici](/post/presentation_0993421052631561 308.pptx) et [là](/post/presentation_0993421052631561 422.pptx).  
+Afin que les personnes qui le souhaite puissent réutiliser ces lignes de codes, le template utilisé est [ici](/post/template_rstudio_article_off.pptx), les données sont celles des Pingouins du package `FlexParamCurve` de [Stephen OSWALD](https://www.rdocumentation.org/packages/FlexParamCurve/versions/1.5-5/topics/penguin.data) et de [LifeCycleSavings](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/LifeCycleSavings) du package `datasets`. Les exemples de supports éditées à la fin de l'article sont disponibles [ici](/post/presentation_0993421052631561 308.pptx) et [là](/post/presentation_0993421052631561 422.pptx).  
   
 Déroulé du travail :  
 
@@ -47,7 +47,7 @@ _ Envoi du support avec `sendmailR` d'[Olaf Mersmann](www.rdocumentation.org/pac
   
 # Création de graphiques sur les données  
   
-Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielle. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck. Je vais aussi réaliser un autre graphique sur les données internationnales du revenu réel disponible par habitant.  
+Lorsque j'ai réalisé ce travail c'était sur des données clients donc confidentielles. Pour cet article de blog je vais utiliser les données de masse des pingouins en fonction de leurs âges et les comparer aux données moyennes des autres pingouins nés dans le même ordre et la même année pour montrer comment réaliser un graphique avec un benchmarck. Je vais aussi réaliser un autre graphique sur les données internationnales du revenu réel disponible par habitant.  
   
 ## Comparaison d'un pingouin par rapport aux autres  
   
@@ -133,9 +133,9 @@ En effet, si la mise en forme globale est bonne l'arrondi ne se fait pas... Mais
 Je suis restée bloquée un petit moment à me demander ce qui n'allait pas et pourquoi et j'ai fini par demander de l'aide sur la slack francophone des utilisateurs de R, [GRRR](https://lstu.fr/rgrrr).  
 **Petit point info** : Quelque soit le support sur lequel vous voulez demander de l'aide, pensez à réaliser un `repex`, un exemple reproductible !  
 Oui les gens sur les forums ou slacks sont vos ami-e-s et oui, la sphère R est bienveillante mais n'oubliez pas que personne n'est dans votre tête (à part vous, enfin normalement), donc le premier pas vers la résolution d'un problème est de le sortir de son contexte pour pouvoir l'expliquer à tous en utilisant des données accessibles !  
-Cela m'est déjà arrivé plus d'une fois qu'en réalisant mon repex pour demander de l'aide j'ai vu où étais le soucis :D  
+Cela m'est déjà arrivé plus d'une fois qu'en réalisant le repex pour demander de l'aide, j'ai vu et corrigé mon erreur.   
   
-Voici les lignes de codes que j'ai partagée sur la slack.  
+Cette fois_ci cela n'a pas fonctionné, donc voici les lignes de codes que j'ai partagée sur la slack.  
   
 ```{r creation_exemple_reproductible}
 
@@ -155,7 +155,7 @@ tibble(
 ```
   
 Cette fois-là c'est [Julien Barnier](https://twitter.com/lapply) qui m'a dépanné en me faisant remarquer que j'avais fait une faute à `accuracy`, il n'y a pas de 'n'...  
-Bizarrement ça a tout de suite fonctionné mieux ;)  
+Bizarrement ça a tout de suite mieux fonctionné.    
   
 ```{r reponse_au_probleme}
 mise_en_forme_fr <- label_number(accuracy = 1)
@@ -186,7 +186,7 @@ graphique_LCS
   
 # Création du support PowerPoint avec `officer`  
   
-De base je ne suis pas trop pour la création de support `pptx` avec R, je préfère rapports `html` mais cela reste un support très attendu pour la communication à destination des clients.  
+De base je ne suis pas trop pour la création de support `pptx` avec R, je préfère les rapports `html` mais cela reste un support très attendu pour la communication à destination des clients.  
   
 Grâce au package [`officer`](davidgohel.github.io/officer/), je vais créer un support simple mais dynamique avec des liens entre les diapos.  
   
