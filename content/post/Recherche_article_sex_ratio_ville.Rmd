@@ -1,0 +1,93 @@
+---
+title: "Recherche article sex-ratio des villes de plus de 100 000 habitants"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+```
+  
+  
+On commence par aller chercher la liste des villes de plus de 100 000 habitants sur le site de [INSEE](https://www.insee.fr/fr/statistiques/4265429?sommaire=4265511) (Téléchargement du fichier d'ensemble des populations légales en 2017).  
+  
+DEPCOM : Numéro de département + numéro de la commune, identifiant unique  
+COM : Nom de la commune  
+PMUN : Population municipale, c'est-à-dire habitants réellement là  
+PCAP : Population comptées à part, c'est-à-dire les personnes avec plusieurs lieux de résidences (enfants avec plusieurs foyers, étudiants,...) ou avec aucun lieux de résidence (SDF)  
+PTOT : Somme des deux  
+  
+```{r import_dans_R}
+
+library(tidyverse)
+
+pop_par_communes <- read.csv2(
+  "content/post/Communes.csv",
+  encoding = "UTF-8"
+)
+
+
+```
+  
+Soucis, Lyon, Paris et Marseille sont séparées par arrondissement, donc il faut les mettre ensemble.  
+  
+```{r supp_arrondissement_plus_sortie_des_villes_interessantes}
+
+ville_avec_arrondissement <- pop_par_communes %>% 
+  filter(
+    COM %>% str_detect("Arrondissement") == TRUE
+  ) %>% 
+  mutate(
+    COM = (COM %>% str_split(" ", simplify = TRUE))[,1]
+  ) %>% 
+  group_by(
+    COM
+  ) %>% 
+  summarise_if(
+    is.numeric,
+    sum,
+    na.rm = TRUE
+  ) %>% 
+  ungroup()
+
+communes_de_plus_de_100000_habitants <- pop_par_communes %>% 
+  filter(
+    COM %>% str_detect("Arrondissement") == FALSE
+  ) %>% 
+  bind_rows(ville_avec_arrondissement) %>% 
+  filter(
+    PTOT > 100000
+  )
+
+```
+  
+Recherche noms de rue, places, etc...  
+  
+```{r recherche_banr}
+
+# récupéré sur https://adresse.data.gouv.fr/donnees-nationales
+
+ban_06 <- read.csv2(
+  "content/post/ban-06.csv",
+  encoding = "UTF-8"
+)
+
+noms_de_rues_nice <- ban_06 %>% 
+  filter(
+    nom_commune == "Nice"
+  ) %>% 
+  distinct(nom_voie)
+
+
+library(banR)
+
+test_Marseille <- banR::geocode("Marseille")
+
+```
+
+  
+  
+  
+  
+  
