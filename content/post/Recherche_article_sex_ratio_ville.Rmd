@@ -9,6 +9,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```
   
+# Recherche des villes de plus de 100 000 habitants sur le site de l'INSEE  
   
 On commence par aller chercher la liste des villes de plus de 100 000 habitants sur le site de [INSEE](https://www.insee.fr/fr/statistiques/4265429?sommaire=4265511) (Téléchargement du fichier d'ensemble des populations légales en 2017).  
   
@@ -30,6 +31,9 @@ pop_par_communes <- read.csv2(
 
 ```
   
+  
+## Pb avec les villes qui ont des arrondissements  
+  
 Soucis, Lyon, Paris et Marseille sont séparées par arrondissement, donc il faut les mettre ensemble.  
   
 ```{r supp_arrondissement_plus_sortie_des_villes_interessantes}
@@ -49,7 +53,10 @@ ville_avec_arrondissement <- pop_par_communes %>%
     sum,
     na.rm = TRUE
   ) %>% 
-  ungroup()
+  ungroup() %>% 
+  mutate(
+    DEPCOM = c("69000", "13000", "75000")
+  )
 
 communes_de_plus_de_100000_habitants <- pop_par_communes %>% 
   filter(
@@ -62,32 +69,55 @@ communes_de_plus_de_100000_habitants <- pop_par_communes %>%
 
 ```
   
-Recherche noms de rue, places, etc...  
+  
+  
+# Recherche noms de rue, places, etc...  
+  
+## BanR  
+  
+BanR n'est pas adapté car le noms des rues et tous sont en majuscule, la base prends une place folle.  
+En fait, peut-être que si...  
   
 ```{r recherche_banr}
+
+communes_de_plus_de_100000_habitants %>% 
+  distinct(DEPCOM) %>% 
+  arrange(DEPCOM)
 
 # récupéré sur https://adresse.data.gouv.fr/donnees-nationales
 
 ban_06 <- read.csv2(
-  "content/post/ban-06.csv",
+  "content/post/ban/adresses-06.csv",
   encoding = "UTF-8"
 )
 
-noms_de_rues_nice <- ban_06 %>% 
+noms_de_rues_nice <- ban_06 %>%
   filter(
-    nom_commune == "Nice"
-  ) %>% 
+    id_fantoir %>% 
+      str_detect("06088") == TRUE
+  ) %>%
   distinct(nom_voie)
 
+# on retire les noms qui ne nous intéresse pas, c'est-à-dire, Rue du Lavoir, Avenue du Beau Site....
+# il nous faut ceux qui n'ont que des mots commençant par des majuscules (pb : Allfred de Musset, Prince de Galles...)
 
-library(banR)
 
-test_Marseille <- banR::geocode("Marseille")
+# library(banR)
+# 
+# test_Marseille <- banR::geocode("Marseille")
+
+```
+  
+  
+## Recherche à la main...   
+  
+```{r recherche_nom_rues_a_la_main}
+
+communes_de_plus_de_100000_habitants %>% 
+  distinct(DEPCOM)
 
 ```
 
-  
-  
   
   
   
