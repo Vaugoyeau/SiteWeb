@@ -142,16 +142,16 @@ c(13556.4646, 546946.65465) %&gt;% map(fr_formatting)</code></pre>
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  1321. 1 321.0      
-##  2  2905. 2 905.4      
-##  3   553. 552.5        
-##  4   344. 344.1        
-##  5  4228. 4 228.4      
-##  6  1015. 1 015.4      
-##  7  5231. 5 231.1      
-##  8  4481. 4 481.2      
-##  9  2436. 2 436.3      
-## 10   644. 644.3        
+##  1  3172. 3 171.79     
+##  2  5331. 5 331.45     
+##  3  4319. 4 319.15     
+##  4  1053. 1 053.26     
+##  5  2587. 2 587.38     
+##  6  4182. 4 182.38     
+##  7  4941. 4 941.50     
+##  8  3855. 3 854.62     
+##  9  2109. 2 109.46     
+## 10  2764. 2 764.42     
 ## # ... with 40 more rows</code></pre>
 <p>This time it was <a href="https://twitter.com/lapply">Julien Barnier</a> who helped me out by pointing out that I had made a mistake at <code>accuracy</code>, there is no ‘n’….<br />
 Strangely enough, it worked better right away.</p>
@@ -165,16 +165,16 @@ tibble(
 <pre><code>## # A tibble: 50 x 2
 ##    valeur mise_en_forme
 ##     &lt;dbl&gt; &lt;chr&gt;        
-##  1  3414. 3 414        
-##  2  4994. 4 994        
-##  3   707. 707          
-##  4  3715. 3 715        
-##  5  2984. 2 984        
-##  6  2009. 2 009        
-##  7  5452. 5 452        
-##  8  5124. 5 124        
-##  9  4264. 4 264        
-## 10   495. 495          
+##  1  4190. 4 190        
+##  2  5807. 5 807        
+##  3   848. 848          
+##  4  4264. 4 264        
+##  5  4575. 4 575        
+##  6  4906. 4 906        
+##  7  3087. 3 087        
+##  8  3035. 3 035        
+##  9  4490. 4 490        
+## 10  1576. 1 576        
 ## # ... with 40 more rows</code></pre>
 <pre class="r"><code>graphique_LCS &lt;- LifeCycleSavings %&gt;% 
   rownames_to_column(&quot;country&quot;) %&gt;% 
