@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
-date: "2021-03-08"
+date: "2018-04-20"
 output:
   blogdown::html_page:
     toc: true
@@ -22,26 +22,9 @@ Née le 1^er^ mai 1986
 * Français : langue natale  
   
 ### Compétences informatiques  
-* R : niveau avancé  
-  _ [Analyses statistiques](https://mvaugoyeau.netlify.app/fr/curriculum/#compétences-en-statistiques)
-  _ Création de packages
-  _ Applications Shiny
-  _ Machine learning
-  _ Rédaction de rapports Rmarkdown
-  _ Gestion de site internet avec Hugo
-* QGIS et ArcGIS: niveau basic  
 * Microsoft Office: niveau avancé  
-  
-### Compétences en statistiques  
-* Statiques bayésiennes et fréquentistes  
-* Modèles linéaires et généralisés mixtes à effets aléatoires et tests post-hoc de Tuckey  
-* Calcul du rapport de vraisemblance  
-* Tests de Pearson  
-* Critère d’information d’Akaike pour choisir le meilleur modèle  
-* Méthode du maximum de vraisemblance restreint (REML)  
-* Tests-t de Student, de Welch ainsi que le Chi2  
-* Analyses en composantes principales  
-* Tests non paramétriques de Wilcoxon, Mann-Whitney et Kruskal-Wallis et tests post-hoc de Nemenyi  
+* R (analyses statistiques, shiny et site web): niveau avancé  
+* QGIS et ArcGIS: niveau basic  
   
 ### Compétences en biologie  
 #### Compétences sur le terrain (aviaire et squamates)  
@@ -65,23 +48,7 @@ Née le 1^er^ mai 1986
   
   
 ## Expériences  
-### 2021 **Analyste de données en freelance**  
-* Accompagnement à l'analyse de données ou à la formation en bio-statistiques  
-* Réalisation d'applications Shiny  
-* Nettoyage, mise en forme et analyse de données  
-* Création de fonctions et packages (automatisation d'import, mise en forme et analyse de données)  
-
-### 2019-2020 **Data Scientist** Comerso  
-* Gestion, nettoyage, mise en forme, analyse ponctuelle ou récurrente et visualisation des données  
-* Création de supports de communication clients et tableaux de bord  
-  
-### 2019 **Analyste de données** TGS-France (ex. Adventi Informatique)  
-* Création d’indices économiques à partir de données brutes  
-* Automatisation et création d’applications Shiny  
-* Machine learning  
-* Analyse de séries temporelles  
-
-### 2018 **Analyste de données en freelance**  
+### Depuis juin 2018 **Analyste de données en freelance**  
 * Réalisation d'applications Shiny  
 * Nettoyage, mise en forme et analyse de données  
 * Création de fonctions et packages (automatisation d'import, mise en forme et analyse de données)  

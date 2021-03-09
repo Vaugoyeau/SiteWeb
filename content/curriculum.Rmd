@@ -1,6 +1,6 @@
 ---
 title: "Curriculum Vitae"
-date: "2018-01-24"
+date: "2021-03-08"
 output:
   blogdown::html_page:
     toc: true
@@ -22,9 +22,27 @@ Born May 1^st^ 1986
 * French: native speaker  
   
 ### Computer skills  
-* Microsoft Office: advanced level  
-* R (statistical analyses for all kind of data, shiny and website): advanced level  
+* R: advanced level   
+  _ [Statistical analysis](https://mvaugoyeau.netlify.app/curriculum/#statistics-skills)  
+  _ Packages creations  
+  _ Shiny applications  
+  _ Machine learning  
+  _ Rmarkdown report writing  
+  _ Website management with Hugo  
 * QGIS - ArcGIS: basic level  
+* Microsoft Office: advanced level  
+  
+### Statistics skills  
+* Bayesian and frequentists statics  
+* General mixed models with random effects and Tuckey post-hoc tests  
+* Calculation of the likelihood ratio  
+* Akaike Information Criterion to choose the best model  
+* Restricted maximum likelihood (REML) approach  
+* Pearson tests, Student t-tests, Welch and Chi2 tests  
+* Principal Component Analysis (PCA)  
+* Non-parametric tests of Wilcoxon, Mann-Whitney and Kruskal-Wallis  
+* Nemenyi post-hoc non-parametric tests  
+  
   
 ### Biological skills  
 #### Field skills on birds and reptiles
@@ -51,7 +69,23 @@ Born May 1^st^ 1986
   
 
 ## Experiences  
-### Since June 2018 **Freelance data-analyst**  
+### 2021 **Freelance data analyst**  
+* Coaching and mentoring to learn data analyze  
+* Shiny app  
+* Data cleaning, formatting and analysis  
+* Functions and packages development  
+
+### 2019-2020 **Data Scientist** Comerso  
+* Data management, mining, cleaning, one-time or automatically analysis and data visualization  
+* Creation of customer communication supports and Shiny dashboard  
+  
+### 2019 **Data analyst** TGS-France (ex. Adventi Informatique)  
+* Creation of economic indices from raw data  
+* Automatization and creation of Shiny applications  
+* Machine learning  
+* Forecasting  
+  
+### 2018 **Freelance data analyst**  
 * Shiny app  
 * Data cleaning, formatting and analysis  
 * Functions and packages development  
