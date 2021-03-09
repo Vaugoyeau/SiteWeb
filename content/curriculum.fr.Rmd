@@ -23,12 +23,12 @@ Née le 1^er^ mai 1986
   
 ### Compétences informatiques  
 * R : niveau avancé  
-  _ [Analyses statistiques](https://mvaugoyeau.netlify.app/fr/curriculum/#compétences-en-statistiques)
-  _ Création de packages
-  _ Applications Shiny
-  _ Machine learning
-  _ Rédaction de rapports Rmarkdown
-  _ Gestion de site internet avec Hugo
+  _ [Analyses statistiques](https://mvaugoyeau.netlify.app/fr/curriculum/#compétences-en-statistiques)  
+  _ Création de packages  
+  _ Applications Shiny  
+  _ Machine learning  
+  _ Rédaction de rapports Rmarkdown  
+  _ Gestion de site internet avec Hugo  
 * QGIS et ArcGIS: niveau basic  
 * Microsoft Office: niveau avancé  
   
